@@ -14,6 +14,7 @@ using System.IO;
 using System.Diagnostics;
 
 //added git
+//adding a fork and start with Payment GUI fixing
 
 namespace LoanLifeTracker
 {
