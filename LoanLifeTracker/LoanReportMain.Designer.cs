@@ -96,7 +96,14 @@
             this.labelTermStart = new System.Windows.Forms.Label();
             this.inputAddInterestTerm = new System.Windows.Forms.Button();
             this.labelInterestTermEndDate = new System.Windows.Forms.Label();
+            this.groupInterestPenalty = new System.Windows.Forms.GroupBox();
+            this.labelPenaltyPercent = new System.Windows.Forms.Label();
+            this.labelInterestPenalty = new System.Windows.Forms.Label();
+            this.inputInterestPenaltyStart = new System.Windows.Forms.DateTimePicker();
+            this.inputInterestPenaltyRate = new System.Windows.Forms.NumericUpDown();
+            this.labelInterestPenaltyRate = new System.Windows.Forms.Label();
             this.groupFinancialData = new System.Windows.Forms.GroupBox();
+            this.inputInitialLoanAmount = new System.Windows.Forms.TextBox();
             this.buttonOpenPrincipalAdjust = new System.Windows.Forms.Button();
             this.buttonOpenAddPayment = new System.Windows.Forms.Button();
             this.labelYears = new System.Windows.Forms.Label();
@@ -110,12 +117,6 @@
             this.inputCalculateLoan = new System.Windows.Forms.Button();
             this.groupInterestConfig = new System.Windows.Forms.GroupBox();
             this.labelInterestPercent = new System.Windows.Forms.Label();
-            this.groupInterestPenalty = new System.Windows.Forms.GroupBox();
-            this.labelPenaltyPercent = new System.Windows.Forms.Label();
-            this.labelInterestPenalty = new System.Windows.Forms.Label();
-            this.inputInterestPenaltyStart = new System.Windows.Forms.DateTimePicker();
-            this.inputInterestPenaltyRate = new System.Windows.Forms.NumericUpDown();
-            this.labelInterestPenaltyRate = new System.Windows.Forms.Label();
             this.inputInterestPenaltyChk = new System.Windows.Forms.CheckBox();
             this.inputRateToWholeDurationChk = new System.Windows.Forms.CheckBox();
             this.labelInterestStructure = new System.Windows.Forms.Label();
@@ -127,7 +128,6 @@
             this.panelLoanDetails = new System.Windows.Forms.TableLayoutPanel();
             this.panelLoandDataGrid = new System.Windows.Forms.Panel();
             this.loanReportDataGrid = new System.Windows.Forms.DataGridView();
-            this.inputInitialLoanAmount = new System.Windows.Forms.TextBox();
             this.groupLoanInput.SuspendLayout();
             this.groupReportControls.SuspendLayout();
             this.groupReportActions.SuspendLayout();
@@ -137,11 +137,11 @@
             this.panelReport.SuspendLayout();
             this.panelLoanConfig.SuspendLayout();
             this.groupVaryingInterestTerm.SuspendLayout();
+            this.groupInterestPenalty.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.inputInterestPenaltyRate)).BeginInit();
             this.groupFinancialData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.inputLoanDuration)).BeginInit();
             this.groupInterestConfig.SuspendLayout();
-            this.groupInterestPenalty.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.inputInterestPenaltyRate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.inputInterestRate)).BeginInit();
             this.panelLoanDataDisplay.SuspendLayout();
             this.panelLoanDetails.SuspendLayout();
@@ -180,7 +180,7 @@
             this.groupLoanInput.Margin = new System.Windows.Forms.Padding(4);
             this.groupLoanInput.Name = "groupLoanInput";
             this.groupLoanInput.Padding = new System.Windows.Forms.Padding(4);
-            this.groupLoanInput.Size = new System.Drawing.Size(290, 275);
+            this.groupLoanInput.Size = new System.Drawing.Size(300, 275);
             this.groupLoanInput.TabIndex = 6;
             this.groupLoanInput.TabStop = false;
             this.groupLoanInput.Text = "Loan Details";
@@ -447,7 +447,7 @@
             this.groupReportControls.ForeColor = System.Drawing.Color.Gainsboro;
             this.groupReportControls.Location = new System.Drawing.Point(2, 2);
             this.groupReportControls.Name = "groupReportControls";
-            this.groupReportControls.Size = new System.Drawing.Size(295, 219);
+            this.groupReportControls.Size = new System.Drawing.Size(300, 219);
             this.groupReportControls.TabIndex = 13;
             this.groupReportControls.TabStop = false;
             this.groupReportControls.Text = "Report Controls";
@@ -565,7 +565,7 @@
             this.groupReportActions.Margin = new System.Windows.Forms.Padding(4);
             this.groupReportActions.Name = "groupReportActions";
             this.groupReportActions.Padding = new System.Windows.Forms.Padding(4);
-            this.groupReportActions.Size = new System.Drawing.Size(294, 138);
+            this.groupReportActions.Size = new System.Drawing.Size(300, 138);
             this.groupReportActions.TabIndex = 10;
             this.groupReportActions.TabStop = false;
             this.groupReportActions.Text = "Loan Report Actions";
@@ -963,7 +963,7 @@
             this.groupVaryingInterestTerm.ForeColor = System.Drawing.Color.Gainsboro;
             this.groupVaryingInterestTerm.Location = new System.Drawing.Point(2, 416);
             this.groupVaryingInterestTerm.Name = "groupVaryingInterestTerm";
-            this.groupVaryingInterestTerm.Size = new System.Drawing.Size(296, 137);
+            this.groupVaryingInterestTerm.Size = new System.Drawing.Size(300, 137);
             this.groupVaryingInterestTerm.TabIndex = 29;
             this.groupVaryingInterestTerm.TabStop = false;
             this.groupVaryingInterestTerm.Text = "Add Varying Interest Term";
@@ -1032,6 +1032,79 @@
             this.labelInterestTermEndDate.TabIndex = 13;
             this.labelInterestTermEndDate.Text = "Interest Term End Date";
             // 
+            // groupInterestPenalty
+            // 
+            this.groupInterestPenalty.Controls.Add(this.labelPenaltyPercent);
+            this.groupInterestPenalty.Controls.Add(this.labelInterestPenalty);
+            this.groupInterestPenalty.Controls.Add(this.inputInterestPenaltyStart);
+            this.groupInterestPenalty.Controls.Add(this.inputInterestPenaltyRate);
+            this.groupInterestPenalty.Controls.Add(this.labelInterestPenaltyRate);
+            this.groupInterestPenalty.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupInterestPenalty.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.groupInterestPenalty.Location = new System.Drawing.Point(2, 336);
+            this.groupInterestPenalty.Name = "groupInterestPenalty";
+            this.groupInterestPenalty.Size = new System.Drawing.Size(300, 74);
+            this.groupInterestPenalty.TabIndex = 22;
+            this.groupInterestPenalty.TabStop = false;
+            this.groupInterestPenalty.Text = "Interest Penalty";
+            // 
+            // labelPenaltyPercent
+            // 
+            this.labelPenaltyPercent.AutoSize = true;
+            this.labelPenaltyPercent.Location = new System.Drawing.Point(258, 43);
+            this.labelPenaltyPercent.Name = "labelPenaltyPercent";
+            this.labelPenaltyPercent.Size = new System.Drawing.Size(15, 15);
+            this.labelPenaltyPercent.TabIndex = 43;
+            this.labelPenaltyPercent.Text = "%";
+            // 
+            // labelInterestPenalty
+            // 
+            this.labelInterestPenalty.AutoSize = true;
+            this.labelInterestPenalty.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelInterestPenalty.Location = new System.Drawing.Point(9, 17);
+            this.labelInterestPenalty.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelInterestPenalty.Name = "labelInterestPenalty";
+            this.labelInterestPenalty.Size = new System.Drawing.Size(147, 16);
+            this.labelInterestPenalty.TabIndex = 15;
+            this.labelInterestPenalty.Text = "Interest Penalty Start Date";
+            // 
+            // inputInterestPenaltyStart
+            // 
+            this.inputInterestPenaltyStart.CalendarFont = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.inputInterestPenaltyStart.CustomFormat = "MMMM dd, yyyy";
+            this.inputInterestPenaltyStart.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.inputInterestPenaltyStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.inputInterestPenaltyStart.Location = new System.Drawing.Point(12, 37);
+            this.inputInterestPenaltyStart.Margin = new System.Windows.Forms.Padding(4);
+            this.inputInterestPenaltyStart.MaxDate = new System.DateTime(3000, 12, 31, 0, 0, 0, 0);
+            this.inputInterestPenaltyStart.MinDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
+            this.inputInterestPenaltyStart.Name = "inputInterestPenaltyStart";
+            this.inputInterestPenaltyStart.Size = new System.Drawing.Size(160, 26);
+            this.inputInterestPenaltyStart.TabIndex = 17;
+            // 
+            // inputInterestPenaltyRate
+            // 
+            this.inputInterestPenaltyRate.BackColor = System.Drawing.Color.Gainsboro;
+            this.inputInterestPenaltyRate.DecimalPlaces = 2;
+            this.inputInterestPenaltyRate.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.inputInterestPenaltyRate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            this.inputInterestPenaltyRate.Location = new System.Drawing.Point(181, 37);
+            this.inputInterestPenaltyRate.Margin = new System.Windows.Forms.Padding(4);
+            this.inputInterestPenaltyRate.Name = "inputInterestPenaltyRate";
+            this.inputInterestPenaltyRate.Size = new System.Drawing.Size(70, 26);
+            this.inputInterestPenaltyRate.TabIndex = 18;
+            // 
+            // labelInterestPenaltyRate
+            // 
+            this.labelInterestPenaltyRate.AutoSize = true;
+            this.labelInterestPenaltyRate.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelInterestPenaltyRate.Location = new System.Drawing.Point(177, 17);
+            this.labelInterestPenaltyRate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelInterestPenaltyRate.Name = "labelInterestPenaltyRate";
+            this.labelInterestPenaltyRate.Size = new System.Drawing.Size(74, 16);
+            this.labelInterestPenaltyRate.TabIndex = 17;
+            this.labelInterestPenaltyRate.Text = "Penalty Rate";
+            // 
             // groupFinancialData
             // 
             this.groupFinancialData.Controls.Add(this.inputInitialLoanAmount);
@@ -1050,10 +1123,23 @@
             this.groupFinancialData.ForeColor = System.Drawing.Color.Gainsboro;
             this.groupFinancialData.Location = new System.Drawing.Point(3, 45);
             this.groupFinancialData.Name = "groupFinancialData";
-            this.groupFinancialData.Size = new System.Drawing.Size(295, 153);
+            this.groupFinancialData.Size = new System.Drawing.Size(300, 153);
             this.groupFinancialData.TabIndex = 30;
             this.groupFinancialData.TabStop = false;
             this.groupFinancialData.Text = "Fiancial Data";
+            // 
+            // inputInitialLoanAmount
+            // 
+            this.inputInitialLoanAmount.BackColor = System.Drawing.Color.Gainsboro;
+            this.inputInitialLoanAmount.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
+            this.inputInitialLoanAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            this.inputInitialLoanAmount.Location = new System.Drawing.Point(7, 83);
+            this.inputInitialLoanAmount.Name = "inputInitialLoanAmount";
+            this.inputInitialLoanAmount.ShortcutsEnabled = false;
+            this.inputInitialLoanAmount.Size = new System.Drawing.Size(160, 26);
+            this.inputInitialLoanAmount.TabIndex = 68;
+            this.inputInitialLoanAmount.TextChanged += new System.EventHandler(this.inputInitialLoanAmount_TextChanged);
+            this.inputInitialLoanAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.inputInitialLoanAmount_KeyPress);
             // 
             // buttonOpenPrincipalAdjust
             // 
@@ -1098,12 +1184,12 @@
             // 
             this.labelLoanDuration.AutoSize = true;
             this.labelLoanDuration.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelLoanDuration.Location = new System.Drawing.Point(184, 16);
+            this.labelLoanDuration.Location = new System.Drawing.Point(188, 16);
             this.labelLoanDuration.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelLoanDuration.Name = "labelLoanDuration";
-            this.labelLoanDuration.Size = new System.Drawing.Size(84, 16);
+            this.labelLoanDuration.Size = new System.Drawing.Size(107, 16);
             this.labelLoanDuration.TabIndex = 40;
-            this.labelLoanDuration.Text = "Loan Duration";
+            this.labelLoanDuration.Text = "Projected Duration";
             // 
             // inputLoanDuration
             // 
@@ -1168,6 +1254,7 @@
             this.inputLoanStartDate.Name = "inputLoanStartDate";
             this.inputLoanStartDate.Size = new System.Drawing.Size(160, 26);
             this.inputLoanStartDate.TabIndex = 9;
+            this.inputLoanStartDate.ValueChanged += new System.EventHandler(this.inputLoanStartDate_ValueChanged);
             // 
             // labelInitialLoanAmount
             // 
@@ -1220,7 +1307,7 @@
             this.groupInterestConfig.ForeColor = System.Drawing.Color.Gainsboro;
             this.groupInterestConfig.Location = new System.Drawing.Point(3, 204);
             this.groupInterestConfig.Name = "groupInterestConfig";
-            this.groupInterestConfig.Size = new System.Drawing.Size(295, 126);
+            this.groupInterestConfig.Size = new System.Drawing.Size(300, 126);
             this.groupInterestConfig.TabIndex = 28;
             this.groupInterestConfig.TabStop = false;
             this.groupInterestConfig.Text = "Interest Configuration";
@@ -1233,79 +1320,6 @@
             this.labelInterestPercent.Size = new System.Drawing.Size(15, 15);
             this.labelInterestPercent.TabIndex = 42;
             this.labelInterestPercent.Text = "%";
-            // 
-            // groupInterestPenalty
-            // 
-            this.groupInterestPenalty.Controls.Add(this.labelPenaltyPercent);
-            this.groupInterestPenalty.Controls.Add(this.labelInterestPenalty);
-            this.groupInterestPenalty.Controls.Add(this.inputInterestPenaltyStart);
-            this.groupInterestPenalty.Controls.Add(this.inputInterestPenaltyRate);
-            this.groupInterestPenalty.Controls.Add(this.labelInterestPenaltyRate);
-            this.groupInterestPenalty.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupInterestPenalty.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.groupInterestPenalty.Location = new System.Drawing.Point(2, 336);
-            this.groupInterestPenalty.Name = "groupInterestPenalty";
-            this.groupInterestPenalty.Size = new System.Drawing.Size(295, 74);
-            this.groupInterestPenalty.TabIndex = 22;
-            this.groupInterestPenalty.TabStop = false;
-            this.groupInterestPenalty.Text = "Interest Penalty";
-            // 
-            // labelPenaltyPercent
-            // 
-            this.labelPenaltyPercent.AutoSize = true;
-            this.labelPenaltyPercent.Location = new System.Drawing.Point(258, 43);
-            this.labelPenaltyPercent.Name = "labelPenaltyPercent";
-            this.labelPenaltyPercent.Size = new System.Drawing.Size(15, 15);
-            this.labelPenaltyPercent.TabIndex = 43;
-            this.labelPenaltyPercent.Text = "%";
-            // 
-            // labelInterestPenalty
-            // 
-            this.labelInterestPenalty.AutoSize = true;
-            this.labelInterestPenalty.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelInterestPenalty.Location = new System.Drawing.Point(9, 17);
-            this.labelInterestPenalty.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelInterestPenalty.Name = "labelInterestPenalty";
-            this.labelInterestPenalty.Size = new System.Drawing.Size(147, 16);
-            this.labelInterestPenalty.TabIndex = 15;
-            this.labelInterestPenalty.Text = "Interest Penalty Start Date";
-            // 
-            // inputInterestPenaltyStart
-            // 
-            this.inputInterestPenaltyStart.CalendarFont = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.inputInterestPenaltyStart.CustomFormat = "MMMM dd, yyyy";
-            this.inputInterestPenaltyStart.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.inputInterestPenaltyStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.inputInterestPenaltyStart.Location = new System.Drawing.Point(12, 37);
-            this.inputInterestPenaltyStart.Margin = new System.Windows.Forms.Padding(4);
-            this.inputInterestPenaltyStart.MaxDate = new System.DateTime(3000, 12, 31, 0, 0, 0, 0);
-            this.inputInterestPenaltyStart.MinDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
-            this.inputInterestPenaltyStart.Name = "inputInterestPenaltyStart";
-            this.inputInterestPenaltyStart.Size = new System.Drawing.Size(160, 26);
-            this.inputInterestPenaltyStart.TabIndex = 17;
-            // 
-            // inputInterestPenaltyRate
-            // 
-            this.inputInterestPenaltyRate.BackColor = System.Drawing.Color.Gainsboro;
-            this.inputInterestPenaltyRate.DecimalPlaces = 2;
-            this.inputInterestPenaltyRate.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.inputInterestPenaltyRate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
-            this.inputInterestPenaltyRate.Location = new System.Drawing.Point(181, 37);
-            this.inputInterestPenaltyRate.Margin = new System.Windows.Forms.Padding(4);
-            this.inputInterestPenaltyRate.Name = "inputInterestPenaltyRate";
-            this.inputInterestPenaltyRate.Size = new System.Drawing.Size(70, 26);
-            this.inputInterestPenaltyRate.TabIndex = 18;
-            // 
-            // labelInterestPenaltyRate
-            // 
-            this.labelInterestPenaltyRate.AutoSize = true;
-            this.labelInterestPenaltyRate.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelInterestPenaltyRate.Location = new System.Drawing.Point(177, 17);
-            this.labelInterestPenaltyRate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelInterestPenaltyRate.Name = "labelInterestPenaltyRate";
-            this.labelInterestPenaltyRate.Size = new System.Drawing.Size(74, 16);
-            this.labelInterestPenaltyRate.TabIndex = 17;
-            this.labelInterestPenaltyRate.Text = "Penalty Rate";
             // 
             // inputInterestPenaltyChk
             // 
@@ -1489,13 +1503,14 @@
             this.loanReportDataGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gainsboro;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Gainsboro;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.loanReportDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.loanReportDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.loanReportDataGrid.ColumnHeadersHeight = 50;
+            this.loanReportDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.loanReportDataGrid.Cursor = System.Windows.Forms.Cursors.Arrow;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.LightSkyBlue;
@@ -1527,18 +1542,6 @@
             this.loanReportDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.loanReportDataGrid.Size = new System.Drawing.Size(961, 693);
             this.loanReportDataGrid.TabIndex = 12;
-            // 
-            // inputInitialLoanAmount
-            // 
-            this.inputInitialLoanAmount.BackColor = System.Drawing.Color.Gainsboro;
-            this.inputInitialLoanAmount.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
-            this.inputInitialLoanAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
-            this.inputInitialLoanAmount.Location = new System.Drawing.Point(7, 83);
-            this.inputInitialLoanAmount.Name = "inputInitialLoanAmount";
-            this.inputInitialLoanAmount.Size = new System.Drawing.Size(160, 26);
-            this.inputInitialLoanAmount.TabIndex = 68;
-            this.inputInitialLoanAmount.TextChanged += new System.EventHandler(this.inputInitialLoanAmount_TextChanged);
-            this.inputInitialLoanAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.inputInitialLoanAmount_KeyPress);
             // 
             // LoanReportMain
             // 
@@ -1577,14 +1580,14 @@
             this.panelLoanConfig.ResumeLayout(false);
             this.groupVaryingInterestTerm.ResumeLayout(false);
             this.groupVaryingInterestTerm.PerformLayout();
+            this.groupInterestPenalty.ResumeLayout(false);
+            this.groupInterestPenalty.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.inputInterestPenaltyRate)).EndInit();
             this.groupFinancialData.ResumeLayout(false);
             this.groupFinancialData.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.inputLoanDuration)).EndInit();
             this.groupInterestConfig.ResumeLayout(false);
             this.groupInterestConfig.PerformLayout();
-            this.groupInterestPenalty.ResumeLayout(false);
-            this.groupInterestPenalty.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.inputInterestPenaltyRate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.inputInterestRate)).EndInit();
             this.panelLoanDataDisplay.ResumeLayout(false);
             this.panelLoanDetails.ResumeLayout(false);
