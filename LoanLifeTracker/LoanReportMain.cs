@@ -14,6 +14,7 @@ using System.IO;
 using System.Diagnostics;
 
 //added git
+//adding a fork and start with Payment GUI fixing
 
 namespace LoanLifeTracker
 {
@@ -100,6 +101,7 @@ namespace LoanLifeTracker
         {
             
             statusProgressBar.Value = 0;
+            
             inputLoanStartDate.Enabled = false;
             inputLoanDuration.Enabled = true;
             loanReportData.RegenerateLoanTable = true;
@@ -108,6 +110,7 @@ namespace LoanLifeTracker
             buttonOpenAddPayment.Visible = true;
             buttonOpenPrincipalAdjust.Visible = true;
             loanReportData.CalculateLoan();
+           // inputInitialLoanAmount.Text = "";
         }
 
         private void getReportDuration(int selectedDuration)
@@ -359,7 +362,10 @@ namespace LoanLifeTracker
 
         private void inputLoanStartDate_ValueChanged(object sender, EventArgs e)
         {
+            inputReportStartDate.Value = inputLoanStartDate.Value.Date;
+            inputReportEndDate.Value = inputLoanStartDate.Value.Date.AddYears(1);
             labelLoanStartDateInfo.Text = inputLoanStartDate.Value.ToLongDateString();
+
         }
 
         private void inputInterestStructureSelection_SelectedIndexChanged(object sender, EventArgs e)
@@ -419,6 +425,7 @@ namespace LoanLifeTracker
                         panelLoanData.Visible = false;
                         panelLoanConfig.Visible = true;
                         panelReport.Visible = false;
+                        loanReportDataGrid.ReadOnly = false;
                         break;
                     }
                 case 2:
@@ -428,6 +435,11 @@ namespace LoanLifeTracker
                         panelLoanData.Visible = false;
                         panelLoanConfig.Visible = false;
                         panelReport.Visible = true;
+                        loanReportDataGrid.ReadOnly = true;
+
+                        inputReportSortMonths.Checked = true;
+                        getReportDuration(reportSelectedDuration);
+
                         break;
                     }
             }
@@ -436,14 +448,7 @@ namespace LoanLifeTracker
 
         private void inputInitialLoanAmount_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
-            {
-                e.Handled = true;
-            }
-            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
-            {
-                e.Handled = true;
-            }
+            ValidateForDigitInput.FilterKeypressToDigits(sender, e);
         }
 
         private void inputInitialLoanAmount_TextChanged(object sender, EventArgs e)

@@ -8,18 +8,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
+// inputPaymentInterestAmount
+// inputPaymentPrincipalAmount
+
 namespace LoanLifeTracker
 {
     public partial class LoanAdjustments : Form
     {
         LoanReportMain loanReportMain;
-        DataGridView paymentGridView;
+        //DataGridView gridPaymentList;
         DataTable paymentsDataTable;
         DataTable LoanDataTable;
         private decimal paymentAmount;
         private decimal paymentPrincipalAmount;
         private decimal paymentInterestAmount;
-        private int trackBarValue;
+       // private int trackBarValue;
         private decimal trackBarTick;
 
 
@@ -29,7 +33,11 @@ namespace LoanLifeTracker
             loanReportMain = loanReportMainPassed;
             LoanDataTable = loanDataTable;
             panelPaymentAllocation.Visible = false;
-            //this.Controls.Add(inputPaymentAmount);
+            gridPaymentList.Visible = false;
+            buttonCloseAddPayment.Visible = false;
+            inputPaymentAllocationTrack.Visible = false;
+            labelInterestPercent.Text = "";
+            labelPrincipalPercent.Text = "";
             createPaymentTable();
             getPaymentsToGrid();
 
@@ -39,7 +47,7 @@ namespace LoanLifeTracker
         {
             paymentsDataTable = null;
             paymentsDataTable = new DataTable();
-            paymentGridView = gridPaymentList;
+            //gridPaymentList = gridPaymentList;
             paymentsDataTable.Columns.Add("paymentDate", typeof(DateTime));
             paymentsDataTable.Columns.Add("totalPayment", typeof(decimal));
             paymentsDataTable.Columns.Add("interestPayment", typeof(decimal));
@@ -60,8 +68,14 @@ namespace LoanLifeTracker
                 paymentsDataTable.Rows.Add(new DateTime(paymentRow.Field<DateTime>("loanDayDate").Year, paymentRow.Field<DateTime>("loanDayDate").Month, paymentRow.Field<DateTime>("loanDayDate").Day),
                     paymentRow.Field<decimal>("loanDayTotalPayment"), paymentRow.Field<decimal>("loanDayInterestPayment"), paymentRow.Field<decimal>("loanDayPrincipalPayment"));
             }
-            gridPaymentList.DataSource = paymentsDataTable;
+            if(paymentsDataTable.Rows.Count > 0)
+            {
+                gridPaymentList.Visible = true;
+                gridPaymentList.DataSource = paymentsDataTable;
             addPaymentColumnHeaders();
+
+             }
+
 
             //DataTable paymentsTabl = allDaysWithPayments.CopyToDataTable
             //DataView viewPayments = allDaysWithPayments.AsDataView();
@@ -69,16 +83,24 @@ namespace LoanLifeTracker
 
         private void addPaymentColumnHeaders()
         {
-            paymentGridView.Columns["paymentDate"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            paymentGridView.Columns["paymentDate"].DefaultCellStyle.Format = "MMMM dd, yyyy";
-            paymentGridView.Columns["totalPayment"].DefaultCellStyle.Format = "c2";
-            paymentGridView.Columns["principalPayment"].DefaultCellStyle.Format = "c2";
-            paymentGridView.Columns["interestPayment"].DefaultCellStyle.Format = "c2";
-            paymentGridView.Columns["paymentDate"].HeaderText = "Payment Date";
-            paymentGridView.Columns["totalPayment"].HeaderText = "Total Payment";
-            paymentGridView.Columns["interestPayment"].HeaderText = "Interest Payment";
-            paymentGridView.Columns["principalPayment"].HeaderText = "Principal Payment";
+            gridPaymentList.ColumnHeadersDefaultCellStyle.Font = new Font(DataGridView.DefaultFont, FontStyle.Bold);
+            gridPaymentList.Columns["paymentDate"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            gridPaymentList.Columns["paymentDate"].DefaultCellStyle.Format = "MMMM dd, yyyy";
+            gridPaymentList.Columns["totalPayment"].DefaultCellStyle.Format = "c2";
+            gridPaymentList.Columns["principalPayment"].DefaultCellStyle.Format = "c2";
+            gridPaymentList.Columns["interestPayment"].DefaultCellStyle.Format = "c2";
+            gridPaymentList.Columns["paymentDate"].HeaderText = "Payment Date";
+            gridPaymentList.Columns["totalPayment"].HeaderText = "Total Payment";
+            gridPaymentList.Columns["interestPayment"].HeaderText = "Interest Payment";
+            gridPaymentList.Columns["principalPayment"].HeaderText = "Principal Payment";
 
+        }
+
+        private void updateAllocationPercent()
+        {
+            decimal onePercentOfPeyment = paymentAmount / 100;
+            labelInterestPercent.Text = ValidateForDigitInput.decimalFormat((paymentInterestAmount / onePercentOfPeyment)).ToString() + "%";
+            labelPrincipalPercent.Text = ValidateForDigitInput.decimalFormat((paymentPrincipalAmount / onePercentOfPeyment)).ToString() + "%";
         }
 
         private void buttonClosePrincipleAdjust_Click(object sender, EventArgs e)
@@ -126,96 +148,159 @@ namespace LoanLifeTracker
                 paymentsDataTable.Rows.Find(inputPaymentDate.Value.Date)[2] = paymentInterestAmount;
                 paymentsDataTable.Rows.Find(inputPaymentDate.Value.Date)[3] = paymentPrincipalAmount;
             }
-
-            inputPaymentAmount.Text = "";
-            inputPaymentInterestAmount.Value = 0;
-            inputPaymentPrincipalAmount.Value = 0;
             inputPaymentAllocationTrack.Value = 0;
+            inputPaymentAmount.Text = "";
+            inputPaymentInterestAmount.Text = "";
+            inputPaymentPrincipalAmount.Text = "";
+
+            gridPaymentList.DataSource = paymentsDataTable;
+            addPaymentColumnHeaders();
+            gridPaymentList.Visible = true;
+            buttonCloseAddPayment.Visible = true;
+
         }
 
         private void inputPaymentAllocationTrack_ValueChanged(object sender, EventArgs e)
         {
-            //paymentPrincipalAmount = trackBarValue * trackBarTick;
-            //inputPaymentPrincipalAmount.Value = trackBarTick * inputPaymentAllocationTrack.Value;
-            //inputPaymentInterestAmount.Value = inputPaymentAmount.Value - inputPaymentPrincipalAmount.Value;
+            if (inputPaymentAllocationTrack.Focused)
+            {
+                decimal calculatedPrinciple;
+                decimal calculatedInterest;
+                
+                calculatedInterest = (trackBarTick * inputPaymentAllocationTrack.Value);
+                calculatedInterest = decimal.Round(calculatedInterest, 2, MidpointRounding.AwayFromZero);
+                paymentInterestAmount = calculatedInterest;
+
+                inputPaymentInterestAmount.Text = calculatedInterest.ToString();
+                calculatedPrinciple = (paymentAmount - calculatedInterest);
+                calculatedPrinciple = decimal.Round(calculatedPrinciple, 2, MidpointRounding.AwayFromZero);
+                paymentPrincipalAmount = calculatedPrinciple;
+                inputPaymentPrincipalAmount.Text = calculatedPrinciple.ToString();
+                updateAllocationPercent();
+            }
         }
-
-        private void inputPaymentPrincipalAmount_ValueChanged(object sender, EventArgs e)
-        {
-           // paymentDelegation();
-        }
-
-        private void inputPaymentInterestAmount_ValueChanged(object sender, EventArgs e)
-        {
-            //paymentDelegation();
-        }
-
-        private void inputPaymentAmount_ValueChanged(object sender, EventArgs e)
-        {
-
-            //MessageBox.Show("Value Changed");
-            //if (inputPaymentAmount.Value > 400)
-            //{
-            //    if (inputPaymentAmount.Value != 0)
-            //    {
-
-            //        paymentAmount = inputPaymentAmount.Value;
-
-            //        paymentPrincipalAmount = paymentAmount / 2;
-            //        paymentInterestAmount = paymentAmount - paymentPrincipalAmount;
-            //        inputPaymentPrincipalAmount.Value = paymentPrincipalAmount;
-            //        inputPaymentInterestAmount.Value = paymentInterestAmount;
-            //        trackBarValue = 1;
-            //        trackBarValue = Convert.ToInt32(paymentAmount / 400);
-            //        trackBarTick = paymentAmount / 400;
-            //        trackBarValue = (Convert.ToInt32(paymentAmount) / trackBarValue) / 2;
-            //        inputPaymentAllocationTrack.Value = trackBarValue;
-            //    }
-            //}
-        }
-
         private void inputPaymentDate_ValueChanged(object sender, EventArgs e)
         {
            
         }
 
-
-        private void paymentDelegation()
-        {
-           // paymentAmount = OLDinputPaymentAmount.Value;
-            paymentInterestAmount = inputPaymentInterestAmount.Value;
-            paymentPrincipalAmount = inputPaymentPrincipalAmount.Value;
-        }
-
-        public void updatePaymentList()
-        {
-
-        }
-
-        private void inputPaymentAmount_KeyUp(object sender, KeyEventArgs e)
-        {
-
-        }
-
         private void inputPaymentAmount_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
-            {
-                e.Handled = true;
-            }
-            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
-            {
-                e.Handled = true;
-            }
+            ValidateForDigitInput.FilterKeypressToDigits(sender, e);
         }
 
         private void inputPaymentAmount_TextChanged(object sender, EventArgs e)
         {
-            panelPaymentAllocation.Visible = true;
-            paymentAmount = Convert.ToDecimal(inputPaymentAmount.Text);
+            if(inputPaymentAmount.Text != "")
+            {
 
-            panelPaymentAllocation.Visible = true;
-            trackBarTick = paymentAmount / 400;
+                inputPaymentAmount.Text = inputPaymentAmount.Text.Trim();
+                paymentAmount = ValidateForDigitInput.decimalFormat(paymentAmount);
+                paymentAmount = decimal.Round(Convert.ToDecimal(inputPaymentAmount.Text),2, MidpointRounding.AwayFromZero);
+                
+                panelPaymentAllocation.Visible = true;
+                if (inputPaymentAmount.Focused)
+                {
+                    inputPaymentInterestAmount.Text = "";
+                    inputPaymentPrincipalAmount.Text = "";
+                    paymentInterestAmount = 0;
+                    paymentPrincipalAmount = 0;
+                    inputPaymentAllocationTrack.Value = 0;
+
+                }
+                if (paymentAmount >= 400)
+                {
+                    inputPaymentAllocationTrack.Visible = true;
+                    trackBarTick = paymentAmount / 400;
+                    
+                }
+                else if (paymentAmount <= 400)
+                {
+                    inputPaymentAllocationTrack.Visible = false;
+                }
+            }
+        }
+
+        private void inputPaymentInterestAmount_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            ValidateForDigitInput.FilterKeypressToDigits(sender, e);
+        }
+
+        private void LoanAdjustments_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            MessageBox.Show(e.KeyChar.ToString());
+        }
+
+        private void inputPaymentInterestAmount_TextChanged(object sender, EventArgs e)
+        {
+            if(inputPaymentInterestAmount.Text != "")
+            {
+                inputPaymentInterestAmount.Text = inputPaymentInterestAmount.Text.Trim();
+                paymentInterestAmount = decimal.Round(Convert.ToDecimal(inputPaymentInterestAmount.Text), 2,MidpointRounding.AwayFromZero);
+                updateAllocationPercent();
+                if (paymentInterestAmount <= paymentAmount && inputPaymentInterestAmount.Focused == true)
+                {
+                    inputPaymentPrincipalAmount.Text = (paymentAmount - paymentInterestAmount).ToString();
+                    if (inputPaymentAllocationTrack.Visible)
+                    {
+                        decimal setTrackValue;
+                        setTrackValue = paymentInterestAmount / trackBarTick;
+                        inputPaymentAllocationTrack.Value = Convert.ToInt32(setTrackValue);
+
+
+                    }
+                }
+                else if (paymentInterestAmount > paymentAmount && inputPaymentInterestAmount.Focused == true)
+                {
+                    MessageBox.Show("Interest exceeded the payment amount, please adjust the value.", "Payments");
+                }
+
+            }
+            
+            else
+            {
+                paymentInterestAmount = 0;
+            }
+        }
+
+        private void inputPaymentPrincipalAmount_TextChanged(object sender, EventArgs e)
+        {
+            if (inputPaymentPrincipalAmount.Text != "")
+            {
+                inputPaymentPrincipalAmount.Text = inputPaymentPrincipalAmount.Text.Trim();
+                paymentPrincipalAmount = decimal.Round(Convert.ToDecimal(inputPaymentPrincipalAmount.Text), 2, MidpointRounding.AwayFromZero);
+                updateAllocationPercent();
+
+                if (paymentPrincipalAmount <= paymentAmount && inputPaymentPrincipalAmount.Focused == true)
+                {
+                    inputPaymentInterestAmount.Text = (paymentAmount - paymentPrincipalAmount).ToString();
+                    paymentInterestAmount = paymentAmount - paymentPrincipalAmount;
+                    if (inputPaymentAllocationTrack.Visible)
+                    {
+                        decimal setTrackValue;
+                        setTrackValue = paymentInterestAmount / trackBarTick;
+                        inputPaymentAllocationTrack.Value = Convert.ToInt32(setTrackValue);
+
+
+                    }
+                }
+                else if (paymentPrincipalAmount > paymentAmount && inputPaymentPrincipalAmount.Focused == true)
+                    {
+                        MessageBox.Show("Principal exceeded the payment amount, please adjust the value.", "Payments");
+                    }
+                
+
+            }
+            else
+            {
+                paymentInterestAmount = 0;
+            }
+        }
+
+        private void inputPaymentAmount_Leave(object sender, EventArgs e)
+        {
+            
+            inputPaymentAmount.Text = ValidateForDigitInput.decimalFormat(paymentAmount).ToString();
         }
     }
 }

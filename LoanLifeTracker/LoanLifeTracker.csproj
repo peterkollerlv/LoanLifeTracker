@@ -66,6 +66,7 @@
     <Compile Include="LoanReportData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidateForDigitInput.cs" />
     <EmbeddedResource Include="LoanAdjustments.resx">
       <DependentUpon>LoanAdjustments.cs</DependentUpon>
     </EmbeddedResource>

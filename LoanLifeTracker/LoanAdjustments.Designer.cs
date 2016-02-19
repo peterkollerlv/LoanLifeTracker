@@ -31,10 +31,11 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoanAdjustments));
             this.panelPrincipleAdjust = new System.Windows.Forms.Panel();
+            this.principalAdjustmentAmount = new System.Windows.Forms.TextBox();
             this.labelPrincipalAdjustment = new System.Windows.Forms.Label();
-            this.inputInitialLoanAmount = new System.Windows.Forms.NumericUpDown();
             this.buttonAddAdjustment = new System.Windows.Forms.Button();
             this.buttonClosePrincipleAdjust = new System.Windows.Forms.Button();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
@@ -42,37 +43,35 @@
             this.panelAddPayment = new System.Windows.Forms.Panel();
             this.inputPaymentAmount = new System.Windows.Forms.TextBox();
             this.panelPaymentAllocation = new System.Windows.Forms.Panel();
+            this.inputPaymentInterestAmount = new System.Windows.Forms.TextBox();
+            this.inputPaymentPrincipalAmount = new System.Windows.Forms.TextBox();
             this.labelPaymentInterestAmount = new System.Windows.Forms.Label();
-            this.inputPaymentInterestAmount = new System.Windows.Forms.NumericUpDown();
             this.labelInterestPaymentCurrency = new System.Windows.Forms.Label();
             this.labelPaymentPrincipalAmount = new System.Windows.Forms.Label();
             this.labelPaymantAllocation = new System.Windows.Forms.Label();
             this.inputPaymentAllocationTrack = new System.Windows.Forms.TrackBar();
-            this.inputPaymentPrincipalAmount = new System.Windows.Forms.NumericUpDown();
+            this.buttonAddPayment = new System.Windows.Forms.Button();
             this.labelPrincipalPaymentCurrency = new System.Windows.Forms.Label();
-            this.buttonPaymentReset = new System.Windows.Forms.Button();
             this.gridPaymentList = new System.Windows.Forms.DataGridView();
             this.buttonCloseAddPayment = new System.Windows.Forms.Button();
             this.labelPaymentCurrency = new System.Windows.Forms.Label();
-            this.buttonAddPayment = new System.Windows.Forms.Button();
             this.labelPaymentAmount = new System.Windows.Forms.Label();
             this.inputPaymentDate = new System.Windows.Forms.DateTimePicker();
             this.lablePaymentDate = new System.Windows.Forms.Label();
+            this.labelInterestPercent = new System.Windows.Forms.Label();
+            this.labelPrincipalPercent = new System.Windows.Forms.Label();
             this.panelPrincipleAdjust.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.inputInitialLoanAmount)).BeginInit();
             this.panelAddPayment.SuspendLayout();
             this.panelPaymentAllocation.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.inputPaymentInterestAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.inputPaymentAllocationTrack)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.inputPaymentPrincipalAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridPaymentList)).BeginInit();
             this.SuspendLayout();
             // 
             // panelPrincipleAdjust
             // 
             this.panelPrincipleAdjust.BackColor = System.Drawing.Color.SteelBlue;
+            this.panelPrincipleAdjust.Controls.Add(this.principalAdjustmentAmount);
             this.panelPrincipleAdjust.Controls.Add(this.labelPrincipalAdjustment);
-            this.panelPrincipleAdjust.Controls.Add(this.inputInitialLoanAmount);
             this.panelPrincipleAdjust.Controls.Add(this.buttonAddAdjustment);
             this.panelPrincipleAdjust.Controls.Add(this.buttonClosePrincipleAdjust);
             this.panelPrincipleAdjust.Controls.Add(this.dateTimePicker1);
@@ -82,6 +81,17 @@
             this.panelPrincipleAdjust.Name = "panelPrincipleAdjust";
             this.panelPrincipleAdjust.Size = new System.Drawing.Size(433, 429);
             this.panelPrincipleAdjust.TabIndex = 0;
+            // 
+            // principalAdjustmentAmount
+            // 
+            this.principalAdjustmentAmount.BackColor = System.Drawing.Color.Gainsboro;
+            this.principalAdjustmentAmount.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
+            this.principalAdjustmentAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            this.principalAdjustmentAmount.Location = new System.Drawing.Point(30, 83);
+            this.principalAdjustmentAmount.Name = "principalAdjustmentAmount";
+            this.principalAdjustmentAmount.ShortcutsEnabled = false;
+            this.principalAdjustmentAmount.Size = new System.Drawing.Size(71, 26);
+            this.principalAdjustmentAmount.TabIndex = 68;
             // 
             // labelPrincipalAdjustment
             // 
@@ -93,22 +103,6 @@
             this.labelPrincipalAdjustment.Size = new System.Drawing.Size(112, 16);
             this.labelPrincipalAdjustment.TabIndex = 58;
             this.labelPrincipalAdjustment.Text = "Adjustment Amount";
-            // 
-            // inputInitialLoanAmount
-            // 
-            this.inputInitialLoanAmount.DecimalPlaces = 2;
-            this.inputInitialLoanAmount.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.inputInitialLoanAmount.Location = new System.Drawing.Point(30, 83);
-            this.inputInitialLoanAmount.Margin = new System.Windows.Forms.Padding(4);
-            this.inputInitialLoanAmount.Maximum = new decimal(new int[] {
-            100000000,
-            0,
-            0,
-            0});
-            this.inputInitialLoanAmount.Name = "inputInitialLoanAmount";
-            this.inputInitialLoanAmount.Size = new System.Drawing.Size(110, 26);
-            this.inputInitialLoanAmount.TabIndex = 57;
-            this.inputInitialLoanAmount.ThousandsSeparator = true;
             // 
             // buttonAddAdjustment
             // 
@@ -171,7 +165,6 @@
             this.panelAddPayment.BackColor = System.Drawing.Color.SteelBlue;
             this.panelAddPayment.Controls.Add(this.inputPaymentAmount);
             this.panelAddPayment.Controls.Add(this.panelPaymentAllocation);
-            this.panelAddPayment.Controls.Add(this.buttonPaymentReset);
             this.panelAddPayment.Controls.Add(this.gridPaymentList);
             this.panelAddPayment.Controls.Add(this.buttonCloseAddPayment);
             this.panelAddPayment.Controls.Add(this.labelPaymentCurrency);
@@ -191,26 +184,55 @@
             this.inputPaymentAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
             this.inputPaymentAmount.Location = new System.Drawing.Point(181, 32);
             this.inputPaymentAmount.Name = "inputPaymentAmount";
+            this.inputPaymentAmount.ShortcutsEnabled = false;
             this.inputPaymentAmount.Size = new System.Drawing.Size(71, 26);
             this.inputPaymentAmount.TabIndex = 67;
             this.inputPaymentAmount.TextChanged += new System.EventHandler(this.inputPaymentAmount_TextChanged);
             this.inputPaymentAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.inputPaymentAmount_KeyPress);
+            this.inputPaymentAmount.Leave += new System.EventHandler(this.inputPaymentAmount_Leave);
             // 
             // panelPaymentAllocation
             // 
-            this.panelPaymentAllocation.Controls.Add(this.labelPaymentInterestAmount);
+            this.panelPaymentAllocation.Controls.Add(this.labelPrincipalPercent);
+            this.panelPaymentAllocation.Controls.Add(this.labelInterestPercent);
             this.panelPaymentAllocation.Controls.Add(this.inputPaymentInterestAmount);
+            this.panelPaymentAllocation.Controls.Add(this.inputPaymentPrincipalAmount);
+            this.panelPaymentAllocation.Controls.Add(this.labelPaymentInterestAmount);
             this.panelPaymentAllocation.Controls.Add(this.labelInterestPaymentCurrency);
             this.panelPaymentAllocation.Controls.Add(this.labelPaymentPrincipalAmount);
             this.panelPaymentAllocation.Controls.Add(this.labelPaymantAllocation);
             this.panelPaymentAllocation.Controls.Add(this.inputPaymentAllocationTrack);
             this.panelPaymentAllocation.Controls.Add(this.buttonAddPayment);
-            this.panelPaymentAllocation.Controls.Add(this.inputPaymentPrincipalAmount);
             this.panelPaymentAllocation.Controls.Add(this.labelPrincipalPaymentCurrency);
             this.panelPaymentAllocation.Location = new System.Drawing.Point(3, 64);
             this.panelPaymentAllocation.Name = "panelPaymentAllocation";
             this.panelPaymentAllocation.Size = new System.Drawing.Size(430, 107);
             this.panelPaymentAllocation.TabIndex = 66;
+            // 
+            // inputPaymentInterestAmount
+            // 
+            this.inputPaymentInterestAmount.BackColor = System.Drawing.Color.Gainsboro;
+            this.inputPaymentInterestAmount.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
+            this.inputPaymentInterestAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            this.inputPaymentInterestAmount.Location = new System.Drawing.Point(7, 68);
+            this.inputPaymentInterestAmount.Name = "inputPaymentInterestAmount";
+            this.inputPaymentInterestAmount.ShortcutsEnabled = false;
+            this.inputPaymentInterestAmount.Size = new System.Drawing.Size(71, 26);
+            this.inputPaymentInterestAmount.TabIndex = 68;
+            this.inputPaymentInterestAmount.TextChanged += new System.EventHandler(this.inputPaymentInterestAmount_TextChanged);
+            this.inputPaymentInterestAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.inputPaymentInterestAmount_KeyPress);
+            // 
+            // inputPaymentPrincipalAmount
+            // 
+            this.inputPaymentPrincipalAmount.BackColor = System.Drawing.Color.Gainsboro;
+            this.inputPaymentPrincipalAmount.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
+            this.inputPaymentPrincipalAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            this.inputPaymentPrincipalAmount.Location = new System.Drawing.Point(324, 67);
+            this.inputPaymentPrincipalAmount.Name = "inputPaymentPrincipalAmount";
+            this.inputPaymentPrincipalAmount.ShortcutsEnabled = false;
+            this.inputPaymentPrincipalAmount.Size = new System.Drawing.Size(71, 26);
+            this.inputPaymentPrincipalAmount.TabIndex = 69;
+            this.inputPaymentPrincipalAmount.TextChanged += new System.EventHandler(this.inputPaymentPrincipalAmount_TextChanged);
             // 
             // labelPaymentInterestAmount
             // 
@@ -224,32 +246,11 @@
             this.labelPaymentInterestAmount.TabIndex = 54;
             this.labelPaymentInterestAmount.Text = "Interest";
             // 
-            // inputPaymentInterestAmount
-            // 
-            this.inputPaymentInterestAmount.DecimalPlaces = 2;
-            this.inputPaymentInterestAmount.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.inputPaymentInterestAmount.Location = new System.Drawing.Point(7, 68);
-            this.inputPaymentInterestAmount.Margin = new System.Windows.Forms.Padding(4);
-            this.inputPaymentInterestAmount.Maximum = new decimal(new int[] {
-            100000000,
-            0,
-            0,
-            0});
-            this.inputPaymentInterestAmount.Minimum = new decimal(new int[] {
-            100000000,
-            0,
-            0,
-            -2147483648});
-            this.inputPaymentInterestAmount.Name = "inputPaymentInterestAmount";
-            this.inputPaymentInterestAmount.Size = new System.Drawing.Size(71, 26);
-            this.inputPaymentInterestAmount.TabIndex = 57;
-            this.inputPaymentInterestAmount.ValueChanged += new System.EventHandler(this.inputPaymentInterestAmount_ValueChanged);
-            // 
             // labelInterestPaymentCurrency
             // 
             this.labelInterestPaymentCurrency.AutoSize = true;
             this.labelInterestPaymentCurrency.ForeColor = System.Drawing.Color.Gainsboro;
-            this.labelInterestPaymentCurrency.Location = new System.Drawing.Point(85, 74);
+            this.labelInterestPaymentCurrency.Location = new System.Drawing.Point(84, 73);
             this.labelInterestPaymentCurrency.Name = "labelInterestPaymentCurrency";
             this.labelInterestPaymentCurrency.Size = new System.Drawing.Size(26, 15);
             this.labelInterestPaymentCurrency.TabIndex = 62;
@@ -260,7 +261,7 @@
             this.labelPaymentPrincipalAmount.AutoSize = true;
             this.labelPaymentPrincipalAmount.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelPaymentPrincipalAmount.ForeColor = System.Drawing.Color.Gainsboro;
-            this.labelPaymentPrincipalAmount.Location = new System.Drawing.Point(363, 48);
+            this.labelPaymentPrincipalAmount.Location = new System.Drawing.Point(321, 48);
             this.labelPaymentPrincipalAmount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelPaymentPrincipalAmount.Name = "labelPaymentPrincipalAmount";
             this.labelPaymentPrincipalAmount.Size = new System.Drawing.Size(54, 16);
@@ -291,26 +292,21 @@
             this.inputPaymentAllocationTrack.TickFrequency = 5;
             this.inputPaymentAllocationTrack.ValueChanged += new System.EventHandler(this.inputPaymentAllocationTrack_ValueChanged);
             // 
-            // inputPaymentPrincipalAmount
+            // buttonAddPayment
             // 
-            this.inputPaymentPrincipalAmount.DecimalPlaces = 2;
-            this.inputPaymentPrincipalAmount.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.inputPaymentPrincipalAmount.Location = new System.Drawing.Point(324, 68);
-            this.inputPaymentPrincipalAmount.Margin = new System.Windows.Forms.Padding(4);
-            this.inputPaymentPrincipalAmount.Maximum = new decimal(new int[] {
-            100000000,
-            0,
-            0,
-            0});
-            this.inputPaymentPrincipalAmount.Minimum = new decimal(new int[] {
-            100000000,
-            0,
-            0,
-            -2147483648});
-            this.inputPaymentPrincipalAmount.Name = "inputPaymentPrincipalAmount";
-            this.inputPaymentPrincipalAmount.Size = new System.Drawing.Size(70, 26);
-            this.inputPaymentPrincipalAmount.TabIndex = 55;
-            this.inputPaymentPrincipalAmount.ValueChanged += new System.EventHandler(this.inputPaymentPrincipalAmount_ValueChanged);
+            this.buttonAddPayment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonAddPayment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            this.buttonAddPayment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonAddPayment.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonAddPayment.ForeColor = System.Drawing.Color.Gainsboro;
+            this.buttonAddPayment.Location = new System.Drawing.Point(163, 68);
+            this.buttonAddPayment.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonAddPayment.Name = "buttonAddPayment";
+            this.buttonAddPayment.Size = new System.Drawing.Size(110, 25);
+            this.buttonAddPayment.TabIndex = 58;
+            this.buttonAddPayment.Text = "Add Payment";
+            this.buttonAddPayment.UseVisualStyleBackColor = false;
+            this.buttonAddPayment.Click += new System.EventHandler(this.buttonAddPayment_Click);
             // 
             // labelPrincipalPaymentCurrency
             // 
@@ -321,21 +317,6 @@
             this.labelPrincipalPaymentCurrency.Size = new System.Drawing.Size(26, 15);
             this.labelPrincipalPaymentCurrency.TabIndex = 61;
             this.labelPrincipalPaymentCurrency.Text = "USD";
-            // 
-            // buttonPaymentReset
-            // 
-            this.buttonPaymentReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonPaymentReset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
-            this.buttonPaymentReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonPaymentReset.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonPaymentReset.ForeColor = System.Drawing.Color.Gainsboro;
-            this.buttonPaymentReset.Location = new System.Drawing.Point(359, 11);
-            this.buttonPaymentReset.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonPaymentReset.Name = "buttonPaymentReset";
-            this.buttonPaymentReset.Size = new System.Drawing.Size(61, 28);
-            this.buttonPaymentReset.TabIndex = 65;
-            this.buttonPaymentReset.Text = "Reset";
-            this.buttonPaymentReset.UseVisualStyleBackColor = false;
             // 
             // gridPaymentList
             // 
@@ -349,38 +330,50 @@
             this.gridPaymentList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.gridPaymentList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.SteelBlue;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.gridPaymentList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.gridPaymentList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gridPaymentList.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.gridPaymentList.Cursor = System.Windows.Forms.Cursors.Hand;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.LightSkyBlue;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.SteelBlue;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.DeepSkyBlue;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.LightCyan;
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.gridPaymentList.DefaultCellStyle = dataGridViewCellStyle2;
-            this.gridPaymentList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.gridPaymentList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
+            this.gridPaymentList.EnableHeadersVisualStyles = false;
             this.gridPaymentList.GridColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.gridPaymentList.Location = new System.Drawing.Point(4, 179);
             this.gridPaymentList.Margin = new System.Windows.Forms.Padding(4);
             this.gridPaymentList.Name = "gridPaymentList";
+            this.gridPaymentList.ReadOnly = true;
             this.gridPaymentList.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.SteelBlue;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gridPaymentList.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.gridPaymentList.RowHeadersVisible = false;
             this.gridPaymentList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.SteelBlue;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.WhiteSmoke;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.LightSkyBlue;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.gridPaymentList.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.SteelBlue;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gridPaymentList.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            this.gridPaymentList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.gridPaymentList.Size = new System.Drawing.Size(425, 214);
             this.gridPaymentList.TabIndex = 64;
             // 
@@ -409,22 +402,6 @@
             this.labelPaymentCurrency.Size = new System.Drawing.Size(26, 15);
             this.labelPaymentCurrency.TabIndex = 59;
             this.labelPaymentCurrency.Text = "USD";
-            // 
-            // buttonAddPayment
-            // 
-            this.buttonAddPayment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAddPayment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
-            this.buttonAddPayment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonAddPayment.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAddPayment.ForeColor = System.Drawing.Color.Gainsboro;
-            this.buttonAddPayment.Location = new System.Drawing.Point(163, 68);
-            this.buttonAddPayment.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonAddPayment.Name = "buttonAddPayment";
-            this.buttonAddPayment.Size = new System.Drawing.Size(110, 25);
-            this.buttonAddPayment.TabIndex = 58;
-            this.buttonAddPayment.Text = "Add Payment";
-            this.buttonAddPayment.UseVisualStyleBackColor = false;
-            this.buttonAddPayment.Click += new System.EventHandler(this.buttonAddPayment_Click);
             // 
             // labelPaymentAmount
             // 
@@ -463,6 +440,30 @@
             this.lablePaymentDate.TabIndex = 49;
             this.lablePaymentDate.Text = "Payment Date";
             // 
+            // labelInterestPercent
+            // 
+            this.labelInterestPercent.AutoSize = true;
+            this.labelInterestPercent.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelInterestPercent.ForeColor = System.Drawing.Color.Gainsboro;
+            this.labelInterestPercent.Location = new System.Drawing.Point(61, 48);
+            this.labelInterestPercent.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelInterestPercent.Name = "labelInterestPercent";
+            this.labelInterestPercent.Size = new System.Drawing.Size(26, 16);
+            this.labelInterestPercent.TabIndex = 70;
+            this.labelInterestPercent.Text = "ix%";
+            // 
+            // labelPrincipalPercent
+            // 
+            this.labelPrincipalPercent.AutoSize = true;
+            this.labelPrincipalPercent.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPrincipalPercent.ForeColor = System.Drawing.Color.Gainsboro;
+            this.labelPrincipalPercent.Location = new System.Drawing.Point(383, 48);
+            this.labelPrincipalPercent.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelPrincipalPercent.Name = "labelPrincipalPercent";
+            this.labelPrincipalPercent.Size = new System.Drawing.Size(30, 16);
+            this.labelPrincipalPercent.TabIndex = 71;
+            this.labelPrincipalPercent.Text = "px%";
+            // 
             // LoanAdjustments
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(5F, 15F);
@@ -481,16 +482,14 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "(Default)";
             this.TopMost = true;
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LoanAdjustments_KeyPress);
             this.panelPrincipleAdjust.ResumeLayout(false);
             this.panelPrincipleAdjust.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.inputInitialLoanAmount)).EndInit();
             this.panelAddPayment.ResumeLayout(false);
             this.panelAddPayment.PerformLayout();
             this.panelPaymentAllocation.ResumeLayout(false);
             this.panelPaymentAllocation.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.inputPaymentInterestAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.inputPaymentAllocationTrack)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.inputPaymentPrincipalAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridPaymentList)).EndInit();
             this.ResumeLayout(false);
 
@@ -507,21 +506,22 @@
         public System.Windows.Forms.Label labelPaymentCurrency;
         private System.Windows.Forms.Label labelPaymentPrincipalAmount;
         private System.Windows.Forms.Label labelPaymentInterestAmount;
-        public System.Windows.Forms.NumericUpDown inputPaymentInterestAmount;
-        public System.Windows.Forms.NumericUpDown inputPaymentPrincipalAmount;
         private System.Windows.Forms.Button buttonAddPayment;
         private System.Windows.Forms.Label labelPaymentAmount;
         public System.Windows.Forms.DateTimePicker inputPaymentDate;
         private System.Windows.Forms.Label lablePaymentDate;
         private System.Windows.Forms.Label labelPrincipalAdjustment;
-        public System.Windows.Forms.NumericUpDown inputInitialLoanAmount;
         private System.Windows.Forms.Button buttonAddAdjustment;
         private System.Windows.Forms.Button buttonClosePrincipleAdjust;
         public System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Label labelPrincipleAdjustDate;
         public System.Windows.Forms.DataGridView gridPaymentList;
         private System.Windows.Forms.Panel panelPaymentAllocation;
-        private System.Windows.Forms.Button buttonPaymentReset;
         private System.Windows.Forms.TextBox inputPaymentAmount;
+        private System.Windows.Forms.TextBox inputPaymentInterestAmount;
+        private System.Windows.Forms.TextBox inputPaymentPrincipalAmount;
+        private System.Windows.Forms.TextBox principalAdjustmentAmount;
+        private System.Windows.Forms.Label labelPrincipalPercent;
+        private System.Windows.Forms.Label labelInterestPercent;
     }
 }
