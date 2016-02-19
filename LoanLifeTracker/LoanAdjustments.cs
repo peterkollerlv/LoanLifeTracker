@@ -36,6 +36,8 @@ namespace LoanLifeTracker
             gridPaymentList.Visible = false;
             buttonCloseAddPayment.Visible = false;
             inputPaymentAllocationTrack.Visible = false;
+            labelInterestPercent.Text = "";
+            labelPrincipalPercent.Text = "";
             createPaymentTable();
             getPaymentsToGrid();
 
@@ -92,6 +94,13 @@ namespace LoanLifeTracker
             gridPaymentList.Columns["interestPayment"].HeaderText = "Interest Payment";
             gridPaymentList.Columns["principalPayment"].HeaderText = "Principal Payment";
 
+        }
+
+        private void updateAllocationPercent()
+        {
+            decimal onePercentOfPeyment = paymentAmount / 100;
+            labelInterestPercent.Text = ValidateForDigitInput.decimalFormat((paymentInterestAmount / onePercentOfPeyment)).ToString() + "%";
+            labelPrincipalPercent.Text = ValidateForDigitInput.decimalFormat((paymentPrincipalAmount / onePercentOfPeyment)).ToString() + "%";
         }
 
         private void buttonClosePrincipleAdjust_Click(object sender, EventArgs e)
@@ -157,6 +166,7 @@ namespace LoanLifeTracker
             {
                 decimal calculatedPrinciple;
                 decimal calculatedInterest;
+                
                 calculatedInterest = (trackBarTick * inputPaymentAllocationTrack.Value);
                 calculatedInterest = decimal.Round(calculatedInterest, 2, MidpointRounding.AwayFromZero);
                 paymentInterestAmount = calculatedInterest;
@@ -166,6 +176,7 @@ namespace LoanLifeTracker
                 calculatedPrinciple = decimal.Round(calculatedPrinciple, 2, MidpointRounding.AwayFromZero);
                 paymentPrincipalAmount = calculatedPrinciple;
                 inputPaymentPrincipalAmount.Text = calculatedPrinciple.ToString();
+                updateAllocationPercent();
             }
         }
         private void inputPaymentDate_ValueChanged(object sender, EventArgs e)
@@ -182,9 +193,11 @@ namespace LoanLifeTracker
         {
             if(inputPaymentAmount.Text != "")
             {
+
                 inputPaymentAmount.Text = inputPaymentAmount.Text.Trim();
                 paymentAmount = ValidateForDigitInput.decimalFormat(paymentAmount);
                 paymentAmount = decimal.Round(Convert.ToDecimal(inputPaymentAmount.Text),2, MidpointRounding.AwayFromZero);
+                
                 panelPaymentAllocation.Visible = true;
                 if (inputPaymentAmount.Focused)
                 {
@@ -224,7 +237,7 @@ namespace LoanLifeTracker
             {
                 inputPaymentInterestAmount.Text = inputPaymentInterestAmount.Text.Trim();
                 paymentInterestAmount = decimal.Round(Convert.ToDecimal(inputPaymentInterestAmount.Text), 2,MidpointRounding.AwayFromZero);
-
+                updateAllocationPercent();
                 if (paymentInterestAmount <= paymentAmount && inputPaymentInterestAmount.Focused == true)
                 {
                     inputPaymentPrincipalAmount.Text = (paymentAmount - paymentInterestAmount).ToString();
@@ -256,7 +269,7 @@ namespace LoanLifeTracker
             {
                 inputPaymentPrincipalAmount.Text = inputPaymentPrincipalAmount.Text.Trim();
                 paymentPrincipalAmount = decimal.Round(Convert.ToDecimal(inputPaymentPrincipalAmount.Text), 2, MidpointRounding.AwayFromZero);
-
+                updateAllocationPercent();
 
                 if (paymentPrincipalAmount <= paymentAmount && inputPaymentPrincipalAmount.Focused == true)
                 {
