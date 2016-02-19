@@ -34,6 +34,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoanAdjustments));
             this.panelPrincipleAdjust = new System.Windows.Forms.Panel();
+            this.principalAdjustmentAmount = new System.Windows.Forms.TextBox();
             this.labelPrincipalAdjustment = new System.Windows.Forms.Label();
             this.buttonAddAdjustment = new System.Windows.Forms.Button();
             this.buttonClosePrincipleAdjust = new System.Windows.Forms.Button();
@@ -57,7 +58,8 @@
             this.labelPaymentAmount = new System.Windows.Forms.Label();
             this.inputPaymentDate = new System.Windows.Forms.DateTimePicker();
             this.lablePaymentDate = new System.Windows.Forms.Label();
-            this.principalAdjustmentAmount = new System.Windows.Forms.TextBox();
+            this.labelInterestPercent = new System.Windows.Forms.Label();
+            this.labelPrincipalPercent = new System.Windows.Forms.Label();
             this.panelPrincipleAdjust.SuspendLayout();
             this.panelAddPayment.SuspendLayout();
             this.panelPaymentAllocation.SuspendLayout();
@@ -79,6 +81,17 @@
             this.panelPrincipleAdjust.Name = "panelPrincipleAdjust";
             this.panelPrincipleAdjust.Size = new System.Drawing.Size(433, 429);
             this.panelPrincipleAdjust.TabIndex = 0;
+            // 
+            // principalAdjustmentAmount
+            // 
+            this.principalAdjustmentAmount.BackColor = System.Drawing.Color.Gainsboro;
+            this.principalAdjustmentAmount.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
+            this.principalAdjustmentAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            this.principalAdjustmentAmount.Location = new System.Drawing.Point(30, 83);
+            this.principalAdjustmentAmount.Name = "principalAdjustmentAmount";
+            this.principalAdjustmentAmount.ShortcutsEnabled = false;
+            this.principalAdjustmentAmount.Size = new System.Drawing.Size(71, 26);
+            this.principalAdjustmentAmount.TabIndex = 68;
             // 
             // labelPrincipalAdjustment
             // 
@@ -180,6 +193,8 @@
             // 
             // panelPaymentAllocation
             // 
+            this.panelPaymentAllocation.Controls.Add(this.labelPrincipalPercent);
+            this.panelPaymentAllocation.Controls.Add(this.labelInterestPercent);
             this.panelPaymentAllocation.Controls.Add(this.inputPaymentInterestAmount);
             this.panelPaymentAllocation.Controls.Add(this.inputPaymentPrincipalAmount);
             this.panelPaymentAllocation.Controls.Add(this.labelPaymentInterestAmount);
@@ -246,7 +261,7 @@
             this.labelPaymentPrincipalAmount.AutoSize = true;
             this.labelPaymentPrincipalAmount.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelPaymentPrincipalAmount.ForeColor = System.Drawing.Color.Gainsboro;
-            this.labelPaymentPrincipalAmount.Location = new System.Drawing.Point(341, 48);
+            this.labelPaymentPrincipalAmount.Location = new System.Drawing.Point(321, 48);
             this.labelPaymentPrincipalAmount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelPaymentPrincipalAmount.Name = "labelPaymentPrincipalAmount";
             this.labelPaymentPrincipalAmount.Size = new System.Drawing.Size(54, 16);
@@ -316,7 +331,7 @@
             this.gridPaymentList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gainsboro;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Gainsboro;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
@@ -326,7 +341,7 @@
             this.gridPaymentList.Cursor = System.Windows.Forms.Cursors.Hand;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.SteelBlue;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Gainsboro;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Gainsboro;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
@@ -425,16 +440,29 @@
             this.lablePaymentDate.TabIndex = 49;
             this.lablePaymentDate.Text = "Payment Date";
             // 
-            // principalAdjustmentAmount
+            // labelInterestPercent
             // 
-            this.principalAdjustmentAmount.BackColor = System.Drawing.Color.Gainsboro;
-            this.principalAdjustmentAmount.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
-            this.principalAdjustmentAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
-            this.principalAdjustmentAmount.Location = new System.Drawing.Point(30, 83);
-            this.principalAdjustmentAmount.Name = "principalAdjustmentAmount";
-            this.principalAdjustmentAmount.ShortcutsEnabled = false;
-            this.principalAdjustmentAmount.Size = new System.Drawing.Size(71, 26);
-            this.principalAdjustmentAmount.TabIndex = 68;
+            this.labelInterestPercent.AutoSize = true;
+            this.labelInterestPercent.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelInterestPercent.ForeColor = System.Drawing.Color.Gainsboro;
+            this.labelInterestPercent.Location = new System.Drawing.Point(61, 48);
+            this.labelInterestPercent.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelInterestPercent.Name = "labelInterestPercent";
+            this.labelInterestPercent.Size = new System.Drawing.Size(26, 16);
+            this.labelInterestPercent.TabIndex = 70;
+            this.labelInterestPercent.Text = "ix%";
+            // 
+            // labelPrincipalPercent
+            // 
+            this.labelPrincipalPercent.AutoSize = true;
+            this.labelPrincipalPercent.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPrincipalPercent.ForeColor = System.Drawing.Color.Gainsboro;
+            this.labelPrincipalPercent.Location = new System.Drawing.Point(383, 48);
+            this.labelPrincipalPercent.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelPrincipalPercent.Name = "labelPrincipalPercent";
+            this.labelPrincipalPercent.Size = new System.Drawing.Size(30, 16);
+            this.labelPrincipalPercent.TabIndex = 71;
+            this.labelPrincipalPercent.Text = "px%";
             // 
             // LoanAdjustments
             // 
@@ -493,5 +521,7 @@
         private System.Windows.Forms.TextBox inputPaymentInterestAmount;
         private System.Windows.Forms.TextBox inputPaymentPrincipalAmount;
         private System.Windows.Forms.TextBox principalAdjustmentAmount;
+        private System.Windows.Forms.Label labelPrincipalPercent;
+        private System.Windows.Forms.Label labelInterestPercent;
     }
 }
