@@ -13,77 +13,51 @@ using iTextSharp.text.pdf;
 using System.IO;
 using System.Diagnostics;
 
-//added git
-//adding a fork and start with Payment GUI fixing
-//revisiting constructor
-
 namespace LoanLifeTracker
 {
-    
     public partial class LoanReportMain : Form
     {
-        private string loanTitle;
         private int reportSelectedDuration;
-        private bool loanCreated;
         private string reportText;
         private string displayingPayments;
-        private LoanReportData loanReportData;
-        public LoanReportData LoanReportData
-        {
-            get { return loanReportData; }
-            set { }
+        public static bool LoanCreated;
+        public LoanReportData LoanReportDataObj;
+        private LoanAdjustments loanAdjustments;
 
-        }
         public LoanReportMain()
         {
             InitializeComponent();
-            LoanReportData loanReportData = new LoanReportData(this);           
-        }
-
-        private void LoanReportMain_Load(object sender, EventArgs e)
-        {
-            
+            LoanReportData LoanReportDataObj = new LoanReportData(this);
+            inputCurrencySelection.SelectedIndex = 0;
+            inputLoanPanelSelection.SelectedIndex = 0;
             applicationInitialState();
         }
 
         public void applicationInitialState()
         {
-            loanReportData = null;
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            loanReportData = new LoanReportData(this);
-            loanReportDataGrid.DataSource = null;
-            loanReportData.LoanReportDataGrid = loanReportDataGrid;
-            inputLoanPanelSelection.SelectedIndex = 0;
-            inputCurrencySelection.SelectedIndex = 0;
-            inputReportType.SelectedIndex = 0;
-            statusProgressBar.Value = 0;
             inputInterestRate.Value = Convert.ToDecimal(5.00);
             inputInterestPenaltyRate.Value = Convert.ToDecimal(10.00);
-            inputLoanPanelSelection.Visible = false;
-            inputLoanTitle.Text = "";
-            inputCompanyInfo.Text = "";
+            inputLoanDuration.Value = 5;
+            inputLoanStartDate.Value = DateTime.Now.Date;
+            labelTodayDateInfo.Text = DateTime.Now.Date.ToLongDateString();
             inputLender.Text = "";
             inputBeneficiary.Text = "";
             inputCollectionAccount.Text = "";
-            inputLoanStartDate.Value = DateTime.Now.Date;
-            inputLoanDuration.Value = 5;
             inputInitialLoanAmount.Text = "";
-            labelLoanTitleInfo.Text = inputLoanTitle.Text;
-            labelCompanyInfo.Text = inputCompanyInfo.Text;
+            inputLoanTitle.Text = "";
+            labelInitialLoanAmountInfo.Text = "";
+            labelInterestStructureInfo.Text = "";
+            labelLoanStartDateInfo.Text = "";
+            labelLoanTitleInfo.Text = "";
+            labelCompanyInfo.Text = "";
             labelLenderInfo.Text = inputLender.Text;
             labelBeneficiaryInfo.Text = inputBeneficiary.Text;
             labelCollectionAccountInfo.Text = inputCollectionAccount.Text;
-            labelInitialLoanAmountInfo.Text = inputInitialLoanAmount.Text + " " + inputCurrencySelection.SelectedItem.ToString();
-            labelInterestStructureInfo.Text = "";
-            labelLoanStartDateInfo.Text = "";
-            labelTodayDateInfo.Text = DateTime.Now.Date.ToLongDateString();
             inputInterestPenaltyChk.Checked = true;
             inputRateToWholeDurationChk.Checked = true;
             inputCalculateLoan.Enabled = false;
             groupReportActions.Enabled = false;
             groupLoanInput.Enabled = false;
-            loanCreated = false;
             groupVaryingInterestTerm.Visible = false;
             groupFinancialData.Enabled = false;
             groupInterestConfig.Enabled = false;
@@ -93,40 +67,79 @@ namespace LoanLifeTracker
             inputReportSortWeeks.Checked = true;
             inputRateToWholeDurationChk.Enabled = false;
             inputSaveLoan.Visible = false;
-
         }
 
-
+        public void setCurrencyLabels()
+        {
+            if (LoanReportDataObj != null)
+            {
+                labelInitialLoanAmountInfo.Text = inputInitialLoanAmount.Text + " " + LoanReportDataObj.LoanCurrency;
+                if (loanAdjustments != null)
+                {
+                    loanAdjustments.labelPaymentCurrency.Text = LoanReportDataObj.LoanCurrency;
+                    loanAdjustments.labelInterestPaymentCurrency.Text = LoanReportDataObj.LoanCurrency;
+                    loanAdjustments.labelPrincipalPaymentCurrency.Text = LoanReportDataObj.LoanCurrency;
+                }
+            }
+        }
 
         public void recalculateLoan()
         {
-            
             statusProgressBar.Value = 0;
-            
             inputLoanStartDate.Enabled = false;
             inputLoanDuration.Enabled = true;
-            loanReportData.RegenerateLoanTable = true;
+            LoanReportDataObj.RegenerateLoanTable = true;
             groupReportActions.Enabled = true;
             groupReportControls.Enabled = true;
             buttonOpenAddPayment.Visible = true;
             buttonOpenPrincipalAdjust.Visible = true;
-            loanReportData.CalculateLoan();
-           // inputInitialLoanAmount.Text = "";
+            LoanReportDataObj.CalculateLoan();
         }
 
         private void getReportDuration(int selectedDuration)
         {
             if (groupReportControls.Enabled)
             {
-             
-                loanReportData.SortDataGridToReport(inputReportStartDate.Value.Date, inputReportEndDate.Value.Date, selectedDuration);
+                if (LoanReportDataObj != null)
+                {
+                    LoanReportDataObj.SortDataGridToReport(inputReportStartDate.Value.Date, inputReportEndDate.Value.Date, selectedDuration);
+                }
             }
         }
 
+        // loan details change events
+        
         private void inputLoanTitle_KeyUp(object sender, KeyEventArgs e)
         {
-            loanTitle = inputLoanTitle.Text;
-            labelLoanTitleInfo.Text = inputLoanTitle.Text;
+            LoanReportDataObj.LoanTitle = inputLoanTitle.Text;
+            labelLoanTitleInfo.Text = LoanReportDataObj.LoanTitle;
+        }
+
+        private void inputCompanyInfo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (LoanCreated)
+            {
+                LoanReportDataObj.CompanyInfo = inputCompanyInfo.SelectedItem.ToString();
+                labelCompanyInfo.Text = LoanReportDataObj.CompanyInfo;
+            }
+        }
+
+        private void inputLender_KeyUp(object sender, KeyEventArgs e)
+        {
+            LoanReportDataObj.Lender = inputLender.Text;
+            labelLenderInfo.Text = LoanReportDataObj.Lender;
+        }
+
+        private void inputBeneficiary_KeyUp(object sender, KeyEventArgs e)
+        {
+            LoanReportDataObj.Beneficiary = inputBeneficiary.Text;
+            labelBeneficiaryInfo.Text = LoanReportDataObj.Beneficiary;
+        }
+
+        private void inputCollectionAccount_KeyUp(object sender, KeyEventArgs e)
+        {
+            LoanReportDataObj.CollectionAccount = inputCollectionAccount.Text;
+            labelCollectionAccountInfo.Text = LoanReportDataObj.CollectionAccount;
         }
 
         private void inputReportStartDate_ValueChanged(object sender, EventArgs e)
@@ -138,9 +151,6 @@ namespace LoanLifeTracker
         {
             getReportDuration(reportSelectedDuration);
         }
-
-
-
 
         private void inputReportSortDays_CheckedChanged(object sender, EventArgs e)
         {
@@ -185,14 +195,19 @@ namespace LoanLifeTracker
 
         private void inputCurrencySelection_SelectedIndexChanged(object sender, EventArgs e)
         {
-            loanReportData.LoanCurrency = inputCurrencySelection.SelectedItem.ToString();
-            labelInitialLoanAmountInfo.Text = inputInitialLoanAmount.Text + " " + inputCurrencySelection.SelectedItem.ToString();
-
+            if (LoanReportDataObj != null)
+            {
+                LoanReportDataObj.LoanCurrency = inputCurrencySelection.SelectedItem.ToString();
+                setCurrencyLabels();
+            }
         }
 
         private void inputReportType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            loanReportData.ReportType = inputReportType.SelectedIndex;
+            if (LoanReportDataObj != null)
+            {
+                LoanReportDataObj.ReportType = inputReportType.SelectedIndex;
+            }
         }
 
         private void inputCalculateLoan_Click(object sender, EventArgs e)
@@ -202,40 +217,45 @@ namespace LoanLifeTracker
 
         private void inputNewLoan_Click(object sender, EventArgs e)
         {
-            if (!loanCreated)
+            if (!LoanCreated)
             {
+                LoanReportDataObj = null;
+                LoanReportDataObj = new LoanReportData(this);
                 inputLoanStartDate.Enabled = true;
                 inputLoanDuration.Enabled = true;
-                loanReportData.RegenerateLoanTable = true;
+                LoanReportDataObj.RegenerateLoanTable = true;
                 inputCalculateLoan.Enabled = true;
-                loanReportData.LoanGenerated = true;
+                LoanReportDataObj.LoanGenerated = true;
+                groupLoanInput.Visible = true;
                 groupLoanInput.Enabled = true;
                 groupFinancialData.Enabled = true;
                 groupInterestConfig.Enabled = true;
                 inputInterestStructureSelection.SelectedIndex = 0;
                 labelInterestStructureInfo.Text = inputInterestStructureSelection.SelectedItem.ToString();
-                inputCompanyInfo.SelectedIndex = 0;
-                statusProgressBar.Value = 0;
-                labelCompanyInfo.Text = inputCompanyInfo.SelectedItem.ToString();
+                inputCompanyInfo.SelectedIndex = -1;
                 labelLoanStartDateInfo.Text = inputLoanStartDate.Value.ToLongDateString();
                 inputLoanPanelSelection.Visible = true;
-                loanReportData.CreateLoanObjects();
+                LoanReportDataObj.CreateLoanObjects();
                 inputNewLoan.Text = "Clear Loan";
                 inputSaveLoan.Visible = true;
-                loanCreated = true;
+                panelLoanDetails.Visible = true;
+                LoanCreated = true;
+                setCurrencyLabels();
             }
-            else if (loanCreated)
+            else if (LoanCreated)
             {
+                LoanReportDataObj = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
                 inputNewLoan.Text = "New Loan";
+                inputLoanPanelSelection.Visible = false;
+                panelLoanDetails.Visible = false;
+                groupLoanInput.Visible = false;
+                LoanCreated = false;
+                inputCompanyInfo.SelectedIndex = -1;
                 applicationInitialState();
 
             }
-        }
-
-
-        private void buttonExportToExcel_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void buttonExportToPdf_Click(object sender, EventArgs e)
@@ -314,7 +334,12 @@ namespace LoanLifeTracker
 
         private void buttonImportFromExcel_Click(object sender, EventArgs e)
         {
+            // non implemented yet
+        }
 
+        private void buttonExportToExcel_Click(object sender, EventArgs e)
+        {
+            // non implemented yet
         }
 
         private void inputLoanPenaltyChk_CheckedChanged(object sender, EventArgs e)
@@ -341,32 +366,11 @@ namespace LoanLifeTracker
             }
         }
 
-        private void inputCompanyInfo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            labelCompanyInfo.Text = inputCompanyInfo.SelectedItem.ToString();
-        }
-
-        private void inputLender_KeyUp(object sender, KeyEventArgs e)
-        {
-            labelLenderInfo.Text = inputLender.Text;
-        }
-
-        private void inputBeneficiary_KeyUp(object sender, KeyEventArgs e)
-        {
-            labelBeneficiaryInfo.Text = inputBeneficiary.Text;
-        }
-
-        private void inputCollectionAccount_KeyUp(object sender, KeyEventArgs e)
-        {
-            labelCollectionAccountInfo.Text = inputCollectionAccount.Text;
-        }
-
         private void inputLoanStartDate_ValueChanged(object sender, EventArgs e)
         {
             inputReportStartDate.Value = inputLoanStartDate.Value.Date;
-            inputReportEndDate.Value = inputLoanStartDate.Value.Date.AddYears(1);
+            inputReportEndDate.Value = inputLoanStartDate.Value.Date.AddYears((int)inputLoanDuration.Value);
             labelLoanStartDateInfo.Text = inputLoanStartDate.Value.ToLongDateString();
-
         }
 
         private void inputInterestStructureSelection_SelectedIndexChanged(object sender, EventArgs e)
@@ -374,15 +378,14 @@ namespace LoanLifeTracker
             labelInterestStructureInfo.Text = inputInterestStructureSelection.SelectedItem.ToString();
         }
 
-
         private void controlsFileExit_Click(object sender, EventArgs e)
         {
             Dispose();
         }
 
-        private void buttonOpenAddPayment_Click(object sender, EventArgs e)
+        public void buttonOpenAddPayment_Click(object sender, EventArgs e)
         {
-            LoanAdjustments loanAdjustments = new LoanAdjustments(this, loanReportData.LoanDataTable); 
+            loanAdjustments = new LoanAdjustments(this, LoanReportDataObj.LoanDataTable);
             loanAdjustments.labelPaymentCurrency.Text = inputCurrencySelection.SelectedItem.ToString();
             loanAdjustments.labelInterestPaymentCurrency.Text = inputCurrencySelection.SelectedItem.ToString();
             loanAdjustments.labelPrincipalPaymentCurrency.Text = inputCurrencySelection.SelectedItem.ToString();
@@ -394,10 +397,7 @@ namespace LoanLifeTracker
 
         private void buttonOpenPrincipalAdjust_Click(object sender, EventArgs e)
         {
-            LoanAdjustments loanAdjustments = new LoanAdjustments(this, loanReportData.LoanDataTable);
-            //loanAdjustments.labelPaymentCurrency.Text = inputCurrencySelection.SelectedItem.ToString();
-            //loanAdjustments.labelInterestPaymentCurrency.Text = inputCurrencySelection.SelectedItem.ToString();
-            //loanAdjustments.labelPrincipalPaymentCurrency.Text = inputCurrencySelection.SelectedItem.ToString();
+            LoanAdjustments loanAdjustments = new LoanAdjustments(this, LoanReportDataObj.LoanDataTable);
             loanAdjustments.Text = "Principal";
             loanAdjustments.panelAddPayment.Visible = false;
             loanAdjustments.panelPrincipleAdjust.Visible = true;
@@ -406,8 +406,7 @@ namespace LoanLifeTracker
 
         private void inputLoanPanelSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
-            switch(inputLoanPanelSelection.SelectedIndex)
+            switch (inputLoanPanelSelection.SelectedIndex)
             {
                 case 0:
                     {
@@ -416,7 +415,6 @@ namespace LoanLifeTracker
                         panelLoanData.Visible = true;
                         panelLoanConfig.Visible = false;
                         panelReport.Visible = false;
-                                               
                         break;
                     }
                 case 1:
@@ -426,7 +424,7 @@ namespace LoanLifeTracker
                         panelLoanData.Visible = false;
                         panelLoanConfig.Visible = true;
                         panelReport.Visible = false;
-                        loanReportDataGrid.ReadOnly = false;
+                        getReportDuration(2);
                         break;
                     }
                 case 2:
@@ -436,15 +434,14 @@ namespace LoanLifeTracker
                         panelLoanData.Visible = false;
                         panelLoanConfig.Visible = false;
                         panelReport.Visible = true;
-                        loanReportDataGrid.ReadOnly = true;
-
                         inputReportSortMonths.Checked = true;
+                        inputReportType.SelectedIndex = 0;
                         getReportDuration(reportSelectedDuration);
 
                         break;
                     }
             }
-                
+
         }
 
         private void inputInitialLoanAmount_KeyPress(object sender, KeyPressEventArgs e)

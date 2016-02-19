@@ -14,14 +14,26 @@ namespace LoanLifeTracker
         public LoanReportData(LoanReportMain loanReportMain)
         {
             LoanReportMainObj = loanReportMain;
+            ReportType = 0;
+            LoanReportDataGrid = LoanReportMainObj.loanReportDataGrid;
+            LoanReportDataGrid.DataSource = null;
+            LoanReportMain.LoanCreated = false;
         }
         private bool firstRowSet = false;
-        
-        public string LoanCurrency
-        {
-            get { return LoanReportMainObj.inputCurrencySelection.SelectedText; }
-            set { }
-        }
+
+        //build the LoanDetails objects
+
+        public string LoanTitle { get; set; }
+        public string CompanyInfo { get; set; }
+        public string Lender { get; set; }
+        public string Beneficiary { get; set; }
+        public string CollectionAccount { get; set; }
+
+        public string LoanCurrency { get; set; }
+        //{
+        //    get { return LoanReportMainObj.inputCurrencySelection.SelectedItem.ToString(); }
+        //    set { value = LoanReportMainObj.inputCurrencySelection.SelectedItem.ToString(); }
+        //}
         public DateTime LoanStartDate
         {
             get { return LoanReportMainObj.inputLoanStartDate.Value.Date; }
@@ -60,7 +72,7 @@ namespace LoanLifeTracker
         public int ReportType
         {
             get { return LoanReportMainObj.inputReportType.SelectedIndex; }
-            set { }
+            set { LoanReportMainObj.inputReportType.SelectedIndex = value; }
         }
         public int InterestStructureSelection
         {
@@ -88,7 +100,6 @@ namespace LoanLifeTracker
         }
         public decimal RecuringPaymentAmount { get; set; }
         public DataGridView LoanReportDataGrid { get; set; }
-        //public string LoanTitle { get; set; }
         public string SelectedTabControl;
         public DataTable LoanDataTable;
         public bool RegenerateLoanTable;
@@ -102,7 +113,6 @@ namespace LoanLifeTracker
             firstRowSet = false;
             LoanDataTable.Columns.Add("loanDayDate", typeof(DateTime));
             LoanDataTable.Columns.Add("loanDayPrincipal", typeof(decimal));
-           // LoanDataTable.Columns.Add("principalCurrency",typeof(string));
             LoanDataTable.Columns.Add("loanDayInterestRate", typeof(decimal));
             LoanDataTable.Columns.Add("loanDayInterest", typeof(decimal));
             LoanDataTable.Columns.Add("loanDayCuIntrestBal", typeof(decimal));
@@ -113,7 +123,6 @@ namespace LoanLifeTracker
             LoanDataTable.Columns.Add("loanDayComments", typeof(string));
             LoanDataTable.PrimaryKey = new DataColumn[] { LoanDataTable.Columns["loanDayDate"] };
         }
-
 
         // interest structure and rate calculation
 
@@ -159,7 +168,6 @@ namespace LoanLifeTracker
                 returnInteresRate = LoanReportMainObj.inputInterestRate.Value / 100;
                 return returnInteresRate;
             }
-
         }
 
         // loan calculation
@@ -168,7 +176,7 @@ namespace LoanLifeTracker
         {
             try
             {
-                if (LoanGenerated)
+                if (LoanReportMain.LoanCreated)
                 {
                     DateTime indexingDate = LoanStartDate;
                     DateTime indexEndDate = LoanEndDate;
@@ -191,7 +199,6 @@ namespace LoanLifeTracker
                                     {
                                         LoanDataTable.Rows.Add(dates.Date,
                                             InitialLoanAmount,
-                                            //LoanCurrency,
                                             InterestRate(dates.Date),
                                             decimal.Round(calculateInterest(InterestRate(dates.Date), InitialLoanAmount, InterestStructureSelection, dates), 2, MidpointRounding.AwayFromZero),
                                              decimal.Round(calculateInterest(InterestRate(dates.Date), InitialLoanAmount, InterestStructureSelection, dates), 2, MidpointRounding.AwayFromZero),
@@ -204,7 +211,6 @@ namespace LoanLifeTracker
                                         calculatedPrinciple = decimal.Round(Convert.ToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[1]), 2, MidpointRounding.AwayFromZero) - decimal.Round(Convert.ToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[7]), 2, MidpointRounding.AwayFromZero);
                                         LoanDataTable.Rows.Add(dates.Date,
                                             calculatedPrinciple,
-                                            //LoanCurrency,
                                             InterestRate(dates.Date),
                                             decimal.Round(calculateInterest(InterestRate(dates.Date), InitialLoanAmount, InterestStructureSelection, dates), 2, MidpointRounding.AwayFromZero),
                                             0, 0, 0, 0, 0, "");
@@ -238,6 +244,7 @@ namespace LoanLifeTracker
                                     goto default;
 
                                 //this section changes the rows if they exists
+
                                 case true:
                                     if (dates == LoanStartDate)
                                     {
@@ -306,7 +313,6 @@ namespace LoanLifeTracker
                 return;
             }
         }
-
 
         // report generation
 
@@ -428,7 +434,7 @@ namespace LoanLifeTracker
                             addColumnHeaders();
                             goto default;
                         default:
-                            if (SelectedTabControl == "Report")
+                            if (LoanReportMainObj.inputLoanPanelSelection.SelectedItem.ToString() == "Report")
                             {
                                 DataTable reportTable = new DataTable();
                                 foreach (DataGridViewColumn gridColumns in LoanReportDataGrid.Columns)
@@ -446,11 +452,11 @@ namespace LoanLifeTracker
                                 }
                                 LoanReportDataGrid.DataSource = reportTable;
 
-                                LoanReportDataGrid.ReadOnly = true;
+                                //LoanReportDataGrid.ReadOnly = true;
                             }
                             else
                             {
-                                LoanReportDataGrid.ReadOnly = false;
+                               // LoanReportDataGrid.ReadOnly = false;
                                 LoanReportDataGrid.Refresh();
                             }
                             break;
@@ -474,24 +480,16 @@ namespace LoanLifeTracker
             LoanReportDataGrid.Columns["loanDayInterestPayment"].DefaultCellStyle.Format = "c0";
             LoanReportDataGrid.Columns["loanDayPrincipalPayment"].DefaultCellStyle.Format = "c0";
             LoanReportDataGrid.Columns["loanDayCurrentBalance"].DefaultCellStyle.Format = "c0";
-
             LoanReportDataGrid.Columns["loanDayDate"].HeaderText = "Date"; // Index 0
             LoanReportDataGrid.Columns["loanDayPrincipal"].HeaderText = "Principal"; // Index 1
-            //LoanReportDataGrid.Columns["principalCurrency"].HeaderText = "";
-
-
             LoanReportDataGrid.Columns["loanDayInterestRate"].HeaderText = "Interest Rate"; // Index 2
             LoanReportDataGrid.Columns["loanDayInterest"].HeaderText = "Daily Interest"; // Index 3
-            LoanReportDataGrid.Columns["loanDayCuIntrestBal"].HeaderText = "Cumulative Interes Balance"; // Index 4
+            LoanReportDataGrid.Columns["loanDayCuIntrestBal"].HeaderText = "Cumulative Interest Balance"; // Index 4
             LoanReportDataGrid.Columns["loanDayTotalPayment"].HeaderText = "Total Payment"; // Index 5
             LoanReportDataGrid.Columns["loanDayInterestPayment"].HeaderText = "Interest Payment"; // Index 6
             LoanReportDataGrid.Columns["loanDayPrincipalPayment"].HeaderText = "Principal Payment"; // Index 7
             LoanReportDataGrid.Columns["loanDayCurrentBalance"].HeaderText = "Current Balance"; // Index 8
             LoanReportDataGrid.Columns["loanDayComments"].HeaderText = "Comments"; // Index 9
-
         }
-
-
-
     }
 }

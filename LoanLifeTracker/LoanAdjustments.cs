@@ -8,22 +8,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
-// inputPaymentInterestAmount
-// inputPaymentPrincipalAmount
-
 namespace LoanLifeTracker
 {
     public partial class LoanAdjustments : Form
     {
         LoanReportMain loanReportMain;
-        //DataGridView gridPaymentList;
         DataTable paymentsDataTable;
         DataTable LoanDataTable;
         private decimal paymentAmount;
         private decimal paymentPrincipalAmount;
         private decimal paymentInterestAmount;
-       // private int trackBarValue;
         private decimal trackBarTick;
 
 
@@ -40,14 +34,12 @@ namespace LoanLifeTracker
             labelPrincipalPercent.Text = "";
             createPaymentTable();
             getPaymentsToGrid();
-
         }
 
         private void createPaymentTable()
         {
             paymentsDataTable = null;
             paymentsDataTable = new DataTable();
-            //gridPaymentList = gridPaymentList;
             paymentsDataTable.Columns.Add("paymentDate", typeof(DateTime));
             paymentsDataTable.Columns.Add("totalPayment", typeof(decimal));
             paymentsDataTable.Columns.Add("interestPayment", typeof(decimal));
@@ -57,9 +49,6 @@ namespace LoanLifeTracker
 
         private void getPaymentsToGrid()
         {
-
-
-
             EnumerableRowCollection<DataRow> allDaysWithPayments = from DataRow daysWithPayment in LoanDataTable.AsEnumerable()
                                                                    where daysWithPayment.Field<decimal>("loanDayTotalPayment") != 0
                                                                    select daysWithPayment;
@@ -73,12 +62,7 @@ namespace LoanLifeTracker
                 gridPaymentList.Visible = true;
                 gridPaymentList.DataSource = paymentsDataTable;
             addPaymentColumnHeaders();
-
              }
-
-
-            //DataTable paymentsTabl = allDaysWithPayments.CopyToDataTable
-            //DataView viewPayments = allDaysWithPayments.AsDataView();
         }
 
         private void addPaymentColumnHeaders()
@@ -93,7 +77,6 @@ namespace LoanLifeTracker
             gridPaymentList.Columns["totalPayment"].HeaderText = "Total Payment";
             gridPaymentList.Columns["interestPayment"].HeaderText = "Interest Payment";
             gridPaymentList.Columns["principalPayment"].HeaderText = "Principal Payment";
-
         }
 
         private void updateAllocationPercent()
@@ -105,25 +88,22 @@ namespace LoanLifeTracker
 
         private void buttonClosePrincipleAdjust_Click(object sender, EventArgs e)
         {
-
-
             //this.Hide();
         }
 
         private void buttonCloseAddPayment_Click(object sender, EventArgs e)
         {
-
-            if (loanReportMain.LoanReportData.LoanGenerated)
+            if (loanReportMain.LoanReportDataObj.LoanGenerated)
             {
                 foreach (DataRow payments in paymentsDataTable.Rows)
                 {
                     var paymentDate = payments.Field<DateTime>("paymentDate");
-                    bool rowExists = loanReportMain.LoanReportData.LoanDataTable.Rows.Contains(paymentDate);
+                    bool rowExists = loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Contains(paymentDate);
                     if (rowExists)
                     { 
-                        loanReportMain.LoanReportData.LoanDataTable.Rows.Find(paymentDate)[5] = payments[1];
-                        loanReportMain.LoanReportData.LoanDataTable.Rows.Find(paymentDate)[6] = payments[2];
-                        loanReportMain.LoanReportData.LoanDataTable.Rows.Find(paymentDate)[7] = payments[3];
+                        loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[5] = payments[1];
+                        loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[6] = payments[2];
+                        loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[7] = payments[3];
                     }
                }
                 loanReportMain.recalculateLoan();
@@ -152,7 +132,6 @@ namespace LoanLifeTracker
             inputPaymentAmount.Text = "";
             inputPaymentInterestAmount.Text = "";
             inputPaymentPrincipalAmount.Text = "";
-
             gridPaymentList.DataSource = paymentsDataTable;
             addPaymentColumnHeaders();
             gridPaymentList.Visible = true;
@@ -181,7 +160,7 @@ namespace LoanLifeTracker
         }
         private void inputPaymentDate_ValueChanged(object sender, EventArgs e)
         {
-           
+           //not implemented yet
         }
 
         private void inputPaymentAmount_KeyPress(object sender, KeyPressEventArgs e)
@@ -193,11 +172,9 @@ namespace LoanLifeTracker
         {
             if(inputPaymentAmount.Text != "")
             {
-
                 inputPaymentAmount.Text = inputPaymentAmount.Text.Trim();
                 paymentAmount = ValidateForDigitInput.decimalFormat(paymentAmount);
                 paymentAmount = decimal.Round(Convert.ToDecimal(inputPaymentAmount.Text),2, MidpointRounding.AwayFromZero);
-                
                 panelPaymentAllocation.Visible = true;
                 if (inputPaymentAmount.Focused)
                 {
@@ -246,15 +223,12 @@ namespace LoanLifeTracker
                         decimal setTrackValue;
                         setTrackValue = paymentInterestAmount / trackBarTick;
                         inputPaymentAllocationTrack.Value = Convert.ToInt32(setTrackValue);
-
-
                     }
                 }
                 else if (paymentInterestAmount > paymentAmount && inputPaymentInterestAmount.Focused == true)
                 {
                     MessageBox.Show("Interest exceeded the payment amount, please adjust the value.", "Payments");
                 }
-
             }
             
             else
@@ -280,16 +254,12 @@ namespace LoanLifeTracker
                         decimal setTrackValue;
                         setTrackValue = paymentInterestAmount / trackBarTick;
                         inputPaymentAllocationTrack.Value = Convert.ToInt32(setTrackValue);
-
-
                     }
                 }
                 else if (paymentPrincipalAmount > paymentAmount && inputPaymentPrincipalAmount.Focused == true)
                     {
                         MessageBox.Show("Principal exceeded the payment amount, please adjust the value.", "Payments");
                     }
-                
-
             }
             else
             {
@@ -299,7 +269,6 @@ namespace LoanLifeTracker
 
         private void inputPaymentAmount_Leave(object sender, EventArgs e)
         {
-            
             inputPaymentAmount.Text = ValidateForDigitInput.decimalFormat(paymentAmount).ToString();
         }
     }
