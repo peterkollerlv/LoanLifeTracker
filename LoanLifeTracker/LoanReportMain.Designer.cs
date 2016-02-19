@@ -184,6 +184,7 @@
             this.groupLoanInput.TabIndex = 6;
             this.groupLoanInput.TabStop = false;
             this.groupLoanInput.Text = "Loan Details";
+            this.groupLoanInput.Visible = false;
             // 
             // inputCollectionAccount
             // 
@@ -1400,6 +1401,7 @@
             // inputLoanPanelSelection
             // 
             this.inputLoanPanelSelection.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            this.inputLoanPanelSelection.DisplayMember = "(none)";
             this.inputLoanPanelSelection.DropDownHeight = 180;
             this.inputLoanPanelSelection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.inputLoanPanelSelection.DropDownWidth = 600;
@@ -1419,6 +1421,7 @@
             this.inputLoanPanelSelection.Name = "inputLoanPanelSelection";
             this.inputLoanPanelSelection.Size = new System.Drawing.Size(315, 50);
             this.inputLoanPanelSelection.TabIndex = 30;
+            this.inputLoanPanelSelection.Visible = false;
             this.inputLoanPanelSelection.SelectedIndexChanged += new System.EventHandler(this.inputLoanPanelSelection_SelectedIndexChanged);
             // 
             // panelLoanDataDisplay
@@ -1475,6 +1478,7 @@
             this.panelLoanDetails.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.panelLoanDetails.Size = new System.Drawing.Size(961, 693);
             this.panelLoanDetails.TabIndex = 0;
+            this.panelLoanDetails.Visible = false;
             // 
             // panelLoandDataGrid
             // 
@@ -1527,6 +1531,7 @@
             this.loanReportDataGrid.Location = new System.Drawing.Point(0, 0);
             this.loanReportDataGrid.Margin = new System.Windows.Forms.Padding(0);
             this.loanReportDataGrid.Name = "loanReportDataGrid";
+            this.loanReportDataGrid.ReadOnly = true;
             this.loanReportDataGrid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.loanReportDataGrid.RowHeadersVisible = false;
             this.loanReportDataGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
@@ -1549,14 +1554,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
             this.ClientSize = new System.Drawing.Size(1276, 739);
-            this.Controls.Add(this.panelLoanConfig);
             this.Controls.Add(this.panelLoanData);
             this.Controls.Add(this.panelReport);
             this.Controls.Add(this.inputLoanPanelSelection);
             this.Controls.Add(this.statusIndicationStrip);
             this.Controls.Add(this.controlsMenu);
-            this.Controls.Add(this.panelLoandDataGrid);
             this.Controls.Add(this.panelLoanDataDisplay);
+            this.Controls.Add(this.panelLoandDataGrid);
+            this.Controls.Add(this.panelLoanConfig);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.Black;
@@ -1565,7 +1570,6 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "LoanReportMain";
             this.Text = "Loan LifeTracker";
-            this.Load += new System.EventHandler(this.LoanReportMain_Load);
             this.groupLoanInput.ResumeLayout(false);
             this.groupLoanInput.PerformLayout();
             this.groupReportControls.ResumeLayout(false);
@@ -1689,13 +1693,13 @@
         public System.Windows.Forms.ComboBox inputInterestStructureSelection;
         public System.Windows.Forms.NumericUpDown inputInterestRate;
         private System.Windows.Forms.Label lableInterestRate;
-        private System.Windows.Forms.ComboBox inputLoanPanelSelection;
         private System.Windows.Forms.Panel panelLoanDataDisplay;
         private System.Windows.Forms.Panel panelLoandDataGrid;
         public System.Windows.Forms.DataGridView loanReportDataGrid;
         private System.Windows.Forms.TableLayoutPanel panelLoanDetails;
         public System.Windows.Forms.TextBox inputInitialLoanAmount;
         public System.Windows.Forms.ComboBox inputCurrencySelection;
+        public System.Windows.Forms.ComboBox inputLoanPanelSelection;
     }
 }
 
