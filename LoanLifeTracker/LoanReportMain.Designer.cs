@@ -625,7 +625,7 @@
             this.statusIndicationStrip.Location = new System.Drawing.Point(0, 717);
             this.statusIndicationStrip.Name = "statusIndicationStrip";
             this.statusIndicationStrip.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.statusIndicationStrip.Size = new System.Drawing.Size(1276, 22);
+            this.statusIndicationStrip.Size = new System.Drawing.Size(1511, 22);
             this.statusIndicationStrip.SizingGrip = false;
             this.statusIndicationStrip.TabIndex = 16;
             this.statusIndicationStrip.Text = "Status Indication";
@@ -636,7 +636,7 @@
             this.statusIndicationText.Enabled = false;
             this.statusIndicationText.Name = "statusIndicationText";
             this.statusIndicationText.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.statusIndicationText.Size = new System.Drawing.Size(1120, 17);
+            this.statusIndicationText.Size = new System.Drawing.Size(1355, 17);
             this.statusIndicationText.Spring = true;
             // 
             // toolStripStatusLabel1
@@ -665,7 +665,7 @@
             this.controlsMenu.Location = new System.Drawing.Point(0, 0);
             this.controlsMenu.Name = "controlsMenu";
             this.controlsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.controlsMenu.Size = new System.Drawing.Size(1276, 24);
+            this.controlsMenu.Size = new System.Drawing.Size(1511, 24);
             this.controlsMenu.TabIndex = 17;
             this.controlsMenu.Text = "menu";
             // 
@@ -1185,7 +1185,7 @@
             // 
             this.labelLoanDuration.AutoSize = true;
             this.labelLoanDuration.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelLoanDuration.Location = new System.Drawing.Point(188, 16);
+            this.labelLoanDuration.Location = new System.Drawing.Point(184, 16);
             this.labelLoanDuration.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelLoanDuration.Name = "labelLoanDuration";
             this.labelLoanDuration.Size = new System.Drawing.Size(107, 16);
@@ -1434,7 +1434,7 @@
             this.panelLoanDataDisplay.Controls.Add(this.panelLoanDetails);
             this.panelLoanDataDisplay.Location = new System.Drawing.Point(315, 24);
             this.panelLoanDataDisplay.Name = "panelLoanDataDisplay";
-            this.panelLoanDataDisplay.Size = new System.Drawing.Size(961, 693);
+            this.panelLoanDataDisplay.Size = new System.Drawing.Size(1196, 693);
             this.panelLoanDataDisplay.TabIndex = 31;
             // 
             // panelLoanDetails
@@ -1476,7 +1476,7 @@
             this.panelLoanDetails.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.panelLoanDetails.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.panelLoanDetails.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.panelLoanDetails.Size = new System.Drawing.Size(961, 693);
+            this.panelLoanDetails.Size = new System.Drawing.Size(1196, 693);
             this.panelLoanDetails.TabIndex = 0;
             this.panelLoanDetails.Visible = false;
             // 
@@ -1490,7 +1490,7 @@
             this.panelLoandDataGrid.Controls.Add(this.loanReportDataGrid);
             this.panelLoandDataGrid.Location = new System.Drawing.Point(315, 24);
             this.panelLoandDataGrid.Name = "panelLoandDataGrid";
-            this.panelLoandDataGrid.Size = new System.Drawing.Size(961, 693);
+            this.panelLoandDataGrid.Size = new System.Drawing.Size(1196, 693);
             this.panelLoandDataGrid.TabIndex = 41;
             // 
             // loanReportDataGrid
@@ -1545,7 +1545,7 @@
             this.loanReportDataGrid.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.loanReportDataGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.loanReportDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.loanReportDataGrid.Size = new System.Drawing.Size(961, 693);
+            this.loanReportDataGrid.Size = new System.Drawing.Size(1196, 693);
             this.loanReportDataGrid.TabIndex = 12;
             // 
             // LoanReportMain
@@ -1553,15 +1553,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
-            this.ClientSize = new System.Drawing.Size(1276, 739);
+            this.ClientSize = new System.Drawing.Size(1511, 739);
+            this.Controls.Add(this.panelLoanConfig);
+            this.Controls.Add(this.panelLoanDataDisplay);
+            this.Controls.Add(this.panelLoandDataGrid);
             this.Controls.Add(this.panelLoanData);
             this.Controls.Add(this.panelReport);
             this.Controls.Add(this.inputLoanPanelSelection);
             this.Controls.Add(this.statusIndicationStrip);
             this.Controls.Add(this.controlsMenu);
-            this.Controls.Add(this.panelLoanDataDisplay);
-            this.Controls.Add(this.panelLoandDataGrid);
-            this.Controls.Add(this.panelLoanConfig);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.Black;

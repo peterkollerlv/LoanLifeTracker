@@ -74,6 +74,10 @@ namespace LoanLifeTracker
             if (LoanReportDataObj != null)
             {
                 labelInitialLoanAmountInfo.Text = inputInitialLoanAmount.Text + " " + LoanReportDataObj.LoanCurrency;
+                if (loanReportDataGrid != null)
+                {
+                    LoanReportDataObj.SetColumnHeaders();
+                }
                 if (loanAdjustments != null)
                 {
                     loanAdjustments.labelPaymentCurrency.Text = LoanReportDataObj.LoanCurrency;
@@ -446,7 +450,7 @@ namespace LoanLifeTracker
 
         private void inputInitialLoanAmount_KeyPress(object sender, KeyPressEventArgs e)
         {
-            ValidateForDigitInput.FilterKeypressToDigits(sender, e);
+            FormatDigitInput.FilterKeypressToDigits(sender, e);
         }
 
         private void inputInitialLoanAmount_TextChanged(object sender, EventArgs e)

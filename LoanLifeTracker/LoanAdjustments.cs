@@ -82,8 +82,8 @@ namespace LoanLifeTracker
         private void updateAllocationPercent()
         {
             decimal onePercentOfPeyment = paymentAmount / 100;
-            labelInterestPercent.Text = ValidateForDigitInput.decimalFormat((paymentInterestAmount / onePercentOfPeyment)).ToString() + "%";
-            labelPrincipalPercent.Text = ValidateForDigitInput.decimalFormat((paymentPrincipalAmount / onePercentOfPeyment)).ToString() + "%";
+            labelInterestPercent.Text = FormatDigitInput.FormatToDecimal((paymentInterestAmount / onePercentOfPeyment)).ToString() + "%";
+            labelPrincipalPercent.Text = FormatDigitInput.FormatToDecimal((paymentPrincipalAmount / onePercentOfPeyment)).ToString() + "%";
         }
 
         private void buttonClosePrincipleAdjust_Click(object sender, EventArgs e)
@@ -165,7 +165,7 @@ namespace LoanLifeTracker
 
         private void inputPaymentAmount_KeyPress(object sender, KeyPressEventArgs e)
         {
-            ValidateForDigitInput.FilterKeypressToDigits(sender, e);
+            FormatDigitInput.FilterKeypressToDigits(sender, e);
         }
 
         private void inputPaymentAmount_TextChanged(object sender, EventArgs e)
@@ -173,7 +173,7 @@ namespace LoanLifeTracker
             if(inputPaymentAmount.Text != "")
             {
                 inputPaymentAmount.Text = inputPaymentAmount.Text.Trim();
-                paymentAmount = ValidateForDigitInput.decimalFormat(paymentAmount);
+                paymentAmount = FormatDigitInput.FormatToDecimal(paymentAmount);
                 paymentAmount = decimal.Round(Convert.ToDecimal(inputPaymentAmount.Text),2, MidpointRounding.AwayFromZero);
                 panelPaymentAllocation.Visible = true;
                 if (inputPaymentAmount.Focused)
@@ -200,7 +200,7 @@ namespace LoanLifeTracker
 
         private void inputPaymentInterestAmount_KeyPress(object sender, KeyPressEventArgs e)
         {
-            ValidateForDigitInput.FilterKeypressToDigits(sender, e);
+            FormatDigitInput.FilterKeypressToDigits(sender, e);
         }
 
         private void LoanAdjustments_KeyPress(object sender, KeyPressEventArgs e)
@@ -269,7 +269,7 @@ namespace LoanLifeTracker
 
         private void inputPaymentAmount_Leave(object sender, EventArgs e)
         {
-            inputPaymentAmount.Text = ValidateForDigitInput.decimalFormat(paymentAmount).ToString();
+            inputPaymentAmount.Text = FormatDigitInput.FormatToDecimal(paymentAmount).ToString();
         }
     }
 }
