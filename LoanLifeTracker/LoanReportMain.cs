@@ -241,6 +241,8 @@ namespace LoanLifeTracker
                 inputLoanPanelSelection.Visible = true;
                 LoanReportDataObj.CreateLoanObjects();
                 inputNewLoan.Text = "Clear Loan";
+                navRight.Visible = true;
+                navLeft.Visible = true;
                 inputSaveLoan.Visible = true;
                 panelLoanDetails.Visible = true;
                 LoanCreated = true;
@@ -255,6 +257,8 @@ namespace LoanLifeTracker
                 inputLoanPanelSelection.Visible = false;
                 panelLoanDetails.Visible = false;
                 groupLoanInput.Visible = false;
+                navRight.Visible = false;
+                navLeft.Visible = false;
                 LoanCreated = false;
                 inputCompanyInfo.SelectedIndex = -1;
                 applicationInitialState();
@@ -456,6 +460,30 @@ namespace LoanLifeTracker
         private void inputInitialLoanAmount_TextChanged(object sender, EventArgs e)
         {
             labelInitialLoanAmountInfo.Text = inputInitialLoanAmount.Text + " " + inputCurrencySelection.SelectedItem.ToString();
+        }
+
+        private void navRight_Click(object sender, EventArgs e)
+        {
+            if (inputLoanPanelSelection.SelectedIndex <= 1)
+                inputLoanPanelSelection.SelectedIndex = inputLoanPanelSelection.SelectedIndex + 1;
+            else
+                inputLoanPanelSelection.SelectedIndex = 0;
+        }
+
+        private void navLeft_Click(object sender, EventArgs e)
+        {
+            if (inputLoanPanelSelection.SelectedIndex >= 1)
+                inputLoanPanelSelection.SelectedIndex = inputLoanPanelSelection.SelectedIndex - 1;
+            else
+                inputLoanPanelSelection.SelectedIndex = 2;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (inputLoanPanelSelection.SelectedIndex <= 1)
+                inputLoanPanelSelection.SelectedIndex = inputLoanPanelSelection.SelectedIndex + 1;
+            else
+                inputLoanPanelSelection.SelectedIndex = 0;
         }
     }
 }

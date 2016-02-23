@@ -128,6 +128,8 @@
             this.panelLoanDetails = new System.Windows.Forms.TableLayoutPanel();
             this.panelLoandDataGrid = new System.Windows.Forms.Panel();
             this.loanReportDataGrid = new System.Windows.Forms.DataGridView();
+            this.navLeft = new System.Windows.Forms.PictureBox();
+            this.navRight = new System.Windows.Forms.PictureBox();
             this.groupLoanInput.SuspendLayout();
             this.groupReportControls.SuspendLayout();
             this.groupReportActions.SuspendLayout();
@@ -147,6 +149,8 @@
             this.panelLoanDetails.SuspendLayout();
             this.panelLoandDataGrid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loanReportDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.navLeft)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.navRight)).BeginInit();
             this.SuspendLayout();
             // 
             // labelReportStartDate
@@ -1548,12 +1552,40 @@
             this.loanReportDataGrid.Size = new System.Drawing.Size(1196, 693);
             this.loanReportDataGrid.TabIndex = 12;
             // 
+            // navLeft
+            // 
+            this.navLeft.Cursor = System.Windows.Forms.Cursors.PanWest;
+            this.navLeft.Image = global::LoanLifeTracker.Properties.Resources.lltButtonLeft;
+            this.navLeft.Location = new System.Drawing.Point(10, 635);
+            this.navLeft.Name = "navLeft";
+            this.navLeft.Size = new System.Drawing.Size(75, 75);
+            this.navLeft.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.navLeft.TabIndex = 31;
+            this.navLeft.TabStop = false;
+            this.navLeft.Visible = false;
+            this.navLeft.Click += new System.EventHandler(this.navLeft_Click);
+            // 
+            // navRight
+            // 
+            this.navRight.Cursor = System.Windows.Forms.Cursors.PanEast;
+            this.navRight.Image = global::LoanLifeTracker.Properties.Resources.lltButtonRight;
+            this.navRight.Location = new System.Drawing.Point(230, 635);
+            this.navRight.Name = "navRight";
+            this.navRight.Size = new System.Drawing.Size(75, 75);
+            this.navRight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.navRight.TabIndex = 32;
+            this.navRight.TabStop = false;
+            this.navRight.Visible = false;
+            this.navRight.Click += new System.EventHandler(this.navRight_Click);
+            // 
             // LoanReportMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
             this.ClientSize = new System.Drawing.Size(1511, 739);
+            this.Controls.Add(this.navLeft);
+            this.Controls.Add(this.navRight);
             this.Controls.Add(this.panelLoanConfig);
             this.Controls.Add(this.panelLoanDataDisplay);
             this.Controls.Add(this.panelLoandDataGrid);
@@ -1598,6 +1630,8 @@
             this.panelLoanDetails.PerformLayout();
             this.panelLoandDataGrid.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.loanReportDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.navLeft)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.navRight)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1700,6 +1734,8 @@
         public System.Windows.Forms.TextBox inputInitialLoanAmount;
         public System.Windows.Forms.ComboBox inputCurrencySelection;
         public System.Windows.Forms.ComboBox inputLoanPanelSelection;
+        private System.Windows.Forms.PictureBox navLeft;
+        private System.Windows.Forms.PictureBox navRight;
     }
 }
 
