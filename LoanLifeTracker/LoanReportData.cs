@@ -97,6 +97,7 @@ namespace LoanLifeTracker
         public DateTime LoanEndDate
         {
             get { return LoanStartDate.AddYears(LoanDuration); }
+            set { }
         }
         public decimal RecuringPaymentAmount { get; set; }
         public DataGridView LoanReportDataGrid { get; set; }
@@ -182,160 +183,167 @@ namespace LoanLifeTracker
                     DateTime indexEndDate = LoanEndDate;
                     LoanReportMainObj.statusProgressBar.Maximum = LoanTimeSpan.Days;
                     LoanReportMainObj.statusProgressBar.Value = 0;
-                   // LoanReportMainObj.loanReportDataGrid.DataSource = null; //testing nulling the data source
+                    //LoanReportMainObj.loanReportDataGrid.DataSource = null; //testing nulling the data source
                     LoanGenerated = false;
                     if (RegenerateLoanTable)
                     {
+                        bool loanPaid = false; 
                         for (DateTime dates = LoanStartDate; dates < LoanEndDate; dates = dates.AddDays(1), LoanReportMainObj.statusProgressBar.Value += 1)
                         {
-                            bool rowExists = LoanDataTable.Rows.Contains(dates);
-                            var calculatedPrinciple = 0M;
-
-                            switch (rowExists)
+                            if (!loanPaid)
                             {
-                                //this section adds the rows
-                                case false:
-                                    if (!firstRowSet)
-                                    {
-                                        LoanDataTable.Rows.Add(dates.Date,
-                                            InitialLoanAmount,
-                                            InterestRate(dates.Date),
-                                            calculateInterest(InterestRate(dates.Date), InitialLoanAmount, InterestStructureSelection, dates),
-                                            calculateInterest(InterestRate(dates.Date), InitialLoanAmount, InterestStructureSelection, dates),
-                                            0, 0, 0, InitialLoanAmount, "");
-                                        firstRowSet = true;
-                                    }
-                                    else
-                                    {
-                                        
-                                        dates.AddDays(1);
-                                        calculatedPrinciple = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[1]) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[7]);
-                                        LoanDataTable.Rows.Add(dates.Date,
-                                            calculatedPrinciple,
-                                            InterestRate(dates.Date),
-                                           calculateInterest(InterestRate(dates.Date), InitialLoanAmount, InterestStructureSelection, dates),
-                                            0, 0, 0, 0, 0, "");
-                                        LoanDataTable.Rows.Find(dates)[4] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[3]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[4]) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[6]);
-                                        if (InterestStructureSelection == 2)
+                                bool rowExists = LoanDataTable.Rows.Contains(dates);
+                                var calculatedPrinciple = 0M;
+
+                                switch (rowExists)
+                                {
+                                    //this section adds the rows
+                                    case false:
+                                        if (!firstRowSet)
                                         {
-                                            if (dates.Day == getLastDayOfMonth(dates))
-                                            {
-                                                LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]);
-                                                LoanDataTable.Rows.Find(dates)[1] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[8]);
-                                            }
-                                            else
-                                            {
-                                                LoanDataTable.Rows.Find(dates)[8] = LoanDataTable.Rows.Find(dates.AddDays(-1))[8];
-                                            }
+                                            LoanDataTable.Rows.Add(dates.Date,
+                                                InitialLoanAmount,
+                                                InterestRate(dates.Date),
+                                                calculateInterest(InterestRate(dates.Date), InitialLoanAmount, InterestStructureSelection, dates),
+                                                calculateInterest(InterestRate(dates.Date), InitialLoanAmount, InterestStructureSelection, dates),
+                                                0, 0, 0, InitialLoanAmount, "");
+                                            firstRowSet = true;
                                         }
                                         else
                                         {
-                                            if (dates.Day == getLastDayOfMonth(dates))
+
+                                            dates.AddDays(1);
+                                            calculatedPrinciple = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[1]) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[7]);
+                                            LoanDataTable.Rows.Add(dates.Date,
+                                                calculatedPrinciple,
+                                                InterestRate(dates.Date),
+                                               calculateInterest(InterestRate(dates.Date), InitialLoanAmount, InterestStructureSelection, dates),
+                                                0, 0, 0, 0, 0, "");
+                                            LoanDataTable.Rows.Find(dates)[4] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[3]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[4]) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[6]);
+                                            if (InterestStructureSelection == 2)
                                             {
-                                                LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]);
+                                                if (dates.Day == getLastDayOfMonth(dates))
+                                                {
+                                                    LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]);
+                                                    LoanDataTable.Rows.Find(dates)[1] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[8]);
+                                                }
+                                                else
+                                                {
+                                                    LoanDataTable.Rows.Find(dates)[8] = LoanDataTable.Rows.Find(dates.AddDays(-1))[8];
+                                                }
                                             }
                                             else
                                             {
-                                                LoanDataTable.Rows.Find(dates)[8] = LoanDataTable.Rows.Find(dates.AddDays(-1))[8];
+                                                if (dates.Day == getLastDayOfMonth(dates))
+                                                {
+                                                    LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]);
+                                                }
+                                                else
+                                                {
+                                                    LoanDataTable.Rows.Find(dates)[8] = LoanDataTable.Rows.Find(dates.AddDays(-1))[8];
+                                                }
                                             }
+                                            if (dates == LoanEndDate.AddDays(-1))
+                                            { LoanReportMainObj.statusProgressBar.Value = 0; }
                                         }
-                                        if (dates == LoanEndDate.AddDays(-1))
-                                        { LoanReportMainObj.statusProgressBar.Value = 0; }
-                                    }
-                                    goto default;
+                                        goto default;
 
-                                //this section changes the rows if they exists
+                                    //this section changes the rows if they exists
 
-                                case true:
-                                    if (dates == LoanStartDate)
-                                    {
-                                        LoanDataTable.Rows.Find(dates)[1] = FormatDigitInput.FormatToDecimal(InitialLoanAmount);
-                                        LoanDataTable.Rows.Find(dates)[2] = InterestRate(dates.Date);
-                                        LoanDataTable.Rows.Find(dates)[3] = calculateInterest(InterestRate(dates.Date),
-                                            FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]), InterestStructureSelection, dates);
-                                        LoanDataTable.Rows.Find(dates)[4] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[6]);
-                                        LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(InitialLoanAmount);
-                                    }
-                                    else if (dates != LoanStartDate)
-                                    {
-                         
-                                        LoanDataTable.Rows.Find(dates)[1] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[1]); // calculatePrinciple;
-                                        LoanDataTable.Rows.Find(dates)[1] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[7]);
-                                        LoanDataTable.Rows.Find(dates)[2] = InterestRate(dates.Date);
-                                        LoanDataTable.Rows.Find(dates)[3] = calculateInterest(InterestRate(dates.Date), FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]), InterestStructureSelection, dates);
-                                        
-
-                                        if (InterestStructureSelection == 2)
+                                    case true:
+                                        if (dates == LoanStartDate)
+                                        {
+                                            LoanDataTable.Rows.Find(dates)[1] = FormatDigitInput.FormatToDecimal(InitialLoanAmount);
+                                            LoanDataTable.Rows.Find(dates)[2] = InterestRate(dates.Date);
+                                            LoanDataTable.Rows.Find(dates)[3] = calculateInterest(InterestRate(dates.Date),
+                                                FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]), InterestStructureSelection, dates);
+                                            LoanDataTable.Rows.Find(dates)[4] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[6]);
+                                            LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(InitialLoanAmount);
+                                        }
+                                        else if (dates != LoanStartDate)
                                         {
 
+                                            LoanDataTable.Rows.Find(dates)[1] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[1]); // calculatePrinciple;
+                                            LoanDataTable.Rows.Find(dates)[1] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[7]);
+                                            LoanDataTable.Rows.Find(dates)[2] = InterestRate(dates.Date);
+                                            LoanDataTable.Rows.Find(dates)[3] = calculateInterest(InterestRate(dates.Date), FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]), InterestStructureSelection, dates);
 
-                                            if (dates.Day == getLastDayOfMonth(dates))
+
+                                            if (InterestStructureSelection == 2)
                                             {
-                                                LoanDataTable.Rows.Find(dates)[4] = (FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[3]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[4])) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[6]);
-                                                LoanDataTable.Rows.Find(dates)[1] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]);
-                                                LoanDataTable.Rows.Find(dates)[8] = LoanDataTable.Rows.Find(dates)[1];
-                                                
-                                            }
-                                            else if (dates.Day == 1)
-                                            {
-                                                LoanDataTable.Rows.Find(dates)[4] = 0;
-                                                LoanDataTable.Rows.Find(dates)[4] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[3]) -  FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[6]);
-                                                LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[8]);
+
+
+                                                if (dates.Day == getLastDayOfMonth(dates))
+                                                {
+                                                    LoanDataTable.Rows.Find(dates)[4] = (FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[3]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[4])) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[6]);
+                                                    LoanDataTable.Rows.Find(dates)[1] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]);
+                                                    LoanDataTable.Rows.Find(dates)[8] = LoanDataTable.Rows.Find(dates)[1];
+
+                                                }
+                                                else if (dates.Day == 1)
+                                                {
+                                                    LoanDataTable.Rows.Find(dates)[4] = 0;
+                                                    LoanDataTable.Rows.Find(dates)[4] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[3]) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[6]);
+                                                    LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[8]);
+                                                }
+                                                else if (!loanPaid)
+                                                {
+                                                    LoanDataTable.Rows.Find(dates)[4] = (FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[3]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[4])) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[6]);
+                                                    LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[8]);
+                                                }
+
+                                                if (FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[8]) <= 0)
+                                                {
+                                                    LoanDataTable.Rows.Find(dates)[9] = "The loan is paid of at: " + dates.Date.ToShortDateString();
+                                                    LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]);
+
+                                                    LoanGenerated = true;
+                                                    LoanEndDate = dates;
+                                                    loanPaid = true;
+                                                    goto default;
+                                                }
+                                  
                                             }
                                             else
                                             {
-                                                LoanDataTable.Rows.Find(dates)[4] = (FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[3]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[4])) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[6]);
-                                                LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[8]);
+                                                if (dates.Day == getLastDayOfMonth(dates))
+                                                {
+                                                    LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]);
+                                                }
+                                                else
+                                                {
+                                                    LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[8]);
+                                                }
                                             }
 
-                                            if (FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[8]) <= 0)
-                                            {
-                                                LoanDataTable.Rows.Find(dates)[9] = "The loan is paid of at: " + dates.Date.ToShortDateString();
-                                                goto default;
-                                            }
-                                            else
-                                            {
-                                                LoanDataTable.Rows.Find(dates)[9] = "not paid" + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[8]).ToString();
-                                            }
-
-                                            // need to fix negative number bug
-                                            //    if (dates.Day == getLastDayOfMonth(dates))
-                                            //    {
-                                            //        LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]);
-                                            //        LoanDataTable.Rows.Find(dates)[1] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[8]);
-                                            //    }
-                                            //    else
-                                            //    {
-                                            //        LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[8]);
-                                            //    }
+                                            if (dates == LoanEndDate.AddDays(-1))
+                                            { LoanReportMainObj.statusProgressBar.Value = 0; }
                                         }
-                                        else
-                                        {
-                                            if (dates.Day == getLastDayOfMonth(dates))
-                                            {
-                                                LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]);
-                                            }
-                                            else
-                                            {
-                                                LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[8]);
-                                            }
-                                        }
-
+                                        goto default;
+                                    default:
                                         if (dates == LoanEndDate.AddDays(-1))
-                                        { LoanReportMainObj.statusProgressBar.Value = 0; }
-                                    }
-                                    goto default;
-                                default:
-                                    if (dates == LoanEndDate.AddDays(-1))
-                                    {
-                                        LoanGenerated = true;
-                                        SortDataGridToReport(LoanStartDate, LoanEndDate, 2);
+                                        {
+                                            LoanGenerated = true;
+                                            SortDataGridToReport(LoanStartDate, LoanEndDate, 2);
 
-                                    }
-                                    break;
+                                        }
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                if (LoanDataTable.Rows.Contains(dates))
+                                {
+                                    var rowToDelete = LoanDataTable.Rows.Find(dates);
+
+                                    rowToDelete.Delete();
+
+                                }
                             }
                         }
+                        LoanReportMainObj.statusProgressBar.Value = 0;
                         LoanDataTable.AcceptChanges();
+                        SortDataGridToReport(LoanStartDate, LoanEndDate, 2);
                     }
                     else if (!RegenerateLoanTable)
                     {

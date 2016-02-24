@@ -81,9 +81,12 @@ namespace LoanLifeTracker
 
         private void updateAllocationPercent()
         {
-            decimal onePercentOfPeyment = paymentAmount / 100;
-            labelInterestPercent.Text = FormatDigitInput.FormatToDecimal((paymentInterestAmount / onePercentOfPeyment)).ToString() + "%";
-            labelPrincipalPercent.Text = FormatDigitInput.FormatToDecimal((paymentPrincipalAmount / onePercentOfPeyment)).ToString() + "%";
+            if (FormatDigitInput.FormatToDecimal(paymentInterestAmount) > 0 && FormatDigitInput.FormatToDecimal(paymentPrincipalAmount) > 0)
+                {
+                decimal onePercentOfPeyment = paymentAmount / 100;
+                labelInterestPercent.Text = FormatDigitInput.FormatToDecimal((paymentInterestAmount / onePercentOfPeyment)).ToString() + "%";
+                labelPrincipalPercent.Text = FormatDigitInput.FormatToDecimal((paymentPrincipalAmount / onePercentOfPeyment)).ToString() + "%";
+            }
         }
 
         private void buttonClosePrincipleAdjust_Click(object sender, EventArgs e)
@@ -104,6 +107,7 @@ namespace LoanLifeTracker
                         loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[5] = payments[1];
                         loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[6] = payments[2];
                         loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[7] = payments[3];
+                        //loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[8] = FormatDigitInput.FormatToDecimal(loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[1]) + FormatDigitInput.FormatToDecimal(loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[4]);
                     }
                }
                 loanReportMain.recalculateLoan();
@@ -132,6 +136,8 @@ namespace LoanLifeTracker
             inputPaymentAmount.Text = "";
             inputPaymentInterestAmount.Text = "";
             inputPaymentPrincipalAmount.Text = "";
+            labelInterestPercent.Text = "";
+            labelPrincipalPercent.Text = "";
             gridPaymentList.DataSource = paymentsDataTable;
             addPaymentColumnHeaders();
             gridPaymentList.Visible = true;
