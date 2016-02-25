@@ -19,6 +19,7 @@ namespace LoanLifeTracker
         private decimal paymentPrincipalAmount;
         private decimal paymentInterestAmount;
         private decimal trackBarTick;
+        private List<Payment> paymentList;
 
 
         public LoanAdjustments(LoanReportMain loanReportMainPassed, DataTable loanDataTable)
@@ -26,6 +27,7 @@ namespace LoanLifeTracker
             InitializeComponent();
             loanReportMain = loanReportMainPassed;
             LoanDataTable = loanDataTable;
+            paymentList = loanReportMainPassed.LoanReportDataObj.PaymentsList;
             panelPaymentAllocation.Visible = false;
             gridPaymentList.Visible = false;
             buttonCloseAddPayment.Visible = false;
@@ -33,7 +35,7 @@ namespace LoanLifeTracker
             labelInterestPercent.Text = "";
             labelPrincipalPercent.Text = "";
             createPaymentTable();
-            getPaymentsToGrid();
+            //getPaymentsToGrid();
         }
 
         private void createPaymentTable()
@@ -103,10 +105,11 @@ namespace LoanLifeTracker
                     var paymentDate = payments.Field<DateTime>("paymentDate");
                     bool rowExists = loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Contains(paymentDate);
                     if (rowExists)
-                    { 
-                        loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[5] = payments[1];
-                        loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[6] = payments[2];
-                        loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[7] = payments[3];
+                    {
+                 
+                        //loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[5] = payments[1];
+                        //loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[6] = payments[2];
+                        //loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[7] = payments[3];
                         //loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[8] = FormatDigitInput.FormatToDecimal(loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[1]) + FormatDigitInput.FormatToDecimal(loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[4]);
                     }
                }
@@ -122,9 +125,24 @@ namespace LoanLifeTracker
         private void buttonAddPayment_Click(object sender, EventArgs e)
         {
             bool paymentExists = paymentsDataTable.Rows.Contains(inputPaymentDate.Value.Date);
+
             if (!paymentExists)
             {
                 paymentsDataTable.Rows.Add(inputPaymentDate.Value.Date, paymentAmount, paymentInterestAmount, paymentPrincipalAmount);
+
+                Payment payment = new Payment();
+                payment.PaymentID = 1;
+                payment.PaymentDate = inputPaymentDate.Value.Date;
+                payment.TotalPaymentAmount = paymentAmount;
+                payment.InterestPaymentAmount = paymentInterestAmount;
+                payment.PrincipalPaymentAmount = paymentPrincipalAmount;
+                paymentList.Add(payment);
+                loanReportMain.textPaymentList.Text = "";
+              foreach (Payment individualPayment in paymentList)
+                {
+                 
+                        loanReportMain.textPaymentList.Text += individualPayment.PaymentDate.ToShortDateString() + " " + individualPayment.TotalPaymentAmount + " " + individualPayment.InterestPaymentAmount + " " + individualPayment.PrincipalPaymentAmount + "\r\n";
+                }
             }
             else if (paymentExists)
             {

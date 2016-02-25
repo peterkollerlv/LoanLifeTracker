@@ -130,6 +130,7 @@
             this.loanReportDataGrid = new System.Windows.Forms.DataGridView();
             this.navLeft = new System.Windows.Forms.PictureBox();
             this.navRight = new System.Windows.Forms.PictureBox();
+            this.textPaymentList = new System.Windows.Forms.TextBox();
             this.groupLoanInput.SuspendLayout();
             this.groupReportControls.SuspendLayout();
             this.groupReportActions.SuspendLayout();
@@ -1466,6 +1467,7 @@
             this.panelLoanDetails.Controls.Add(this.labelBeneficiary, 0, 3);
             this.panelLoanDetails.Controls.Add(this.labelCollection, 0, 4);
             this.panelLoanDetails.Controls.Add(this.labelLoanStart, 0, 6);
+            this.panelLoanDetails.Controls.Add(this.textPaymentList, 2, 9);
             this.panelLoanDetails.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelLoanDetails.Location = new System.Drawing.Point(0, 0);
             this.panelLoanDetails.Name = "panelLoanDetails";
@@ -1577,6 +1579,16 @@
             this.navRight.TabStop = false;
             this.navRight.Visible = false;
             this.navRight.Click += new System.EventHandler(this.navRight_Click);
+            // 
+            // textPaymentList
+            // 
+            this.textPaymentList.BackColor = System.Drawing.Color.SteelBlue;
+            this.textPaymentList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            this.textPaymentList.Location = new System.Drawing.Point(603, 183);
+            this.textPaymentList.Multiline = true;
+            this.textPaymentList.Name = "textPaymentList";
+            this.textPaymentList.Size = new System.Drawing.Size(593, 507);
+            this.textPaymentList.TabIndex = 42;
             // 
             // LoanReportMain
             // 
@@ -1736,6 +1748,7 @@
         public System.Windows.Forms.ComboBox inputLoanPanelSelection;
         private System.Windows.Forms.PictureBox navLeft;
         private System.Windows.Forms.PictureBox navRight;
+        public System.Windows.Forms.TextBox textPaymentList;
     }
 }
 

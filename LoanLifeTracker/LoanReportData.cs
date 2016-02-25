@@ -10,6 +10,7 @@ namespace LoanLifeTracker
 {
     public class LoanReportData
     {
+        private List<Payment> paymentsList;
         LoanReportMain LoanReportMainObj;
         public LoanReportData(LoanReportMain loanReportMain)
         {
@@ -17,9 +18,11 @@ namespace LoanLifeTracker
             ReportType = 0;
             LoanReportDataGrid = LoanReportMainObj.loanReportDataGrid;
             LoanReportDataGrid.DataSource = null;
-            LoanReportMain.LoanCreated = false;
+            //LoanReportMain.LoanCreated = false;
+            principalBalance = 0;
+            paymentsList = new List<Payment>();
         }
-        private bool firstRowSet = false;
+        //private bool firstRowSet = false;
 
         //build the LoanDetails objects
 
@@ -29,7 +32,7 @@ namespace LoanLifeTracker
         public string Beneficiary { get; set; }
         public string CollectionAccount { get; set; }
 
-        public string LoanCurrency/* { get; set; }*/
+        public string LoanCurrency
         {
             get { return LoanReportMainObj.inputCurrencySelection.SelectedItem.ToString(); }
             set { value = LoanReportMainObj.inputCurrencySelection.SelectedItem.ToString(); }
@@ -101,21 +104,81 @@ namespace LoanLifeTracker
         }
         public decimal RecuringPaymentAmount { get; set; }
         public DataGridView LoanReportDataGrid { get; set; }
+
+        private decimal principalBalance;
+        public decimal PrincipalBalance
+        {
+            get
+            {
+                return principalBalance;
+            } set
+            {
+                principalBalance = value;
+            }
+        }
+
+        public List<Payment> PaymentsList
+        {
+            get
+            {
+                return paymentsList;
+            }
+            set
+            {
+                paymentsList = value;
+            }
+        }
+
+        private decimal interestBalance;
+        public decimal InterestBalance
+        {
+            get
+            {
+                return interestBalance;
+            }
+            private set { interestBalance = value; }
+        }
+
+        private decimal cumulativeInterestBalance;
+        public decimal CumulativeInterestBalance
+        {
+            get
+            {
+                return cumulativeInterestBalance;
+            }
+            private set
+            {
+                cumulativeInterestBalance = value;
+            }
+        }
+
+        private decimal currentBalance;
+        public decimal CurrentBalance { get
+            {
+                return currentBalance;
+            }
+            private set { currentBalance = value; }
+        }
+
         public string SelectedTabControl;
         public DataTable LoanDataTable;
         public bool RegenerateLoanTable;
         public bool LoanGenerated;
+
 
         //Generate the loan objects, and populate the data grid colums
 
         public void CreateLoanObjects()
         {
             LoanDataTable = new DataTable();
-            firstRowSet = false;
+            //firstRowSet = false;
             LoanDataTable.Columns.Add("loanDayDate", typeof(DateTime));
             LoanDataTable.Columns.Add("loanDayPrincipal", typeof(decimal));
             LoanDataTable.Columns.Add("loanDayInterestRate", typeof(decimal));
             LoanDataTable.Columns.Add("loanDayInterest", typeof(decimal));
+
+            LoanDataTable.Columns.Add("loanInterestBalance", typeof(decimal));
+
             LoanDataTable.Columns.Add("loanDayCuIntrestBal", typeof(decimal));
             LoanDataTable.Columns.Add("loanDayTotalPayment", typeof(decimal)); ;
             LoanDataTable.Columns.Add("loanDayInterestPayment", typeof(decimal));
@@ -127,12 +190,12 @@ namespace LoanLifeTracker
 
         // interest structure and rate calculation
 
-        private decimal calculateInterest(decimal interestRate, decimal principal, int structureSelected, DateTime date) //geting date to find out the lenght of the year
+        private decimal calculateInterest(decimal interestRate, decimal principal, DateTime date) //geting date to find out the lenght of the year
         {
             decimal interest = 0;
             int numberOfDaysInDateYear = getLastDayOfYear(date);
 
-            switch (structureSelected)
+            switch (InterestStructureSelection)
             {
                 case 0:
                     interest = (principal * interestRate) / numberOfDaysInDateYear;
@@ -177,190 +240,169 @@ namespace LoanLifeTracker
         {
             try
             {
-                if (LoanReportMain.LoanCreated)
+                //if (LoanReportMain.LoanCreated)
+
+                DateTime indexingDate = LoanStartDate;
+                DateTime indexEndDate = LoanEndDate;
+                LoanReportMainObj.statusProgressBar.Maximum = LoanTimeSpan.Days;
+                LoanReportMainObj.statusProgressBar.Value = 0;
+                PrincipalBalance = 0;
+                InterestBalance = 0;
+                CumulativeInterestBalance = 0;
+
+
+                //testing nulling the data source
+                LoanGenerated = false;
+                if (RegenerateLoanTable)
                 {
-                    DateTime indexingDate = LoanStartDate;
-                    DateTime indexEndDate = LoanEndDate;
-                    LoanReportMainObj.statusProgressBar.Maximum = LoanTimeSpan.Days;
-                    LoanReportMainObj.statusProgressBar.Value = 0;
-                    //LoanReportMainObj.loanReportDataGrid.DataSource = null; //testing nulling the data source
-                    LoanGenerated = false;
-                    if (RegenerateLoanTable)
+
+                    for (DateTime currentDate = LoanStartDate; currentDate < LoanEndDate; currentDate = currentDate.AddDays(1), LoanReportMainObj.statusProgressBar.Value += 1)
                     {
-                        bool loanPaid = false; 
-                        for (DateTime dates = LoanStartDate; dates < LoanEndDate; dates = dates.AddDays(1), LoanReportMainObj.statusProgressBar.Value += 1)
+                        bool rowExists = LoanDataTable.Rows.Contains(currentDate);
+                        if (!rowExists)
                         {
-                            if (!loanPaid)
+                            if (addDateRow(currentDate) != null)
                             {
-                                bool rowExists = LoanDataTable.Rows.Contains(dates);
-                                var calculatedPrinciple = 0M;
-
-                                switch (rowExists)
-                                {
-                                    //this section adds the rows
-                                    case false:
-                                        if (!firstRowSet)
-                                        {
-                                            LoanDataTable.Rows.Add(dates.Date,
-                                                InitialLoanAmount,
-                                                InterestRate(dates.Date),
-                                                calculateInterest(InterestRate(dates.Date), InitialLoanAmount, InterestStructureSelection, dates),
-                                                calculateInterest(InterestRate(dates.Date), InitialLoanAmount, InterestStructureSelection, dates),
-                                                0, 0, 0, InitialLoanAmount, "");
-                                            firstRowSet = true;
-                                        }
-                                        else
-                                        {
-
-                                            dates.AddDays(1);
-                                            calculatedPrinciple = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[1]) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[7]);
-                                            LoanDataTable.Rows.Add(dates.Date,
-                                                calculatedPrinciple,
-                                                InterestRate(dates.Date),
-                                               calculateInterest(InterestRate(dates.Date), InitialLoanAmount, InterestStructureSelection, dates),
-                                                0, 0, 0, 0, 0, "");
-                                            LoanDataTable.Rows.Find(dates)[4] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[3]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[4]) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[6]);
-                                            if (InterestStructureSelection == 2)
-                                            {
-                                                if (dates.Day == getLastDayOfMonth(dates))
-                                                {
-                                                    LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]);
-                                                    LoanDataTable.Rows.Find(dates)[1] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[8]);
-                                                }
-                                                else
-                                                {
-                                                    LoanDataTable.Rows.Find(dates)[8] = LoanDataTable.Rows.Find(dates.AddDays(-1))[8];
-                                                }
-                                            }
-                                            else
-                                            {
-                                                if (dates.Day == getLastDayOfMonth(dates))
-                                                {
-                                                    LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]);
-                                                }
-                                                else
-                                                {
-                                                    LoanDataTable.Rows.Find(dates)[8] = LoanDataTable.Rows.Find(dates.AddDays(-1))[8];
-                                                }
-                                            }
-                                            if (dates == LoanEndDate.AddDays(-1))
-                                            { LoanReportMainObj.statusProgressBar.Value = 0; }
-                                        }
-                                        goto default;
-
-                                    //this section changes the rows if they exists
-
-                                    case true:
-                                        if (dates == LoanStartDate)
-                                        {
-                                            LoanDataTable.Rows.Find(dates)[1] = FormatDigitInput.FormatToDecimal(InitialLoanAmount);
-                                            LoanDataTable.Rows.Find(dates)[2] = InterestRate(dates.Date);
-                                            LoanDataTable.Rows.Find(dates)[3] = calculateInterest(InterestRate(dates.Date),
-                                                FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]), InterestStructureSelection, dates);
-                                            LoanDataTable.Rows.Find(dates)[4] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[6]);
-                                            LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(InitialLoanAmount);
-                                        }
-                                        else if (dates != LoanStartDate)
-                                        {
-
-                                            LoanDataTable.Rows.Find(dates)[1] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[1]); // calculatePrinciple;
-                                            LoanDataTable.Rows.Find(dates)[1] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[7]);
-                                            LoanDataTable.Rows.Find(dates)[2] = InterestRate(dates.Date);
-                                            LoanDataTable.Rows.Find(dates)[3] = calculateInterest(InterestRate(dates.Date), FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]), InterestStructureSelection, dates);
-
-
-                                            if (InterestStructureSelection == 2)
-                                            {
-
-
-                                                if (dates.Day == getLastDayOfMonth(dates))
-                                                {
-                                                    LoanDataTable.Rows.Find(dates)[4] = (FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[3]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[4])) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[6]);
-                                                    LoanDataTable.Rows.Find(dates)[1] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]);
-                                                    LoanDataTable.Rows.Find(dates)[8] = LoanDataTable.Rows.Find(dates)[1];
-
-                                                }
-                                                else if (dates.Day == 1)
-                                                {
-                                                    LoanDataTable.Rows.Find(dates)[4] = 0;
-                                                    LoanDataTable.Rows.Find(dates)[4] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[3]) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[6]);
-                                                    LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[8]);
-                                                }
-                                                else if (!loanPaid)
-                                                {
-                                                    LoanDataTable.Rows.Find(dates)[4] = (FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[3]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[4])) - FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[6]);
-                                                    LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[8]);
-                                                }
-
-                                                if (FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[8]) <= 0)
-                                                {
-                                                    LoanDataTable.Rows.Find(dates)[9] = "The loan is paid of at: " + dates.Date.ToShortDateString();
-                                                    LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]);
-
-                                                    LoanGenerated = true;
-                                                    LoanEndDate = dates;
-                                                    loanPaid = true;
-                                                    goto default;
-                                                }
-                                  
-                                            }
-                                            else
-                                            {
-                                                if (dates.Day == getLastDayOfMonth(dates))
-                                                {
-                                                    LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[4]) + FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates)[1]);
-                                                }
-                                                else
-                                                {
-                                                    LoanDataTable.Rows.Find(dates)[8] = FormatDigitInput.FormatToDecimal(LoanDataTable.Rows.Find(dates.AddDays(-1))[8]);
-                                                }
-                                            }
-
-                                            if (dates == LoanEndDate.AddDays(-1))
-                                            { LoanReportMainObj.statusProgressBar.Value = 0; }
-                                        }
-                                        goto default;
-                                    default:
-                                        if (dates == LoanEndDate.AddDays(-1))
-                                        {
-                                            LoanGenerated = true;
-                                            SortDataGridToReport(LoanStartDate, LoanEndDate, 2);
-
-                                        }
-                                        break;
-                                }
-                            }
-                            else
-                            {
-                                if (LoanDataTable.Rows.Contains(dates))
-                                {
-                                    var rowToDelete = LoanDataTable.Rows.Find(dates);
-
-                                    rowToDelete.Delete();
-
-                                }
+                                LoanDataTable.Rows.Add(addDateRow(currentDate));
                             }
                         }
-                        LoanReportMainObj.statusProgressBar.Value = 0;
-                        LoanDataTable.AcceptChanges();
-                        SortDataGridToReport(LoanStartDate, LoanEndDate, 2);
+                        else if (rowExists)
+                        {
+                            LoanDataTable.Rows.Find(currentDate).Delete();
+                            if (addDateRow(currentDate) != null)
+                            {
+                                LoanDataTable.Rows.Add(addDateRow(currentDate));
+                            }
+                        }
                     }
-                    else if (!RegenerateLoanTable)
-                    {
-                        MessageBox.Show("Loan is not regenerated with new start date");
-                    }
+                    LoanReportMainObj.statusProgressBar.Value = 0;
+                    LoanDataTable.AcceptChanges();
+                    //LoanReportMainObj.loanReportDataGrid.DataSource = LoanDataTable;
+                    // SetColumnHeaders();
+                    LoanGenerated = true;
+                    SortDataGridToReport(LoanStartDate, LoanEndDate, 2);
                 }
+                else if (!RegenerateLoanTable)
+                {
+                    MessageBox.Show("Loan is not regenerated with new start date");
+                }
+
             }
             catch (OverflowException e)
             {
-                MessageBox.Show(e.ToString());
+                MessageBox.Show(e.Message.ToString());
                 return;
             }
         }
 
+        private DataRow addDateRow(DateTime currentDate)
+        {
+            DataRow dateRow = LoanDataTable.NewRow();
+            decimal dailyInterest = calculateInterest(InterestRate(currentDate), PrincipalBalance, currentDate.Date);
+            dateRow[0] = currentDate;
+            if (currentDate == LoanStartDate)
+            {
+                PrincipalBalance = FormatDigitInput.FormatToDecimal(InitialLoanAmount);
+
+            }
+            
+    
+
+            if (paymentExists(currentDate))
+            {
+                PrincipalBalance = PrincipalBalance - getPaymentDetails(currentDate).PrincipalPaymentAmount;
+            }
+            
+            dateRow[2] = InterestRate(currentDate);
+            dateRow[3] = FormatDigitInput.FormatToDecimal(dailyInterest);
+            if (paymentExists(currentDate))
+            {
+                InterestBalance += calculateInterest(InterestRate(currentDate), PrincipalBalance, currentDate.Date) - getPaymentDetails(currentDate).InterestPaymentAmount;
+            }
+            else
+            {
+                InterestBalance = InterestBalance + calculateInterest(InterestRate(currentDate), PrincipalBalance, currentDate.Date);
+            }
+            dateRow[4] = FormatDigitInput.FormatToDecimal(InterestBalance);
+            CumulativeInterestBalance = CumulativeInterestBalance + calculateInterest(InterestRate(currentDate), PrincipalBalance, currentDate.Date);
+                dateRow[5] = FormatDigitInput.FormatToDecimal(CumulativeInterestBalance);
+                if (paymentExists(currentDate))
+                {
+                    dateRow[6] = FormatDigitInput.FormatToDecimal(getPaymentDetails(currentDate).TotalPaymentAmount);
+                    dateRow[7] = FormatDigitInput.FormatToDecimal(getPaymentDetails(currentDate).InterestPaymentAmount);
+                    dateRow[8] = FormatDigitInput.FormatToDecimal(getPaymentDetails(currentDate).PrincipalPaymentAmount);
+                }
+                else
+                {
+                    dateRow[6] = 0;
+                    dateRow[7] = 0;
+                    dateRow[8] = 0;
+            }
+
+            if (InterestStructureSelection == 2)
+            {
+                if (currentDate.Day == 1)
+                {
+                    InterestBalance = 0;
+                }
+                else if (getLastDayOfMonth(currentDate) == currentDate.Day)
+                {
+                    PrincipalBalance = PrincipalBalance + InterestBalance;
+                    CurrentBalance = PrincipalBalance;
+                }
+                else
+                {
+                    CurrentBalance = PrincipalBalance + InterestBalance;
+                }
+            }
+            else
+            {
+                CurrentBalance = PrincipalBalance + InterestBalance;
+            }
+
+
+            dateRow[9] = FormatDigitInput.FormatToDecimal(CurrentBalance);
+            dateRow[1] = FormatDigitInput.FormatToDecimal(PrincipalBalance);
+
+            if (CurrentBalance > 0)
+            {
+                return dateRow;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private Payment getPaymentDetails(DateTime currentDate)
+        {
+            foreach (var paymentDetail in paymentsList)
+            {
+                if (paymentDetail.PaymentDate == currentDate)
+                {
+                    return paymentDetail;
+                }
+            }
+                return null;
+        }
+        private bool paymentExists(DateTime currentDate)
+        {
+            foreach (var paymentDetail in paymentsList)
+            {
+                if(paymentDetail.PaymentDate == currentDate)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+
+
         // report generation
 
-                //get last days methods
+        //get last days methods
         private int getLastDayOfMonth(DateTime lastDay)
         {
             switch (lastDay.Month)
@@ -515,27 +557,29 @@ namespace LoanLifeTracker
         {
             if(LoanReportDataGrid.DataSource != null)
             {
-            LoanReportDataGrid.ColumnHeadersDefaultCellStyle.Font = new Font(DataGridView.DefaultFont, FontStyle.Bold);
-            LoanReportDataGrid.Columns["loanDayDate"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            LoanReportDataGrid.Columns["loanDayDate"].DefaultCellStyle.Format = "MMMM dd, yyyy";
-            LoanReportDataGrid.Columns["loanDayInterestRate"].DefaultCellStyle.Format = "p2";   // #0.00 %
-            LoanReportDataGrid.Columns["loanDayPrincipal"].DefaultCellStyle.Format = "N";
-            LoanReportDataGrid.Columns["loanDayInterest"].DefaultCellStyle.Format = "N";
-            LoanReportDataGrid.Columns["loanDayCuIntrestBal"].DefaultCellStyle.Format = "N";
-            LoanReportDataGrid.Columns["loanDayTotalPayment"].DefaultCellStyle.Format = "N";
-            LoanReportDataGrid.Columns["loanDayInterestPayment"].DefaultCellStyle.Format = "N";
-            LoanReportDataGrid.Columns["loanDayPrincipalPayment"].DefaultCellStyle.Format = "N";
-            LoanReportDataGrid.Columns["loanDayCurrentBalance"].DefaultCellStyle.Format = "N";
-            LoanReportDataGrid.Columns["loanDayDate"].HeaderText = "Date"; // Index 0
-            LoanReportDataGrid.Columns["loanDayPrincipal"].HeaderText = "Principal \n(" + LoanCurrency+")"; // Index 1
-            LoanReportDataGrid.Columns["loanDayInterestRate"].HeaderText = "Interest Rate"; // Index 2
-            LoanReportDataGrid.Columns["loanDayInterest"].HeaderText = "Daily Interest \n(" + LoanCurrency + ")"; // Index 3
-            LoanReportDataGrid.Columns["loanDayCuIntrestBal"].HeaderText = "Cumulative Interest Balance \n(" + LoanCurrency + ")"; // Index 4
-            LoanReportDataGrid.Columns["loanDayTotalPayment"].HeaderText = "Total Payment \n(" + LoanCurrency + ")"; // Index 5
-            LoanReportDataGrid.Columns["loanDayInterestPayment"].HeaderText = "Interest Payment \n(" + LoanCurrency + ")"; // Index 6
-            LoanReportDataGrid.Columns["loanDayPrincipalPayment"].HeaderText = "Principal Payment \n(" + LoanCurrency + ")"; // Index 7
-            LoanReportDataGrid.Columns["loanDayCurrentBalance"].HeaderText = "Current Balance \n(" + LoanCurrency + ")"; // Index 8
-            LoanReportDataGrid.Columns["loanDayComments"].HeaderText = "Comments"; // Index 9
+                LoanReportDataGrid.ColumnHeadersDefaultCellStyle.Font = new Font(DataGridView.DefaultFont, FontStyle.Bold);
+                LoanReportDataGrid.Columns["loanDayDate"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                LoanReportDataGrid.Columns["loanDayDate"].DefaultCellStyle.Format = "MMMM dd, yyyy";
+                LoanReportDataGrid.Columns["loanDayInterestRate"].DefaultCellStyle.Format = "p2";   // #0.00 %
+                LoanReportDataGrid.Columns["loanDayPrincipal"].DefaultCellStyle.Format = "N";
+                LoanReportDataGrid.Columns["loanDayInterest"].DefaultCellStyle.Format = "N";
+                LoanReportDataGrid.Columns["loanInterestBalance"].DefaultCellStyle.Format = "N";
+                LoanReportDataGrid.Columns["loanDayCuIntrestBal"].DefaultCellStyle.Format = "N";
+                LoanReportDataGrid.Columns["loanDayTotalPayment"].DefaultCellStyle.Format = "N";
+                LoanReportDataGrid.Columns["loanDayInterestPayment"].DefaultCellStyle.Format = "N";
+                LoanReportDataGrid.Columns["loanDayPrincipalPayment"].DefaultCellStyle.Format = "N";
+                LoanReportDataGrid.Columns["loanDayCurrentBalance"].DefaultCellStyle.Format = "N";
+                LoanReportDataGrid.Columns["loanDayDate"].HeaderText = "Date"; // Index 0
+                LoanReportDataGrid.Columns["loanDayPrincipal"].HeaderText = "Principal \n(" + LoanCurrency + ")"; // Index 1
+                LoanReportDataGrid.Columns["loanDayInterestRate"].HeaderText = "Interest Rate"; // Index 2
+                LoanReportDataGrid.Columns["loanDayInterest"].HeaderText = "Daily Interest \n(" + LoanCurrency + ")"; // Index 3
+                LoanReportDataGrid.Columns["loanInterestBalance"].HeaderText = "Interest Balance\n(" + LoanCurrency + ")"; // Index 4
+                LoanReportDataGrid.Columns["loanDayCuIntrestBal"].HeaderText = "Cumulative Interest Balance \n(" + LoanCurrency + ")"; // Index 5
+                LoanReportDataGrid.Columns["loanDayTotalPayment"].HeaderText = "Total Payment \n(" + LoanCurrency + ")"; // Index 6
+                LoanReportDataGrid.Columns["loanDayInterestPayment"].HeaderText = "Interest Payment \n(" + LoanCurrency + ")"; // Index 7
+                LoanReportDataGrid.Columns["loanDayPrincipalPayment"].HeaderText = "Principal Payment \n(" + LoanCurrency + ")"; // Index 8
+                LoanReportDataGrid.Columns["loanDayCurrentBalance"].HeaderText = "Current Balance \n(" + LoanCurrency + ")"; // Index 9
+                LoanReportDataGrid.Columns["loanDayComments"].HeaderText = "Comments"; // Index 10
             }
         }
     }
