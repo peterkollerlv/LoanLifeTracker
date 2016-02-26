@@ -25,16 +25,13 @@ namespace LoanLifeTracker
         {
             try
             {
-                decimal dConvert = Convert.ToDecimal(d);
-                d = decimal.Round(dConvert, 2, MidpointRounding.AwayFromZero);
-                return dConvert;
+                d = decimal.Round(Convert.ToDecimal(d), 2, MidpointRounding.AwayFromZero);
+                return (decimal)d;
             }
             catch
             {
                 return 0;
             }
         }
-
-
     }
 }
