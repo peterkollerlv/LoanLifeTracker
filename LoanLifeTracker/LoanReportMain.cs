@@ -331,7 +331,7 @@ namespace LoanLifeTracker
 
             catch (Exception ex)
             {
-
+                MessageBox.Show(ex.Message.ToString());
             }
             finally
             {

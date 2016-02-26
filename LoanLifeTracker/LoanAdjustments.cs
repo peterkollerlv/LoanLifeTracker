@@ -35,7 +35,7 @@ namespace LoanLifeTracker
             labelInterestPercent.Text = "";
             labelPrincipalPercent.Text = "";
             createPaymentTable();
-            //getPaymentsToGrid();
+            addPaymentsToGrid();
         }
 
         private void createPaymentTable()
@@ -49,25 +49,44 @@ namespace LoanLifeTracker
             paymentsDataTable.PrimaryKey = new DataColumn[] { paymentsDataTable.Columns["paymentDate"] };
         }
 
-        private void getPaymentsToGrid()
+        private void addPaymentsToGrid()
         {
-            EnumerableRowCollection<DataRow> allDaysWithPayments = from DataRow daysWithPayment in LoanDataTable.AsEnumerable()
-                                                                   where daysWithPayment.Field<decimal>("loanDayTotalPayment") != 0
-                                                                   select daysWithPayment;
-            foreach (DataRow paymentRow in allDaysWithPayments)
+            foreach (Payment payment in paymentList)
             {
-                paymentsDataTable.Rows.Add(new DateTime(paymentRow.Field<DateTime>("loanDayDate").Year, paymentRow.Field<DateTime>("loanDayDate").Month, paymentRow.Field<DateTime>("loanDayDate").Day),
-                    paymentRow.Field<decimal>("loanDayTotalPayment"), paymentRow.Field<decimal>("loanDayInterestPayment"), paymentRow.Field<decimal>("loanDayPrincipalPayment"));
+                DataRow paymentRow = paymentsDataTable.NewRow();
+
+                paymentRow[0] = payment.PaymentDate;
+                paymentRow[1] = payment.TotalPaymentAmount;
+                paymentRow[2] = payment.InterestPaymentAmount;
+                paymentRow[3] = payment.PrincipalPaymentAmount;
             }
-            if(paymentsDataTable.Rows.Count > 0)
-            {
-                gridPaymentList.Visible = true;
-                gridPaymentList.DataSource = paymentsDataTable;
-            addPaymentColumnHeaders();
-             }
+            paymentsDataTable.AcceptChanges();
+            
+            gridPaymentList.DataSource = paymentsDataTable;
+            gridPaymentList.Visible = true;
+            
+            formatPaymentColumnHeaders();
         }
 
-        private void addPaymentColumnHeaders()
+        //private void getPaymentsToGrid()
+        //{
+        //    EnumerableRowCollection<DataRow> allDaysWithPayments = from DataRow daysWithPayment in LoanDataTable.AsEnumerable()
+        //                                                           where daysWithPayment.Field<decimal>("loanDayTotalPayment") != 0
+        //                                                           select daysWithPayment;
+        //    foreach (DataRow paymentRow in allDaysWithPayments)
+        //    {
+        //        paymentsDataTable.Rows.Add(new DateTime(paymentRow.Field<DateTime>("loanDayDate").Year, paymentRow.Field<DateTime>("loanDayDate").Month, paymentRow.Field<DateTime>("loanDayDate").Day),
+        //            paymentRow.Field<decimal>("loanDayTotalPayment"), paymentRow.Field<decimal>("loanDayInterestPayment"), paymentRow.Field<decimal>("loanDayPrincipalPayment"));
+        //    }
+        //    if(paymentsDataTable.Rows.Count > 0)
+        //    {
+        //        gridPaymentList.Visible = true;
+        //        gridPaymentList.DataSource = paymentsDataTable;
+        //    addPaymentColumnHeaders();
+        //     }
+        //}
+
+        private void formatPaymentColumnHeaders()
         {
             gridPaymentList.ColumnHeadersDefaultCellStyle.Font = new Font(DataGridView.DefaultFont, FontStyle.Bold);
             gridPaymentList.Columns["paymentDate"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
@@ -98,27 +117,8 @@ namespace LoanLifeTracker
 
         private void buttonCloseAddPayment_Click(object sender, EventArgs e)
         {
-            if (loanReportMain.LoanReportDataObj.LoanGenerated)
-            {
-                foreach (DataRow payments in paymentsDataTable.Rows)
-                {
-                    var paymentDate = payments.Field<DateTime>("paymentDate");
-                    bool rowExists = loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Contains(paymentDate);
-                    if (rowExists)
-                    {
-                 
-                        //loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[5] = payments[1];
-                        //loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[6] = payments[2];
-                        //loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[7] = payments[3];
-                        //loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[8] = FormatDigitInput.FormatToDecimal(loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[1]) + FormatDigitInput.FormatToDecimal(loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(paymentDate)[4]);
-                    }
-               }
-                loanReportMain.recalculateLoan();
-            }
-            else
-            {
-                MessageBox.Show("Please generate the loan first.");
-            }
+
+            loanReportMain.LoanReportDataObj.CalculateLoan();
             Close();
         }
 
@@ -138,6 +138,8 @@ namespace LoanLifeTracker
                 payment.PrincipalPaymentAmount = paymentPrincipalAmount;
                 paymentList.Add(payment);
                 loanReportMain.textPaymentList.Text = "";
+
+
               foreach (Payment individualPayment in paymentList)
                 {
                  
@@ -157,7 +159,7 @@ namespace LoanLifeTracker
             labelInterestPercent.Text = "";
             labelPrincipalPercent.Text = "";
             gridPaymentList.DataSource = paymentsDataTable;
-            addPaymentColumnHeaders();
+            formatPaymentColumnHeaders();
             gridPaymentList.Visible = true;
             buttonCloseAddPayment.Visible = true;
 
