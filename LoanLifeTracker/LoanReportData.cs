@@ -316,6 +316,7 @@ namespace LoanLifeTracker
             {
                 PrincipalBalance = PrincipalBalance - getPaymentDetails(currentDate).PrincipalPaymentAmount;
                 InterestBalance += dailyInterest - getPaymentDetails(currentDate).InterestPaymentAmount; //calculateInterest(currentDate.Date) - getPaymentDetails(currentDate).InterestPaymentAmount;
+                CurrentBalance = PrincipalBalance + InterestBalance;
             }
             else
             {

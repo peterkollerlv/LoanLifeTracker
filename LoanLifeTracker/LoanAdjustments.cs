@@ -54,11 +54,11 @@ namespace LoanLifeTracker
             foreach (Payment payment in paymentList)
             {
                 DataRow paymentRow = paymentsDataTable.NewRow();
-
                 paymentRow[0] = payment.PaymentDate;
                 paymentRow[1] = payment.TotalPaymentAmount;
                 paymentRow[2] = payment.InterestPaymentAmount;
                 paymentRow[3] = payment.PrincipalPaymentAmount;
+                paymentsDataTable.Rows.Add(paymentRow);
             }
             paymentsDataTable.AcceptChanges();
             
@@ -67,24 +67,6 @@ namespace LoanLifeTracker
             
             formatPaymentColumnHeaders();
         }
-
-        //private void getPaymentsToGrid()
-        //{
-        //    EnumerableRowCollection<DataRow> allDaysWithPayments = from DataRow daysWithPayment in LoanDataTable.AsEnumerable()
-        //                                                           where daysWithPayment.Field<decimal>("loanDayTotalPayment") != 0
-        //                                                           select daysWithPayment;
-        //    foreach (DataRow paymentRow in allDaysWithPayments)
-        //    {
-        //        paymentsDataTable.Rows.Add(new DateTime(paymentRow.Field<DateTime>("loanDayDate").Year, paymentRow.Field<DateTime>("loanDayDate").Month, paymentRow.Field<DateTime>("loanDayDate").Day),
-        //            paymentRow.Field<decimal>("loanDayTotalPayment"), paymentRow.Field<decimal>("loanDayInterestPayment"), paymentRow.Field<decimal>("loanDayPrincipalPayment"));
-        //    }
-        //    if(paymentsDataTable.Rows.Count > 0)
-        //    {
-        //        gridPaymentList.Visible = true;
-        //        gridPaymentList.DataSource = paymentsDataTable;
-        //    addPaymentColumnHeaders();
-        //     }
-        //}
 
         private void formatPaymentColumnHeaders()
         {
