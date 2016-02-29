@@ -304,18 +304,31 @@ namespace LoanLifeTracker
             {
                 PrincipalBalance = InitialLoanAmount;
                 CurrentBalance = PrincipalBalance;
-               // InterestBalance = calculateInterest(currentDate.Date);
-               // CumulativeInterestBalance = calculateInterest(currentDate.Date);
             }
-
             decimal dailyInterest = calculateInterest(currentDate.Date);
-
             CumulativeInterestBalance += dailyInterest;
 
             if (paymentExists(currentDate))
             {
-                PrincipalBalance = PrincipalBalance - getPaymentDetails(currentDate).PrincipalPaymentAmount;
-                InterestBalance += dailyInterest - getPaymentDetails(currentDate).InterestPaymentAmount; //calculateInterest(currentDate.Date) - getPaymentDetails(currentDate).InterestPaymentAmount;
+                if (getPaymentDetails(currentDate).InterestPaymentAmount > InterestBalance)
+                {
+                    //InterestBalance = InterestBalance - getPaymentDetails(currentDate).InterestPaymentAmount;
+                    InterestBalance = Math.Abs(InterestBalance - getPaymentDetails(currentDate).InterestPaymentAmount + dailyInterest);
+                    PrincipalBalance = PrincipalBalance - InterestBalance - getPaymentDetails(currentDate).PrincipalPaymentAmount;
+                    InterestBalance = 0;
+                }
+                else if (getPaymentDetails(currentDate).PrincipalPaymentAmount > PrincipalBalance)
+                {
+                    PrincipalBalance = Math.Abs(PrincipalBalance - getPaymentDetails(currentDate).PrincipalPaymentAmount);
+                    InterestBalance = InterestBalance - PrincipalBalance - getPaymentDetails(currentDate).InterestPaymentAmount;
+                    PrincipalBalance = 0;
+                }
+
+                else
+                {
+                    PrincipalBalance = PrincipalBalance - getPaymentDetails(currentDate).PrincipalPaymentAmount;
+                    InterestBalance += dailyInterest - getPaymentDetails(currentDate).InterestPaymentAmount;
+                }
                 CurrentBalance = PrincipalBalance + InterestBalance;
             }
             else
@@ -374,12 +387,12 @@ namespace LoanLifeTracker
                         dateRow[7] = 0; 
                         dateRow[8] = 0; 
                     }
-                    dateRow[9] = FormatDigitInput.FormatToDecimal(CurrentBalance);//ok
+                    dateRow[9] = FormatDigitInput.FormatToDecimal(CurrentBalance);
                     return dateRow;
             }
         }
 
-        private Payment getPaymentDetails(DateTime currentDate)
+        public Payment getPaymentDetails(DateTime currentDate)
         {
             foreach (var paymentDetail in paymentsList)
             {
@@ -437,16 +450,12 @@ namespace LoanLifeTracker
             {
                 if (ReportType == 0)
                 {
-                    // getLastDayOfMonth(LoanStartDate);
+                    EnumerableRowCollection<DataRow> reportScope = from displayDate in LoanDataTable.AsEnumerable()
+                                                                   where displayDate.Field<DateTime>("loanDayDate") <= reportEnd && displayDate.Field<DateTime>("loanDayDate") >= reportStart
+                                                                   select displayDate;
                     switch (reportDisplayRange)
                     {
                         case 0:
-                            EnumerableRowCollection<DataRow> reportScope = from displayDate in LoanDataTable.AsEnumerable()
-                                                                           where displayDate.Field<DateTime>("loanDayDate") <= reportEnd && displayDate.Field<DateTime>("loanDayDate") >= reportStart
-                                                                           select displayDate;
-                            DataView viewReport = reportScope.AsDataView();
-                            LoanReportDataGrid.DataSource = viewReport;
-                            SetColumnHeaders();
                             goto default;
                         case 1:
                             if (DisplayPaymentsChk)
@@ -458,8 +467,6 @@ namespace LoanLifeTracker
                                               displayDate.Field<DateTime>("loanDayDate").DayOfWeek == DayOfWeek.Monday || displayDate.Field<decimal>("loanDayTotalPayment") != 0 ||
                                               displayDate.Field<decimal>("loanDayInterestPayment") != 0 || displayDate.Field<decimal>("loanDayPrincipalPayment") != 0
                                               select displayDate;
-                                viewReport = reportScope.AsDataView();
-                                LoanReportDataGrid.DataSource = viewReport;
                             }
                             else if (!DisplayPaymentsChk)
                             {
@@ -469,10 +476,7 @@ namespace LoanLifeTracker
                                               displayDate.Field<DateTime>("loanDayDate").Month == displayDate.Field<DateTime>("loanDayDate").Month &&
                                               displayDate.Field<DateTime>("loanDayDate").DayOfWeek == DayOfWeek.Monday
                                               select displayDate;
-                                viewReport = reportScope.AsDataView();
-                                LoanReportDataGrid.DataSource = viewReport;
                             }
-                            SetColumnHeaders();
                             goto default;
                         case 2:
                             if (DisplayPaymentsChk)
@@ -484,8 +488,6 @@ namespace LoanLifeTracker
                                               where displayDate.Field<DateTime>("loanDayDate").Day == getLastDayOfMonth(displayDate.Field<DateTime>("loanDayDate")) || displayDate.Field<decimal>("loanDayTotalPayment") != 0 ||
                                               displayDate.Field<decimal>("loanDayInterestPayment") != 0 || displayDate.Field<decimal>("loanDayPrincipalPayment") != 0
                                               select displayDate;
-                                viewReport = reportScope.AsDataView();
-                                LoanReportDataGrid.DataSource = viewReport;
                             }
                             else if (!DisplayPaymentsChk)
                             {
@@ -495,10 +497,7 @@ namespace LoanLifeTracker
                                               displayDate.Field<DateTime>("loanDayDate").Month == displayDate.Field<DateTime>("loanDayDate").Month
                                               where displayDate.Field<DateTime>("loanDayDate").Day == getLastDayOfMonth(displayDate.Field<DateTime>("loanDayDate"))
                                               select displayDate;
-                                viewReport = reportScope.AsDataView();
-                                LoanReportDataGrid.DataSource = viewReport;
                             }
-                            SetColumnHeaders();
                             goto default;
                         case 3:
                             if (DisplayPaymentsChk)
@@ -509,10 +508,6 @@ namespace LoanLifeTracker
                                               displayDate.Field<DateTime>("loanDayDate").DayOfYear == getLastDayOfYear(displayDate.Field<DateTime>("loanDayDate")) || displayDate.Field<decimal>("loanDayTotalPayment") != 0 ||
                                               displayDate.Field<decimal>("loanDayInterestPayment") != 0 || displayDate.Field<decimal>("loanDayPrincipalPayment") != 0
                                               select displayDate;
-
-                                viewReport = reportScope.AsDataView();
-                                LoanReportDataGrid.DataSource = viewReport;
-
                             }
                             else if (!DisplayPaymentsChk)
                             {
@@ -522,34 +517,11 @@ namespace LoanLifeTracker
                                               displayDate.Field<DateTime>("loanDayDate").DayOfYear == getLastDayOfYear(displayDate.Field<DateTime>("loanDayDate"))
                                               select displayDate;
                             }
-                            SetColumnHeaders();
                             goto default;
                         default:
-                            if (LoanReportMainObj.inputLoanPanelSelection.SelectedItem.ToString() == "Report")
-                            {
-                                DataTable reportTable = new DataTable();
-                                foreach (DataGridViewColumn gridColumns in LoanReportDataGrid.Columns)
-                                {
-                                    reportTable.Columns.Add(gridColumns.Name);
-                                }
-                                foreach (DataGridViewRow gridRows in LoanReportDataGrid.Rows)
-                                {
-                                    DataRow reportTableRow = reportTable.NewRow();
-                                    foreach (DataColumn gridCol in reportTable.Columns)
-                                    {
-                                        reportTableRow[gridCol.ColumnName] = gridRows.Cells[gridCol.ColumnName].FormattedValue.ToString();
-                                    }
-                                    reportTable.Rows.Add(reportTableRow);
-                                }
-                                LoanReportDataGrid.DataSource = reportTable;
-
-                                //LoanReportDataGrid.ReadOnly = true;
-                            }
-                            else
-                            {
-                               // LoanReportDataGrid.ReadOnly = false;
-                                LoanReportDataGrid.Refresh();
-                            }
+                             DataView viewReport = reportScope.AsDataView();
+                            LoanReportDataGrid.DataSource = viewReport;
+                            SetColumnHeaders();
                             break;
                     }
                 }
