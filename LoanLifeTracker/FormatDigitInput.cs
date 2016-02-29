@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace LoanLifeTracker
 {
-    public class ValidateForDigitInput
+    public class FormatDigitInput
     {
         public static void FilterKeypressToDigits(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
@@ -21,12 +21,17 @@ namespace LoanLifeTracker
             }
         }
 
-        public static decimal decimalFormat(decimal d)
+        public static decimal FormatToDecimal(object d)
         {
-            d = decimal.Round(d, 2, MidpointRounding.AwayFromZero);
-            return d;
+            try
+            {
+                d = decimal.Round(Convert.ToDecimal(d), 2, MidpointRounding.AwayFromZero);
+                return (decimal)d;
+            }
+            catch
+            {
+                return 0;
+            }
         }
-
-
     }
 }
