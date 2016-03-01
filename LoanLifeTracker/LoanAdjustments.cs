@@ -13,27 +13,29 @@ namespace LoanLifeTracker
     public partial class LoanAdjustments : Form
     {
         LoanReportMain loanReportMain;
+        Loan activeLoan;
+        List<Payment> paymentList;
         DataTable paymentsDataTable;
         DataTable LoanDataTable;
+        private Payment selectedPayment;
+        private DateTime selectedPaymentDate;
         private decimal paymentAmount;
         private decimal paymentPrincipalAmount;
         private decimal paymentInterestAmount;
         private decimal trackBarTick;
-        private List<Payment> paymentList;
-        private Payment selectedPayment;
+
+        // fields need to be implemented:
         private decimal paymentMaxTotal;
         private decimal paymentMaxInterest;
         private decimal paymentMaxPrinciple;
-        private DateTime selectedPaymentDate;
 
-
-
-        public LoanAdjustments(LoanReportMain loanReportMainPassed, DataTable loanDataTable)
+        public LoanAdjustments(LoanReportMain loanReportMainPassed, DataTable loanDataTable, Loan activeLoanP)
         {
             InitializeComponent();
             loanReportMain = loanReportMainPassed;
             LoanDataTable = loanDataTable;
-            paymentList = loanReportMainPassed.LoanReportDataObj.PaymentsList;
+            activeLoan = activeLoanP;
+            paymentList = activeLoan.PaymentsList;
             panelPaymentAllocation.Visible = false;
             gridPaymentList.Visible = false;
             buttonCloseAddPayment.Visible = false;
@@ -93,7 +95,7 @@ namespace LoanLifeTracker
         private void updateAllocationPercent()
         {
             if (FormatDigitInput.FormatToDecimal(paymentInterestAmount) > 0 && FormatDigitInput.FormatToDecimal(paymentPrincipalAmount) > 0)
-                {
+            {
                 decimal onePercentOfPeyment = paymentAmount / 100;
                 labelInterestPercent.Text = FormatDigitInput.FormatToDecimal(Math.Floor((paymentInterestAmount / onePercentOfPeyment))).ToString() + "%";
                 labelPrincipalPercent.Text = FormatDigitInput.FormatToDecimal(Math.Floor((paymentPrincipalAmount / onePercentOfPeyment))).ToString() + "%";
@@ -107,8 +109,6 @@ namespace LoanLifeTracker
 
         private void buttonCloseAddPayment_Click(object sender, EventArgs e)
         {
-
-            
             Close();
         }
 
@@ -119,7 +119,6 @@ namespace LoanLifeTracker
             if (!paymentExists)
             {
                 paymentsDataTable.Rows.Add(selectedPaymentDate, paymentAmount, paymentInterestAmount, paymentPrincipalAmount);
-
                 Payment payment = new Payment();
                 payment.PaymentID = 1;
                 payment.PaymentDate = selectedPaymentDate;
@@ -130,11 +129,9 @@ namespace LoanLifeTracker
                 inputPaymentDate.Value = selectedPaymentDate;
                 loanReportMain.textPaymentList.Text = "";
 
-
-              foreach (Payment individualPayment in paymentList)
+                foreach (Payment individualPayment in paymentList)
                 {
-                 
-                        loanReportMain.textPaymentList.Text += individualPayment.PaymentDate.ToShortDateString() + " " + individualPayment.TotalPaymentAmount + " " + individualPayment.InterestPaymentAmount + " " + individualPayment.PrincipalPaymentAmount + "\r\n";
+                    loanReportMain.textPaymentList.Text += individualPayment.PaymentDate.ToShortDateString() + " " + individualPayment.TotalPaymentAmount + " " + individualPayment.InterestPaymentAmount + " " + individualPayment.PrincipalPaymentAmount + "\r\n";
                 }
             }
             else if (paymentExists)
@@ -154,7 +151,6 @@ namespace LoanLifeTracker
             gridPaymentList.Visible = true;
             buttonCloseAddPayment.Visible = true;
             loanReportMain.LoanReportDataObj.CalculateLoan();
-
         }
 
         private void inputPaymentAllocationTrack_ValueChanged(object sender, EventArgs e)
@@ -163,7 +159,6 @@ namespace LoanLifeTracker
             {
                 decimal calculatedPrinciple;
                 decimal calculatedInterest;
-                
                 calculatedInterest = FormatDigitInput.FormatToDecimal(trackBarTick * inputPaymentAllocationTrack.Value);
                 paymentInterestAmount = calculatedInterest;
                 inputPaymentInterestAmount.Text = calculatedInterest.ToString();
@@ -186,7 +181,7 @@ namespace LoanLifeTracker
             {
                 buttonRemovePayment.Visible = true;
                 selectedPayment = loanReportMain.LoanReportDataObj.getPaymentDetails(selectedPaymentDate);
-                textExistingPaymentSummary.Text += "Existing payment: "+selectedPayment.TotalPaymentAmount;
+                textExistingPaymentSummary.Text += "Existing payment: " + selectedPayment.TotalPaymentAmount;
             }
 
         }
@@ -194,16 +189,16 @@ namespace LoanLifeTracker
         private void updateTextBoxWithExistingPaymentData()
         {
             textExistingPaymentSummary.Text = "";
-        DataRow dateRow = loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(selectedPaymentDate);
+            DataRow dateRow = loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(selectedPaymentDate);
             if (dateRow != null)
             {
                 textExistingPaymentSummary.Text = "Balance on date: \r\n" +
-                    "Principal Balance: "+ FormatDigitInput.FormatToDecimal(dateRow[1]).ToString()+ loanReportMain.LoanReportDataObj.LoanCurrency+"\r\n"+
-             "Interest Balance: " + FormatDigitInput.FormatToDecimal(dateRow[4]).ToString() + loanReportMain.LoanReportDataObj.LoanCurrency + "\r\n"+
-             "Current Balance: " + FormatDigitInput.FormatToDecimal(dateRow[9]).ToString() + loanReportMain.LoanReportDataObj.LoanCurrency + "\r\n";
+                    "Principal Balance: " + FormatDigitInput.FormatToDecimal(dateRow[1]).ToString() + activeLoan.LoanCurrency + "\r\n" +
+             "Interest Balance: " + FormatDigitInput.FormatToDecimal(dateRow[4]).ToString() + activeLoan.LoanCurrency + "\r\n" +
+             "Current Balance: " + FormatDigitInput.FormatToDecimal(dateRow[9]).ToString() + activeLoan.LoanCurrency + "\r\n";
 
             }
-            }
+        }
 
         private void inputPaymentAmount_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -212,7 +207,7 @@ namespace LoanLifeTracker
 
         private void inputPaymentAmount_TextChanged(object sender, EventArgs e)
         {
-            if(inputPaymentAmount.Text != "")
+            if (inputPaymentAmount.Text != "")
             {
                 inputPaymentAmount.Text = inputPaymentAmount.Text.Trim();
                 paymentAmount = FormatDigitInput.FormatToDecimal(inputPaymentAmount.Text);
@@ -230,7 +225,7 @@ namespace LoanLifeTracker
                 {
                     inputPaymentAllocationTrack.Visible = true;
                     trackBarTick = paymentAmount / 400;
-                    
+
                 }
                 else if (paymentAmount <= 400)
                 {
@@ -251,7 +246,7 @@ namespace LoanLifeTracker
 
         private void inputPaymentInterestAmount_TextChanged(object sender, EventArgs e)
         {
-            if(inputPaymentInterestAmount.Text != "")
+            if (inputPaymentInterestAmount.Text != "")
             {
                 inputPaymentInterestAmount.Text = inputPaymentInterestAmount.Text.Trim();
                 paymentInterestAmount = FormatDigitInput.FormatToDecimal(inputPaymentInterestAmount.Text);
@@ -271,7 +266,7 @@ namespace LoanLifeTracker
                     MessageBox.Show("Interest exceeded the payment amount, please adjust the value.", "Payments");
                 }
             }
-            
+
             else
             {
                 paymentInterestAmount = 0;
@@ -298,9 +293,9 @@ namespace LoanLifeTracker
                     }
                 }
                 else if (paymentPrincipalAmount > paymentAmount && inputPaymentPrincipalAmount.Focused == true)
-                    {
-                        MessageBox.Show("Principal exceeded the payment amount, please adjust the value.", "Payments");
-                    }
+                {
+                    MessageBox.Show("Principal exceeded the payment amount, please adjust the value.", "Payments");
+                }
             }
             else
             {

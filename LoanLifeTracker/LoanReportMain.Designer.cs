@@ -125,8 +125,8 @@
             this.lableInterestRate = new System.Windows.Forms.Label();
             this.inputLoanPanelSelection = new System.Windows.Forms.ComboBox();
             this.panelLoanDataDisplay = new System.Windows.Forms.Panel();
-            this.panelLoanDetails = new System.Windows.Forms.TableLayoutPanel();
             this.textPaymentList = new System.Windows.Forms.TextBox();
+            this.panelLoanDetails = new System.Windows.Forms.TableLayoutPanel();
             this.panelLoandDataGrid = new System.Windows.Forms.Panel();
             this.loanReportDataGrid = new System.Windows.Forms.DataGridView();
             this.navLeft = new System.Windows.Forms.PictureBox();
@@ -1442,6 +1442,21 @@
             this.panelLoanDataDisplay.Size = new System.Drawing.Size(1196, 693);
             this.panelLoanDataDisplay.TabIndex = 31;
             // 
+            // textPaymentList
+            // 
+            this.textPaymentList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.textPaymentList.BackColor = System.Drawing.Color.SteelBlue;
+            this.textPaymentList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textPaymentList.Cursor = System.Windows.Forms.Cursors.Default;
+            this.textPaymentList.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textPaymentList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            this.textPaymentList.Location = new System.Drawing.Point(795, 0);
+            this.textPaymentList.Multiline = true;
+            this.textPaymentList.Name = "textPaymentList";
+            this.textPaymentList.ReadOnly = true;
+            this.textPaymentList.Size = new System.Drawing.Size(400, 300);
+            this.textPaymentList.TabIndex = 42;
+            // 
             // panelLoanDetails
             // 
             this.panelLoanDetails.BackColor = System.Drawing.Color.Transparent;
@@ -1486,21 +1501,6 @@
             this.panelLoanDetails.Size = new System.Drawing.Size(1196, 693);
             this.panelLoanDetails.TabIndex = 0;
             this.panelLoanDetails.Visible = false;
-            // 
-            // textPaymentList
-            // 
-            this.textPaymentList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textPaymentList.BackColor = System.Drawing.Color.SteelBlue;
-            this.textPaymentList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textPaymentList.Cursor = System.Windows.Forms.Cursors.Default;
-            this.textPaymentList.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textPaymentList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
-            this.textPaymentList.Location = new System.Drawing.Point(795, 0);
-            this.textPaymentList.Multiline = true;
-            this.textPaymentList.Name = "textPaymentList";
-            this.textPaymentList.ReadOnly = true;
-            this.textPaymentList.Size = new System.Drawing.Size(400, 300);
-            this.textPaymentList.TabIndex = 42;
             // 
             // panelLoandDataGrid
             // 
@@ -1606,10 +1606,10 @@
             this.ClientSize = new System.Drawing.Size(1511, 739);
             this.Controls.Add(this.navLeft);
             this.Controls.Add(this.navRight);
+            this.Controls.Add(this.panelLoanData);
             this.Controls.Add(this.panelLoanConfig);
             this.Controls.Add(this.panelLoanDataDisplay);
             this.Controls.Add(this.panelLoandDataGrid);
-            this.Controls.Add(this.panelLoanData);
             this.Controls.Add(this.panelReport);
             this.Controls.Add(this.inputLoanPanelSelection);
             this.Controls.Add(this.statusIndicationStrip);
