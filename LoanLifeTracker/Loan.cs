@@ -15,6 +15,7 @@ namespace LoanLifeTracker
         public Loan(bool newLoan)
         {
             LoanGuid = generateNewGuid();
+            LoanStartDate = DateTime.Now.Date;
             PaymentsList = new List<Payment>();
         }
 
@@ -54,16 +55,16 @@ namespace LoanLifeTracker
             }
         }
 
-        private string loanComapanyInfo;
-        public string LoanComapanyInfo
+        private string loanCompanyInfo;
+        public string LoanCompanyInfo
         {
             get
             {
-                return loanComapanyInfo;
+                return loanCompanyInfo;
             }
             set
             {
-                loanComapanyInfo = value;
+                loanCompanyInfo = value;
             }
         }
 
@@ -111,11 +112,11 @@ namespace LoanLifeTracker
         {
             get
             {
-                return loanStartDate;
+                return loanStartDate.Date;
             }
             set
             {
-                loanStartDate = value;
+                loanStartDate = value.Date;
             }
         }
 

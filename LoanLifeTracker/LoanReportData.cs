@@ -72,11 +72,11 @@ namespace LoanLifeTracker
         }
         public TimeSpan LoanTimeSpan
         {
-            get { return LoanEndDate.Subtract(activeLoan.LoanStartDate); }
+            get { return LoanEndDate.Subtract(ActiveLoan.LoanStartDate); }
         }
         public DateTime LoanEndDate
         {
-            get { return activeLoan.LoanStartDate.AddYears(LoanDuration); }
+            get { return ActiveLoan.LoanStartDate.AddYears(LoanDuration); }
             set { }
         }
         public decimal RecuringPaymentAmount { get; set; }
@@ -201,7 +201,7 @@ namespace LoanLifeTracker
             decimal returnInteresRate;
             if (InterestPenaltyChk)
             {
-                if (interestOnGivenDay < activeLoan.LoanInterestPenaltyDate)
+                if (interestOnGivenDay < ActiveLoan.LoanInterestPenaltyDate)
                 {
                     returnInteresRate = LoanReportMainObj.inputInterestRate.Value / 100;
                     return returnInteresRate;
@@ -227,7 +227,7 @@ namespace LoanLifeTracker
             {
                 //if (LoanReportMain.LoanCreated)
 
-                DateTime indexingDate = activeLoan.LoanStartDate;
+                DateTime indexingDate = ActiveLoan.LoanStartDate;
                 DateTime indexEndDate = LoanEndDate;
                 LoanReportMainObj.statusProgressBar.Maximum = LoanTimeSpan.Days;
                 LoanReportMainObj.statusProgressBar.Value = 0;
@@ -241,7 +241,7 @@ namespace LoanLifeTracker
                 if (RegenerateLoanTable)
                 {
 
-                    for (DateTime currentDate = activeLoan.LoanStartDate; currentDate < LoanEndDate; currentDate = currentDate.AddDays(1), LoanReportMainObj.statusProgressBar.Value += 1)
+                    for (DateTime currentDate = ActiveLoan.LoanStartDate; currentDate < LoanEndDate; currentDate = currentDate.AddDays(1), LoanReportMainObj.statusProgressBar.Value += 1)
                     {
                         bool rowExists = LoanDataTable.Rows.Contains(currentDate);
 
@@ -266,7 +266,7 @@ namespace LoanLifeTracker
                     //LoanReportMainObj.loanReportDataGrid.DataSource = LoanDataTable;
                     // SetColumnHeaders();
                     LoanGenerated = true;
-                    SortDataGridToReport(activeLoan.LoanStartDate, LoanEndDate, 2);
+                    SortDataGridToReport(ActiveLoan.LoanStartDate, LoanEndDate, 2);
                 }
                 else if (!RegenerateLoanTable)
                 {
@@ -285,9 +285,9 @@ namespace LoanLifeTracker
         {
             DataRow dateRow = LoanDataTable.NewRow();
             
-            if (currentDate == activeLoan.LoanStartDate) //first day of the loan
+            if (currentDate == ActiveLoan.LoanStartDate) //first day of the loan
             {
-                PrincipalBalance = activeLoan.LoanInitialLoanAmount;
+                PrincipalBalance = ActiveLoan.LoanInitialLoanAmount;
                 CurrentBalance = PrincipalBalance;
             }
             decimal dailyInterest = calculateInterest(currentDate.Date);
@@ -532,15 +532,15 @@ namespace LoanLifeTracker
                 LoanReportDataGrid.Columns["loanDayPrincipalPayment"].DefaultCellStyle.Format = "N";
                 LoanReportDataGrid.Columns["loanDayCurrentBalance"].DefaultCellStyle.Format = "N";
                 LoanReportDataGrid.Columns["loanDayDate"].HeaderText = "Date"; // Index 0
-                LoanReportDataGrid.Columns["loanDayPrincipal"].HeaderText = "Principal \n(" + activeLoan.LoanCurrency + ")"; // Index 1
+                LoanReportDataGrid.Columns["loanDayPrincipal"].HeaderText = "Principal \n(" + ActiveLoan.LoanCurrency + ")"; // Index 1
                 LoanReportDataGrid.Columns["loanDayInterestRate"].HeaderText = "Interest Rate"; // Index 2
-                LoanReportDataGrid.Columns["loanDayInterest"].HeaderText = "Daily Interest \n(" + activeLoan.LoanCurrency + ")"; // Index 3
-                LoanReportDataGrid.Columns["loanInterestBalance"].HeaderText = "Interest Balance\n(" + activeLoan.LoanCurrency + ")"; // Index 4
-                LoanReportDataGrid.Columns["loanDayCuIntrestBal"].HeaderText = "Cumulative Interest \n(" + activeLoan.LoanCurrency + ")"; // Index 5
-                LoanReportDataGrid.Columns["loanDayTotalPayment"].HeaderText = "Total Payment \n(" + activeLoan.LoanCurrency + ")"; // Index 6
-                LoanReportDataGrid.Columns["loanDayInterestPayment"].HeaderText = "Interest Payment \n(" + activeLoan.LoanCurrency + ")"; // Index 7
-                LoanReportDataGrid.Columns["loanDayPrincipalPayment"].HeaderText = "Principal Payment \n(" + activeLoan.LoanCurrency + ")"; // Index 8
-                LoanReportDataGrid.Columns["loanDayCurrentBalance"].HeaderText = "Current Balance \n(" + activeLoan.LoanCurrency + ")"; // Index 9
+                LoanReportDataGrid.Columns["loanDayInterest"].HeaderText = "Daily Interest \n(" + ActiveLoan.LoanCurrency + ")"; // Index 3
+                LoanReportDataGrid.Columns["loanInterestBalance"].HeaderText = "Interest Balance\n(" + ActiveLoan.LoanCurrency + ")"; // Index 4
+                LoanReportDataGrid.Columns["loanDayCuIntrestBal"].HeaderText = "Cumulative Interest \n(" + ActiveLoan.LoanCurrency + ")"; // Index 5
+                LoanReportDataGrid.Columns["loanDayTotalPayment"].HeaderText = "Total Payment \n(" + ActiveLoan.LoanCurrency + ")"; // Index 6
+                LoanReportDataGrid.Columns["loanDayInterestPayment"].HeaderText = "Interest Payment \n(" + ActiveLoan.LoanCurrency + ")"; // Index 7
+                LoanReportDataGrid.Columns["loanDayPrincipalPayment"].HeaderText = "Principal Payment \n(" + ActiveLoan.LoanCurrency + ")"; // Index 8
+                LoanReportDataGrid.Columns["loanDayCurrentBalance"].HeaderText = "Current Balance \n(" + ActiveLoan.LoanCurrency + ")"; // Index 9
                 LoanReportDataGrid.Columns["loanDayComments"].HeaderText = "Comments"; // Index 10
             }
         }

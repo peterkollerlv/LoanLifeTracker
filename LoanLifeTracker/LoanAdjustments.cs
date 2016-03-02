@@ -83,13 +83,13 @@ namespace LoanLifeTracker
             gridPaymentList.ColumnHeadersDefaultCellStyle.Font = new Font(DataGridView.DefaultFont, FontStyle.Bold);
             gridPaymentList.Columns["paymentDate"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             gridPaymentList.Columns["paymentDate"].DefaultCellStyle.Format = "MMMM dd, yyyy";
-            gridPaymentList.Columns["totalPayment"].DefaultCellStyle.Format = "c2";
-            gridPaymentList.Columns["principalPayment"].DefaultCellStyle.Format = "c2";
-            gridPaymentList.Columns["interestPayment"].DefaultCellStyle.Format = "c2";
-            gridPaymentList.Columns["paymentDate"].HeaderText = "Payment Date";
-            gridPaymentList.Columns["totalPayment"].HeaderText = "Total Payment";
-            gridPaymentList.Columns["interestPayment"].HeaderText = "Interest Payment";
-            gridPaymentList.Columns["principalPayment"].HeaderText = "Principal Payment";
+            gridPaymentList.Columns["totalPayment"].DefaultCellStyle.Format = "N";
+            gridPaymentList.Columns["principalPayment"].DefaultCellStyle.Format = "N";
+            gridPaymentList.Columns["interestPayment"].DefaultCellStyle.Format = "N";
+            gridPaymentList.Columns["paymentDate"].HeaderText = "Payment Date \n(" + activeLoan.LoanCurrency + ")";
+            gridPaymentList.Columns["totalPayment"].HeaderText = "Total Payment \n(" + activeLoan.LoanCurrency + ")";
+            gridPaymentList.Columns["interestPayment"].HeaderText = "Interest Payment \n(" + activeLoan.LoanCurrency + ")";
+            gridPaymentList.Columns["principalPayment"].HeaderText = "Principal Payment \n(" + activeLoan.LoanCurrency + ")";
         }
 
         private void updateAllocationPercent()
@@ -199,6 +199,8 @@ namespace LoanLifeTracker
 
             }
         }
+
+
 
         private void inputPaymentAmount_KeyPress(object sender, KeyPressEventArgs e)
         {
