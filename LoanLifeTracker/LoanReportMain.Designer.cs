@@ -132,6 +132,7 @@
             this.loanReportDataGrid = new System.Windows.Forms.DataGridView();
             this.navLeft = new System.Windows.Forms.PictureBox();
             this.navRight = new System.Windows.Forms.PictureBox();
+            this.labelLoanTitleFront = new System.Windows.Forms.Label();
             this.loanBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupLoanInput.SuspendLayout();
             this.groupReportControls.SuspendLayout();
@@ -184,7 +185,7 @@
             this.groupLoanInput.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupLoanInput.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupLoanInput.ForeColor = System.Drawing.Color.Gainsboro;
-            this.groupLoanInput.Location = new System.Drawing.Point(4, 8);
+            this.groupLoanInput.Location = new System.Drawing.Point(5, 25);
             this.groupLoanInput.Margin = new System.Windows.Forms.Padding(4);
             this.groupLoanInput.Name = "groupLoanInput";
             this.groupLoanInput.Padding = new System.Windows.Forms.Padding(4);
@@ -248,7 +249,6 @@
             this.inputLender.Name = "inputLender";
             this.inputLender.Size = new System.Drawing.Size(271, 26);
             this.inputLender.TabIndex = 2;
-            this.inputLender.KeyUp += new System.Windows.Forms.KeyEventHandler(this.inputLender_KeyUp);
             // 
             // labelLenderInfoSet
             // 
@@ -397,7 +397,7 @@
             this.inputNewLoan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.inputNewLoan.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.inputNewLoan.ForeColor = System.Drawing.Color.Gainsboro;
-            this.inputNewLoan.Location = new System.Drawing.Point(3, 291);
+            this.inputNewLoan.Location = new System.Drawing.Point(3, 309);
             this.inputNewLoan.Margin = new System.Windows.Forms.Padding(4);
             this.inputNewLoan.Name = "inputNewLoan";
             this.inputNewLoan.Size = new System.Drawing.Size(157, 28);
@@ -412,7 +412,7 @@
             this.inputOpenLoan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.inputOpenLoan.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.inputOpenLoan.ForeColor = System.Drawing.Color.Gainsboro;
-            this.inputOpenLoan.Location = new System.Drawing.Point(3, 327);
+            this.inputOpenLoan.Location = new System.Drawing.Point(3, 345);
             this.inputOpenLoan.Margin = new System.Windows.Forms.Padding(4);
             this.inputOpenLoan.Name = "inputOpenLoan";
             this.inputOpenLoan.Size = new System.Drawing.Size(157, 28);
@@ -426,7 +426,7 @@
             this.inputSaveLoan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.inputSaveLoan.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.inputSaveLoan.ForeColor = System.Drawing.Color.Gainsboro;
-            this.inputSaveLoan.Location = new System.Drawing.Point(3, 363);
+            this.inputSaveLoan.Location = new System.Drawing.Point(3, 381);
             this.inputSaveLoan.Margin = new System.Windows.Forms.Padding(4);
             this.inputSaveLoan.Name = "inputSaveLoan";
             this.inputSaveLoan.Size = new System.Drawing.Size(157, 28);
@@ -450,7 +450,7 @@
             this.groupReportControls.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupReportControls.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupReportControls.ForeColor = System.Drawing.Color.Gainsboro;
-            this.groupReportControls.Location = new System.Drawing.Point(2, 2);
+            this.groupReportControls.Location = new System.Drawing.Point(5, 25);
             this.groupReportControls.Name = "groupReportControls";
             this.groupReportControls.Size = new System.Drawing.Size(300, 219);
             this.groupReportControls.TabIndex = 13;
@@ -566,7 +566,7 @@
             this.groupReportActions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupReportActions.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupReportActions.ForeColor = System.Drawing.Color.Gainsboro;
-            this.groupReportActions.Location = new System.Drawing.Point(4, 228);
+            this.groupReportActions.Location = new System.Drawing.Point(5, 248);
             this.groupReportActions.Margin = new System.Windows.Forms.Padding(4);
             this.groupReportActions.Name = "groupReportActions";
             this.groupReportActions.Padding = new System.Windows.Forms.Padding(4);
@@ -971,7 +971,7 @@
             this.groupVaryingInterestTerm.Controls.Add(this.labelInterestTermEndDate);
             this.groupVaryingInterestTerm.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupVaryingInterestTerm.ForeColor = System.Drawing.Color.Gainsboro;
-            this.groupVaryingInterestTerm.Location = new System.Drawing.Point(2, 416);
+            this.groupVaryingInterestTerm.Location = new System.Drawing.Point(5, 437);
             this.groupVaryingInterestTerm.Name = "groupVaryingInterestTerm";
             this.groupVaryingInterestTerm.Size = new System.Drawing.Size(300, 137);
             this.groupVaryingInterestTerm.TabIndex = 29;
@@ -1051,7 +1051,7 @@
             this.groupInterestPenalty.Controls.Add(this.labelInterestPenaltyRate);
             this.groupInterestPenalty.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupInterestPenalty.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.groupInterestPenalty.Location = new System.Drawing.Point(2, 336);
+            this.groupInterestPenalty.Location = new System.Drawing.Point(5, 357);
             this.groupInterestPenalty.Name = "groupInterestPenalty";
             this.groupInterestPenalty.Size = new System.Drawing.Size(300, 74);
             this.groupInterestPenalty.TabIndex = 22;
@@ -1131,7 +1131,7 @@
             this.groupFinancialData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupFinancialData.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupFinancialData.ForeColor = System.Drawing.Color.Gainsboro;
-            this.groupFinancialData.Location = new System.Drawing.Point(3, 45);
+            this.groupFinancialData.Location = new System.Drawing.Point(5, 66);
             this.groupFinancialData.Name = "groupFinancialData";
             this.groupFinancialData.Size = new System.Drawing.Size(300, 153);
             this.groupFinancialData.TabIndex = 30;
@@ -1143,7 +1143,7 @@
             this.inputInitialLoanAmount.BackColor = System.Drawing.Color.Gainsboro;
             this.inputInitialLoanAmount.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
             this.inputInitialLoanAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
-            this.inputInitialLoanAmount.Location = new System.Drawing.Point(7, 83);
+            this.inputInitialLoanAmount.Location = new System.Drawing.Point(84, 83);
             this.inputInitialLoanAmount.Name = "inputInitialLoanAmount";
             this.inputInitialLoanAmount.ShortcutsEnabled = false;
             this.inputInitialLoanAmount.Size = new System.Drawing.Size(160, 26);
@@ -1222,7 +1222,7 @@
             // 
             this.labelCurrencySelection.AutoSize = true;
             this.labelCurrencySelection.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCurrencySelection.Location = new System.Drawing.Point(184, 66);
+            this.labelCurrencySelection.Location = new System.Drawing.Point(6, 66);
             this.labelCurrencySelection.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelCurrencySelection.Name = "labelCurrencySelection";
             this.labelCurrencySelection.Size = new System.Drawing.Size(56, 16);
@@ -1243,11 +1243,12 @@
             "EUR",
             "CAD",
             "AUD"});
-            this.inputCurrencySelection.Location = new System.Drawing.Point(187, 82);
+            this.inputCurrencySelection.Location = new System.Drawing.Point(9, 82);
             this.inputCurrencySelection.Name = "inputCurrencySelection";
             this.inputCurrencySelection.Size = new System.Drawing.Size(68, 28);
             this.inputCurrencySelection.TabIndex = 12;
             this.inputCurrencySelection.SelectedIndexChanged += new System.EventHandler(this.inputCurrencySelection_SelectedIndexChanged);
+            this.inputCurrencySelection.SelectedValueChanged += new System.EventHandler(this.inputCurrencySelection_SelectedValueChanged);
             // 
             // inputLoanStartDate
             // 
@@ -1270,7 +1271,7 @@
             // 
             this.labelInitialLoanAmount.AutoSize = true;
             this.labelInitialLoanAmount.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelInitialLoanAmount.Location = new System.Drawing.Point(7, 66);
+            this.labelInitialLoanAmount.Location = new System.Drawing.Point(84, 66);
             this.labelInitialLoanAmount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelInitialLoanAmount.Name = "labelInitialLoanAmount";
             this.labelInitialLoanAmount.Size = new System.Drawing.Size(112, 16);
@@ -1294,7 +1295,7 @@
             this.inputCalculateLoan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.inputCalculateLoan.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.inputCalculateLoan.ForeColor = System.Drawing.Color.Gainsboro;
-            this.inputCalculateLoan.Location = new System.Drawing.Point(10, 4);
+            this.inputCalculateLoan.Location = new System.Drawing.Point(10, 25);
             this.inputCalculateLoan.Margin = new System.Windows.Forms.Padding(4);
             this.inputCalculateLoan.Name = "inputCalculateLoan";
             this.inputCalculateLoan.Size = new System.Drawing.Size(280, 34);
@@ -1315,7 +1316,7 @@
             this.groupInterestConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupInterestConfig.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupInterestConfig.ForeColor = System.Drawing.Color.Gainsboro;
-            this.groupInterestConfig.Location = new System.Drawing.Point(3, 204);
+            this.groupInterestConfig.Location = new System.Drawing.Point(5, 225);
             this.groupInterestConfig.Name = "groupInterestConfig";
             this.groupInterestConfig.Size = new System.Drawing.Size(300, 126);
             this.groupInterestConfig.TabIndex = 28;
@@ -1602,6 +1603,20 @@
             this.navRight.Visible = false;
             this.navRight.Click += new System.EventHandler(this.navRight_Click);
             // 
+            // labelLoanTitleFront
+            // 
+            this.labelLoanTitleFront.AutoSize = true;
+            this.labelLoanTitleFront.BackColor = System.Drawing.Color.Transparent;
+            this.labelLoanTitleFront.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelLoanTitleFront.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelLoanTitleFront.ForeColor = System.Drawing.Color.Gainsboro;
+            this.labelLoanTitleFront.Location = new System.Drawing.Point(5, 74);
+            this.labelLoanTitleFront.Name = "labelLoanTitleFront";
+            this.labelLoanTitleFront.Size = new System.Drawing.Size(143, 23);
+            this.labelLoanTitleFront.TabIndex = 42;
+            this.labelLoanTitleFront.Text = "Loan Life Tracker";
+            this.labelLoanTitleFront.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // loanBindingSource
             // 
             this.loanBindingSource.DataSource = typeof(LoanLifeTracker.Loan);
@@ -1612,13 +1627,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
             this.ClientSize = new System.Drawing.Size(1511, 739);
+            this.Controls.Add(this.labelLoanTitleFront);
             this.Controls.Add(this.navLeft);
             this.Controls.Add(this.navRight);
-            this.Controls.Add(this.panelLoanData);
             this.Controls.Add(this.panelLoanConfig);
+            this.Controls.Add(this.panelLoanData);
+            this.Controls.Add(this.panelReport);
             this.Controls.Add(this.panelLoanDataDisplay);
             this.Controls.Add(this.panelLoandDataGrid);
-            this.Controls.Add(this.panelReport);
             this.Controls.Add(this.inputLoanPanelSelection);
             this.Controls.Add(this.statusIndicationStrip);
             this.Controls.Add(this.controlsMenu);
@@ -1768,6 +1784,7 @@
         private System.Windows.Forms.TextBox inputLender;
         private System.Windows.Forms.ComboBox inputCompanyInfo;
         private System.Windows.Forms.TextBox inputLoanTitle;
+        private System.Windows.Forms.Label labelLoanTitleFront;
     }
 }
 

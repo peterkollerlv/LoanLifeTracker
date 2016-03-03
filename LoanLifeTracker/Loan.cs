@@ -16,6 +16,9 @@ namespace LoanLifeTracker
         {
             LoanGuid = generateNewGuid();
             LoanStartDate = DateTime.Now.Date;
+            LoanInterestRate = 5;
+            loanInterestPenaltyRate = 10;
+            LoanCurrency = "USD";
             PaymentsList = new List<Payment>();
         }
 

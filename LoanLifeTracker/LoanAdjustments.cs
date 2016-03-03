@@ -193,9 +193,9 @@ namespace LoanLifeTracker
             if (dateRow != null)
             {
                 textExistingPaymentSummary.Text = "Balance on date: \r\n" +
-                    "Principal Balance: " + FormatDigitInput.FormatToDecimal(dateRow[1]).ToString() + activeLoan.LoanCurrency + "\r\n" +
-             "Interest Balance: " + FormatDigitInput.FormatToDecimal(dateRow[4]).ToString() + activeLoan.LoanCurrency + "\r\n" +
-             "Current Balance: " + FormatDigitInput.FormatToDecimal(dateRow[9]).ToString() + activeLoan.LoanCurrency + "\r\n";
+                    "Principal Balance: " + activeLoan.LoanCurrency  + FormatDigitInput.FormatToDecimal(dateRow[1]).ToString() + "\r\n" +
+             "Interest Balance: " + activeLoan.LoanCurrency  + FormatDigitInput.FormatToDecimal(dateRow[4]).ToString() + "\r\n" +
+             "Current Balance: " + activeLoan.LoanCurrency  + FormatDigitInput.FormatToDecimal(dateRow[9]).ToString() + "\r\n";
 
             }
         }
