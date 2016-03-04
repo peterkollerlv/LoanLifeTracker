@@ -1454,7 +1454,7 @@
             this.textPaymentList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textPaymentList.Cursor = System.Windows.Forms.Cursors.Default;
             this.textPaymentList.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textPaymentList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            this.textPaymentList.ForeColor = System.Drawing.Color.Gainsboro;
             this.textPaymentList.Location = new System.Drawing.Point(795, 0);
             this.textPaymentList.Multiline = true;
             this.textPaymentList.Name = "textPaymentList";

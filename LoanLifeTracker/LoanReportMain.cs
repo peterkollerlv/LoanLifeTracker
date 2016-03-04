@@ -430,7 +430,7 @@ namespace LoanLifeTracker
 
         public void buttonOpenAddPayment_Click(object sender, EventArgs e)
         {
-            loanAdjustments = new LoanAdjustments(this, LoanReportDataObj.LoanDataTable, LoanReportDataObj.ActiveLoan);
+            loanAdjustments = new LoanAdjustments(this, LoanReportDataObj);
             //loanAdjustments.labelPaymentCurrency.Text = inputCurrencySelection.SelectedItem.ToString();
             //loanAdjustments.labelInterestPaymentCurrency.Text = inputCurrencySelection.SelectedItem.ToString();
             //loanAdjustments.labelPrincipalPaymentCurrency.Text = inputCurrencySelection.SelectedItem.ToString();
@@ -442,7 +442,7 @@ namespace LoanLifeTracker
 
         private void buttonOpenPrincipalAdjust_Click(object sender, EventArgs e)
         {
-            LoanAdjustments loanAdjustments = new LoanAdjustments(this, LoanReportDataObj.LoanDataTable, LoanReportDataObj.ActiveLoan);
+            LoanAdjustments loanAdjustments = new LoanAdjustments(this, LoanReportDataObj);
             loanAdjustments.Text = "Principal";
             loanAdjustments.panelAddPayment.Visible = false;
             loanAdjustments.panelPrincipleAdjust.Visible = true;

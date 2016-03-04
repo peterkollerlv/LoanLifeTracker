@@ -10,7 +10,7 @@ namespace LoanLifeTracker
 {
     public class LoanReportData
     {
-        private List<Payment> paymentsList;
+        protected List<Payment> paymentsList;
         private Loan activeLoan;
         LoanReportMain LoanReportMainObj;
         public LoanReportData(LoanReportMain loanReportMain)
@@ -20,7 +20,7 @@ namespace LoanLifeTracker
             LoanReportDataGrid = LoanReportMainObj.loanReportDataGrid;
             LoanReportDataGrid.DataSource = null;
             principalBalance = 0;
-            paymentsList = new List<Payment>();
+            
         }
 
         //loanData properties
@@ -136,6 +136,7 @@ namespace LoanLifeTracker
         public void CreateLoanObjects()
         {
             LoanDataTable = new DataTable();
+           // paymentsList = new List<Payment>();
             //firstRowSet = false;
             LoanDataTable.Columns.Add("loanDayDate", typeof(DateTime));
             LoanDataTable.Columns.Add("loanDayPrincipal", typeof(decimal));
@@ -158,11 +159,12 @@ namespace LoanLifeTracker
             if(newLoan)
             {
                 ActiveLoan = new Loan(true);
+                ActiveLoan.PaymentsList = new List<Payment>();
                 return ActiveLoan;
             }
             else if(!newLoan)
             {
-                //need to implement with existing loans from DB
+                //need to implement with existing loans from DB need to be able to pull payments as well
                 MessageBox.Show("Please holder for existing loan");
                 return ActiveLoan;
             }
@@ -379,7 +381,7 @@ namespace LoanLifeTracker
 
         public Payment getPaymentDetails(DateTime currentDate)
         {
-            foreach (var paymentDetail in paymentsList)
+            foreach (Payment paymentDetail in ActiveLoan.PaymentsList)
             {
                 if (paymentDetail.PaymentDate == currentDate)
                 {
@@ -390,7 +392,7 @@ namespace LoanLifeTracker
         }
         private bool paymentExists(DateTime currentDate)
         {
-            foreach (var paymentDetail in paymentsList)
+            foreach (Payment paymentDetail in ActiveLoan.PaymentsList)
             {
                 if(paymentDetail.PaymentDate == currentDate)
                 {
@@ -491,7 +493,7 @@ namespace LoanLifeTracker
                                               where displayDate.Field<DateTime>("loanDayDate") <= reportEnd && displayDate.Field<DateTime>("loanDayDate") >= reportStart
                                               where displayDate.Field<DateTime>("loanDayDate").Year == displayDate.Field<DateTime>("loanDayDate").Year &&
                                               displayDate.Field<DateTime>("loanDayDate").DayOfYear == getLastDayOfYear(displayDate.Field<DateTime>("loanDayDate")) || displayDate.Field<decimal>("loanDayTotalPayment") != 0 ||
-                                              displayDate.Field<decimal>("loanDayInterestPayment") != 0 || displayDate.Field<decimal>("loanDayPrincipalPayment") != 0
+                                              displayDate.Field<decimal>("loanDayInterestPayment") > 0 || displayDate.Field<decimal>("loanDayPrincipalPayment") > 0
                                               select displayDate;
                             }
                             else if (!DisplayPaymentsChk)

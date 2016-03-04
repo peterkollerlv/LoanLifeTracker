@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -62,11 +63,13 @@
             this.inputPaymentDate = new System.Windows.Forms.DateTimePicker();
             this.lablePaymentDate = new System.Windows.Forms.Label();
             this.buttonAddPayment = new System.Windows.Forms.Button();
+            this.paymentBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panelPrincipleAdjust.SuspendLayout();
             this.panelAddPayment.SuspendLayout();
             this.panelPaymentAllocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.inputPaymentAllocationTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridPaymentList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.paymentBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // panelPrincipleAdjust
@@ -502,6 +505,10 @@
             this.buttonAddPayment.UseVisualStyleBackColor = false;
             this.buttonAddPayment.Click += new System.EventHandler(this.buttonAddPayment_Click);
             // 
+            // paymentBindingSource
+            // 
+            this.paymentBindingSource.DataSource = typeof(LoanLifeTracker.Payment);
+            // 
             // LoanAdjustments
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(5F, 15F);
@@ -529,6 +536,7 @@
             this.panelPaymentAllocation.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.inputPaymentAllocationTrack)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridPaymentList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.paymentBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -563,5 +571,6 @@
         private System.Windows.Forms.Label labelInterestPercent;
         private System.Windows.Forms.TextBox textExistingPaymentSummary;
         private System.Windows.Forms.Button buttonRemovePayment;
+        private System.Windows.Forms.BindingSource paymentBindingSource;
     }
 }
