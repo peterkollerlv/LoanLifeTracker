@@ -42,8 +42,8 @@
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.labelPrincipleAdjustDate = new System.Windows.Forms.Label();
             this.panelAddPayment = new System.Windows.Forms.Panel();
+            this.labelSelectedDayInfo = new System.Windows.Forms.Label();
             this.buttonRemovePayment = new System.Windows.Forms.Button();
-            this.textExistingPaymentSummary = new System.Windows.Forms.TextBox();
             this.inputPaymentAmount = new System.Windows.Forms.TextBox();
             this.panelPaymentAllocation = new System.Windows.Forms.Panel();
             this.labelPrincipalPercent = new System.Windows.Forms.Label();
@@ -168,8 +168,8 @@
             // panelAddPayment
             // 
             this.panelAddPayment.BackColor = System.Drawing.Color.SteelBlue;
+            this.panelAddPayment.Controls.Add(this.labelSelectedDayInfo);
             this.panelAddPayment.Controls.Add(this.buttonRemovePayment);
-            this.panelAddPayment.Controls.Add(this.textExistingPaymentSummary);
             this.panelAddPayment.Controls.Add(this.inputPaymentAmount);
             this.panelAddPayment.Controls.Add(this.panelPaymentAllocation);
             this.panelAddPayment.Controls.Add(this.gridPaymentList);
@@ -184,6 +184,18 @@
             this.panelAddPayment.Name = "panelAddPayment";
             this.panelAddPayment.Size = new System.Drawing.Size(508, 481);
             this.panelAddPayment.TabIndex = 1;
+            // 
+            // labelSelectedDayInfo
+            // 
+            this.labelSelectedDayInfo.AutoSize = true;
+            this.labelSelectedDayInfo.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSelectedDayInfo.ForeColor = System.Drawing.Color.Gainsboro;
+            this.labelSelectedDayInfo.Location = new System.Drawing.Point(199, 9);
+            this.labelSelectedDayInfo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelSelectedDayInfo.Name = "labelSelectedDayInfo";
+            this.labelSelectedDayInfo.Size = new System.Drawing.Size(122, 16);
+            this.labelSelectedDayInfo.TabIndex = 70;
+            this.labelSelectedDayInfo.Text = "Selected date details:";
             // 
             // buttonRemovePayment
             // 
@@ -202,20 +214,6 @@
             this.buttonRemovePayment.Visible = false;
             this.buttonRemovePayment.Click += new System.EventHandler(this.buttonRemovePayment_Click);
             // 
-            // textExistingPaymentSummary
-            // 
-            this.textExistingPaymentSummary.BackColor = System.Drawing.Color.SteelBlue;
-            this.textExistingPaymentSummary.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textExistingPaymentSummary.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textExistingPaymentSummary.ForeColor = System.Drawing.Color.Gainsboro;
-            this.textExistingPaymentSummary.Location = new System.Drawing.Point(180, 6);
-            this.textExistingPaymentSummary.Multiline = true;
-            this.textExistingPaymentSummary.Name = "textExistingPaymentSummary";
-            this.textExistingPaymentSummary.ReadOnly = true;
-            this.textExistingPaymentSummary.Size = new System.Drawing.Size(321, 96);
-            this.textExistingPaymentSummary.TabIndex = 68;
-            this.textExistingPaymentSummary.Text = "(exisiting payment summary)";
-            // 
             // inputPaymentAmount
             // 
             this.inputPaymentAmount.BackColor = System.Drawing.Color.Gainsboro;
@@ -228,7 +226,7 @@
             this.inputPaymentAmount.TabIndex = 67;
             this.inputPaymentAmount.TextChanged += new System.EventHandler(this.inputPaymentAmount_TextChanged);
             this.inputPaymentAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.inputPaymentAmount_KeyPress);
-            this.inputPaymentAmount.Leave += new System.EventHandler(this.inputPaymentAmount_Leave);
+            this.inputPaymentAmount.KeyUp += new System.Windows.Forms.KeyEventHandler(this.inputPaymentAmount_KeyUp);
             // 
             // panelPaymentAllocation
             // 
@@ -421,7 +419,7 @@
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.gridPaymentList.RowsDefaultCellStyle = dataGridViewCellStyle4;
-            this.gridPaymentList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.gridPaymentList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gridPaymentList.Size = new System.Drawing.Size(500, 214);
             this.gridPaymentList.TabIndex = 64;
             // 
@@ -527,7 +525,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "(Default)";
             this.TopMost = true;
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LoanAdjustments_KeyPress);
             this.panelPrincipleAdjust.ResumeLayout(false);
             this.panelPrincipleAdjust.PerformLayout();
             this.panelAddPayment.ResumeLayout(false);
@@ -569,8 +566,8 @@
         private System.Windows.Forms.TextBox principalAdjustmentAmount;
         private System.Windows.Forms.Label labelPrincipalPercent;
         private System.Windows.Forms.Label labelInterestPercent;
-        private System.Windows.Forms.TextBox textExistingPaymentSummary;
         private System.Windows.Forms.Button buttonRemovePayment;
         private System.Windows.Forms.BindingSource paymentBindingSource;
+        private System.Windows.Forms.Label labelSelectedDayInfo;
     }
 }

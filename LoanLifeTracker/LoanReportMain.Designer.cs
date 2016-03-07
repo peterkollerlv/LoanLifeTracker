@@ -1522,7 +1522,6 @@
             // 
             // loanReportDataGrid
             // 
-            this.loanReportDataGrid.AllowDrop = true;
             this.loanReportDataGrid.AllowUserToAddRows = false;
             this.loanReportDataGrid.AllowUserToDeleteRows = false;
             this.loanReportDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -1571,7 +1570,7 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.loanReportDataGrid.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.loanReportDataGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.loanReportDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.loanReportDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.loanReportDataGrid.Size = new System.Drawing.Size(1196, 693);
             this.loanReportDataGrid.TabIndex = 12;
             // 
@@ -1633,8 +1632,8 @@
             this.Controls.Add(this.panelLoanConfig);
             this.Controls.Add(this.panelLoanData);
             this.Controls.Add(this.panelReport);
-            this.Controls.Add(this.panelLoanDataDisplay);
             this.Controls.Add(this.panelLoandDataGrid);
+            this.Controls.Add(this.panelLoanDataDisplay);
             this.Controls.Add(this.inputLoanPanelSelection);
             this.Controls.Add(this.statusIndicationStrip);
             this.Controls.Add(this.controlsMenu);
