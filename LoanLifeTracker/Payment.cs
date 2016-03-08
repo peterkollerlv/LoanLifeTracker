@@ -8,7 +8,7 @@ namespace LoanLifeTracker
 {
     public class Payment
     {
-        public int PaymentID { get; set; }
+        public Guid LoanGUID { get; set; }
         public DateTime PaymentDate { get; set; }
         public decimal TotalPaymentAmount { get; set; }
         public decimal InterestPaymentAmount { get; set; }

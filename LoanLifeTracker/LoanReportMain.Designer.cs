@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -67,7 +68,7 @@
             this.labelInitialLoanAmountInfo = new System.Windows.Forms.Label();
             this.statusIndicationStrip = new System.Windows.Forms.StatusStrip();
             this.statusIndicationText = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusIndicationProgressLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.controlsMenu = new System.Windows.Forms.MenuStrip();
             this.controlsFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -125,12 +126,16 @@
             this.lableInterestRate = new System.Windows.Forms.Label();
             this.inputLoanPanelSelection = new System.Windows.Forms.ComboBox();
             this.panelLoanDataDisplay = new System.Windows.Forms.Panel();
-            this.panelLoanDetails = new System.Windows.Forms.TableLayoutPanel();
             this.textPaymentList = new System.Windows.Forms.TextBox();
+            this.panelLoanDetails = new System.Windows.Forms.TableLayoutPanel();
             this.panelLoandDataGrid = new System.Windows.Forms.Panel();
             this.loanReportDataGrid = new System.Windows.Forms.DataGridView();
             this.navLeft = new System.Windows.Forms.PictureBox();
             this.navRight = new System.Windows.Forms.PictureBox();
+            this.labelLoanTitleFront = new System.Windows.Forms.Label();
+            this.loanBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.groupLoanInput.SuspendLayout();
             this.groupReportControls.SuspendLayout();
             this.groupReportActions.SuspendLayout();
@@ -152,6 +157,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.loanReportDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.navLeft)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.navRight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loanBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // labelReportStartDate
@@ -181,7 +187,7 @@
             this.groupLoanInput.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupLoanInput.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupLoanInput.ForeColor = System.Drawing.Color.Gainsboro;
-            this.groupLoanInput.Location = new System.Drawing.Point(4, 8);
+            this.groupLoanInput.Location = new System.Drawing.Point(5, 25);
             this.groupLoanInput.Margin = new System.Windows.Forms.Padding(4);
             this.groupLoanInput.Name = "groupLoanInput";
             this.groupLoanInput.Padding = new System.Windows.Forms.Padding(4);
@@ -201,7 +207,6 @@
             this.inputCollectionAccount.Name = "inputCollectionAccount";
             this.inputCollectionAccount.Size = new System.Drawing.Size(271, 26);
             this.inputCollectionAccount.TabIndex = 4;
-            this.inputCollectionAccount.KeyUp += new System.Windows.Forms.KeyEventHandler(this.inputCollectionAccount_KeyUp);
             // 
             // inputBeneficiary
             // 
@@ -213,7 +218,6 @@
             this.inputBeneficiary.Name = "inputBeneficiary";
             this.inputBeneficiary.Size = new System.Drawing.Size(271, 26);
             this.inputBeneficiary.TabIndex = 3;
-            this.inputBeneficiary.KeyUp += new System.Windows.Forms.KeyEventHandler(this.inputBeneficiary_KeyUp);
             // 
             // labelBeneficiarySet
             // 
@@ -247,7 +251,6 @@
             this.inputLender.Name = "inputLender";
             this.inputLender.Size = new System.Drawing.Size(271, 26);
             this.inputLender.TabIndex = 2;
-            this.inputLender.KeyUp += new System.Windows.Forms.KeyEventHandler(this.inputLender_KeyUp);
             // 
             // labelLenderInfoSet
             // 
@@ -286,7 +289,6 @@
             this.inputCompanyInfo.Name = "inputCompanyInfo";
             this.inputCompanyInfo.Size = new System.Drawing.Size(271, 28);
             this.inputCompanyInfo.TabIndex = 1;
-            this.inputCompanyInfo.SelectedIndexChanged += new System.EventHandler(this.inputCompanyInfo_SelectedIndexChanged);
             // 
             // inputLoanTitle
             // 
@@ -298,7 +300,6 @@
             this.inputLoanTitle.Name = "inputLoanTitle";
             this.inputLoanTitle.Size = new System.Drawing.Size(271, 26);
             this.inputLoanTitle.TabIndex = 0;
-            this.inputLoanTitle.KeyUp += new System.Windows.Forms.KeyEventHandler(this.inputLoanTitle_KeyUp);
             // 
             // labelLoanTitleSet
             // 
@@ -398,7 +399,7 @@
             this.inputNewLoan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.inputNewLoan.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.inputNewLoan.ForeColor = System.Drawing.Color.Gainsboro;
-            this.inputNewLoan.Location = new System.Drawing.Point(3, 291);
+            this.inputNewLoan.Location = new System.Drawing.Point(3, 309);
             this.inputNewLoan.Margin = new System.Windows.Forms.Padding(4);
             this.inputNewLoan.Name = "inputNewLoan";
             this.inputNewLoan.Size = new System.Drawing.Size(157, 28);
@@ -413,7 +414,7 @@
             this.inputOpenLoan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.inputOpenLoan.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.inputOpenLoan.ForeColor = System.Drawing.Color.Gainsboro;
-            this.inputOpenLoan.Location = new System.Drawing.Point(3, 327);
+            this.inputOpenLoan.Location = new System.Drawing.Point(3, 345);
             this.inputOpenLoan.Margin = new System.Windows.Forms.Padding(4);
             this.inputOpenLoan.Name = "inputOpenLoan";
             this.inputOpenLoan.Size = new System.Drawing.Size(157, 28);
@@ -427,7 +428,7 @@
             this.inputSaveLoan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.inputSaveLoan.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.inputSaveLoan.ForeColor = System.Drawing.Color.Gainsboro;
-            this.inputSaveLoan.Location = new System.Drawing.Point(3, 363);
+            this.inputSaveLoan.Location = new System.Drawing.Point(3, 381);
             this.inputSaveLoan.Margin = new System.Windows.Forms.Padding(4);
             this.inputSaveLoan.Name = "inputSaveLoan";
             this.inputSaveLoan.Size = new System.Drawing.Size(157, 28);
@@ -451,7 +452,7 @@
             this.groupReportControls.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupReportControls.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupReportControls.ForeColor = System.Drawing.Color.Gainsboro;
-            this.groupReportControls.Location = new System.Drawing.Point(2, 2);
+            this.groupReportControls.Location = new System.Drawing.Point(5, 25);
             this.groupReportControls.Name = "groupReportControls";
             this.groupReportControls.Size = new System.Drawing.Size(300, 219);
             this.groupReportControls.TabIndex = 13;
@@ -567,7 +568,7 @@
             this.groupReportActions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupReportActions.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupReportActions.ForeColor = System.Drawing.Color.Gainsboro;
-            this.groupReportActions.Location = new System.Drawing.Point(4, 228);
+            this.groupReportActions.Location = new System.Drawing.Point(5, 248);
             this.groupReportActions.Margin = new System.Windows.Forms.Padding(4);
             this.groupReportActions.Name = "groupReportActions";
             this.groupReportActions.Padding = new System.Windows.Forms.Padding(4);
@@ -623,34 +624,39 @@
             // 
             // statusIndicationStrip
             // 
+            this.statusIndicationStrip.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.statusIndicationStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusIndicationText,
-            this.toolStripStatusLabel1,
+            this.statusIndicationProgressLabel,
             this.statusProgressBar});
             this.statusIndicationStrip.Location = new System.Drawing.Point(0, 717);
             this.statusIndicationStrip.Name = "statusIndicationStrip";
             this.statusIndicationStrip.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.statusIndicationStrip.Size = new System.Drawing.Size(1511, 22);
-            this.statusIndicationStrip.SizingGrip = false;
             this.statusIndicationStrip.TabIndex = 16;
             this.statusIndicationStrip.Text = "Status Indication";
             // 
             // statusIndicationText
             // 
+            this.statusIndicationText.AutoSize = false;
             this.statusIndicationText.BackColor = System.Drawing.Color.Transparent;
-            this.statusIndicationText.Enabled = false;
+            this.statusIndicationText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
             this.statusIndicationText.Name = "statusIndicationText";
-            this.statusIndicationText.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.statusIndicationText.Size = new System.Drawing.Size(1355, 17);
+            this.statusIndicationText.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.statusIndicationText.Size = new System.Drawing.Size(1358, 17);
             this.statusIndicationText.Spring = true;
+            this.statusIndicationText.Text = "Loan Life Tracker";
+            this.statusIndicationText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.statusIndicationText.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
             // 
-            // toolStripStatusLabel1
+            // statusIndicationProgressLabel
             // 
-            this.toolStripStatusLabel1.BackColor = System.Drawing.Color.Transparent;
-            this.toolStripStatusLabel1.BorderStyle = System.Windows.Forms.Border3DStyle.Sunken;
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(39, 17);
-            this.toolStripStatusLabel1.Text = "Status";
+            this.statusIndicationProgressLabel.BackColor = System.Drawing.Color.Transparent;
+            this.statusIndicationProgressLabel.BorderStyle = System.Windows.Forms.Border3DStyle.Sunken;
+            this.statusIndicationProgressLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            this.statusIndicationProgressLabel.Name = "statusIndicationProgressLabel";
+            this.statusIndicationProgressLabel.Size = new System.Drawing.Size(36, 17);
+            this.statusIndicationProgressLabel.Text = "Status";
             // 
             // statusProgressBar
             // 
@@ -666,7 +672,8 @@
             this.controlsMenu.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.controlsMenu.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.controlsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.controlsFile});
+            this.controlsFile,
+            this.toolStripMenuItem1});
             this.controlsMenu.Location = new System.Drawing.Point(0, 0);
             this.controlsMenu.Name = "controlsMenu";
             this.controlsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -691,7 +698,7 @@
             this.controlsFileExit.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.controlsFileExit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
             this.controlsFileExit.Name = "controlsFileExit";
-            this.controlsFileExit.Size = new System.Drawing.Size(96, 22);
+            this.controlsFileExit.Size = new System.Drawing.Size(152, 22);
             this.controlsFileExit.Text = "Exit";
             this.controlsFileExit.Click += new System.EventHandler(this.controlsFileExit_Click);
             // 
@@ -967,7 +974,7 @@
             this.groupVaryingInterestTerm.Controls.Add(this.labelInterestTermEndDate);
             this.groupVaryingInterestTerm.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupVaryingInterestTerm.ForeColor = System.Drawing.Color.Gainsboro;
-            this.groupVaryingInterestTerm.Location = new System.Drawing.Point(2, 416);
+            this.groupVaryingInterestTerm.Location = new System.Drawing.Point(5, 437);
             this.groupVaryingInterestTerm.Name = "groupVaryingInterestTerm";
             this.groupVaryingInterestTerm.Size = new System.Drawing.Size(300, 137);
             this.groupVaryingInterestTerm.TabIndex = 29;
@@ -1047,7 +1054,7 @@
             this.groupInterestPenalty.Controls.Add(this.labelInterestPenaltyRate);
             this.groupInterestPenalty.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupInterestPenalty.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.groupInterestPenalty.Location = new System.Drawing.Point(2, 336);
+            this.groupInterestPenalty.Location = new System.Drawing.Point(5, 357);
             this.groupInterestPenalty.Name = "groupInterestPenalty";
             this.groupInterestPenalty.Size = new System.Drawing.Size(300, 74);
             this.groupInterestPenalty.TabIndex = 22;
@@ -1127,7 +1134,7 @@
             this.groupFinancialData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupFinancialData.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupFinancialData.ForeColor = System.Drawing.Color.Gainsboro;
-            this.groupFinancialData.Location = new System.Drawing.Point(3, 45);
+            this.groupFinancialData.Location = new System.Drawing.Point(5, 66);
             this.groupFinancialData.Name = "groupFinancialData";
             this.groupFinancialData.Size = new System.Drawing.Size(300, 153);
             this.groupFinancialData.TabIndex = 30;
@@ -1139,7 +1146,7 @@
             this.inputInitialLoanAmount.BackColor = System.Drawing.Color.Gainsboro;
             this.inputInitialLoanAmount.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
             this.inputInitialLoanAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
-            this.inputInitialLoanAmount.Location = new System.Drawing.Point(7, 83);
+            this.inputInitialLoanAmount.Location = new System.Drawing.Point(84, 83);
             this.inputInitialLoanAmount.Name = "inputInitialLoanAmount";
             this.inputInitialLoanAmount.ShortcutsEnabled = false;
             this.inputInitialLoanAmount.Size = new System.Drawing.Size(160, 26);
@@ -1218,7 +1225,7 @@
             // 
             this.labelCurrencySelection.AutoSize = true;
             this.labelCurrencySelection.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCurrencySelection.Location = new System.Drawing.Point(184, 66);
+            this.labelCurrencySelection.Location = new System.Drawing.Point(6, 66);
             this.labelCurrencySelection.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelCurrencySelection.Name = "labelCurrencySelection";
             this.labelCurrencySelection.Size = new System.Drawing.Size(56, 16);
@@ -1239,11 +1246,12 @@
             "EUR",
             "CAD",
             "AUD"});
-            this.inputCurrencySelection.Location = new System.Drawing.Point(187, 82);
+            this.inputCurrencySelection.Location = new System.Drawing.Point(9, 82);
             this.inputCurrencySelection.Name = "inputCurrencySelection";
             this.inputCurrencySelection.Size = new System.Drawing.Size(68, 28);
             this.inputCurrencySelection.TabIndex = 12;
             this.inputCurrencySelection.SelectedIndexChanged += new System.EventHandler(this.inputCurrencySelection_SelectedIndexChanged);
+            this.inputCurrencySelection.SelectedValueChanged += new System.EventHandler(this.inputCurrencySelection_SelectedValueChanged);
             // 
             // inputLoanStartDate
             // 
@@ -1266,7 +1274,7 @@
             // 
             this.labelInitialLoanAmount.AutoSize = true;
             this.labelInitialLoanAmount.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelInitialLoanAmount.Location = new System.Drawing.Point(7, 66);
+            this.labelInitialLoanAmount.Location = new System.Drawing.Point(84, 66);
             this.labelInitialLoanAmount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelInitialLoanAmount.Name = "labelInitialLoanAmount";
             this.labelInitialLoanAmount.Size = new System.Drawing.Size(112, 16);
@@ -1290,7 +1298,7 @@
             this.inputCalculateLoan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.inputCalculateLoan.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.inputCalculateLoan.ForeColor = System.Drawing.Color.Gainsboro;
-            this.inputCalculateLoan.Location = new System.Drawing.Point(10, 4);
+            this.inputCalculateLoan.Location = new System.Drawing.Point(10, 25);
             this.inputCalculateLoan.Margin = new System.Windows.Forms.Padding(4);
             this.inputCalculateLoan.Name = "inputCalculateLoan";
             this.inputCalculateLoan.Size = new System.Drawing.Size(280, 34);
@@ -1311,7 +1319,7 @@
             this.groupInterestConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupInterestConfig.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupInterestConfig.ForeColor = System.Drawing.Color.Gainsboro;
-            this.groupInterestConfig.Location = new System.Drawing.Point(3, 204);
+            this.groupInterestConfig.Location = new System.Drawing.Point(5, 225);
             this.groupInterestConfig.Name = "groupInterestConfig";
             this.groupInterestConfig.Size = new System.Drawing.Size(300, 126);
             this.groupInterestConfig.TabIndex = 28;
@@ -1442,6 +1450,21 @@
             this.panelLoanDataDisplay.Size = new System.Drawing.Size(1196, 693);
             this.panelLoanDataDisplay.TabIndex = 31;
             // 
+            // textPaymentList
+            // 
+            this.textPaymentList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.textPaymentList.BackColor = System.Drawing.Color.SteelBlue;
+            this.textPaymentList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textPaymentList.Cursor = System.Windows.Forms.Cursors.Default;
+            this.textPaymentList.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textPaymentList.ForeColor = System.Drawing.Color.Gainsboro;
+            this.textPaymentList.Location = new System.Drawing.Point(795, 0);
+            this.textPaymentList.Multiline = true;
+            this.textPaymentList.Name = "textPaymentList";
+            this.textPaymentList.ReadOnly = true;
+            this.textPaymentList.Size = new System.Drawing.Size(400, 300);
+            this.textPaymentList.TabIndex = 42;
+            // 
             // panelLoanDetails
             // 
             this.panelLoanDetails.BackColor = System.Drawing.Color.Transparent;
@@ -1487,21 +1510,6 @@
             this.panelLoanDetails.TabIndex = 0;
             this.panelLoanDetails.Visible = false;
             // 
-            // textPaymentList
-            // 
-            this.textPaymentList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textPaymentList.BackColor = System.Drawing.Color.SteelBlue;
-            this.textPaymentList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textPaymentList.Cursor = System.Windows.Forms.Cursors.Default;
-            this.textPaymentList.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textPaymentList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
-            this.textPaymentList.Location = new System.Drawing.Point(795, 0);
-            this.textPaymentList.Multiline = true;
-            this.textPaymentList.Name = "textPaymentList";
-            this.textPaymentList.ReadOnly = true;
-            this.textPaymentList.Size = new System.Drawing.Size(400, 300);
-            this.textPaymentList.TabIndex = 42;
-            // 
             // panelLoandDataGrid
             // 
             this.panelLoandDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1517,7 +1525,6 @@
             // 
             // loanReportDataGrid
             // 
-            this.loanReportDataGrid.AllowDrop = true;
             this.loanReportDataGrid.AllowUserToAddRows = false;
             this.loanReportDataGrid.AllowUserToDeleteRows = false;
             this.loanReportDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -1566,7 +1573,7 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.loanReportDataGrid.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.loanReportDataGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.loanReportDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.loanReportDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.loanReportDataGrid.Size = new System.Drawing.Size(1196, 693);
             this.loanReportDataGrid.TabIndex = 12;
             // 
@@ -1598,19 +1605,59 @@
             this.navRight.Visible = false;
             this.navRight.Click += new System.EventHandler(this.navRight_Click);
             // 
+            // labelLoanTitleFront
+            // 
+            this.labelLoanTitleFront.AutoSize = true;
+            this.labelLoanTitleFront.BackColor = System.Drawing.Color.Transparent;
+            this.labelLoanTitleFront.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelLoanTitleFront.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelLoanTitleFront.ForeColor = System.Drawing.Color.Gainsboro;
+            this.labelLoanTitleFront.Location = new System.Drawing.Point(5, 74);
+            this.labelLoanTitleFront.Name = "labelLoanTitleFront";
+            this.labelLoanTitleFront.Size = new System.Drawing.Size(143, 23);
+            this.labelLoanTitleFront.TabIndex = 42;
+            this.labelLoanTitleFront.Text = "Loan Life Tracker";
+            this.labelLoanTitleFront.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // loanBindingSource
+            // 
+            this.loanBindingSource.DataSource = typeof(LoanLifeTracker.Loan);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.toolStripMenuItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2});
+            this.toolStripMenuItem1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(109, 20);
+            this.toolStripMenuItem1.Text = "Data Connection";
+            this.toolStripMenuItem1.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.toolStripMenuItem2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem2.Text = "Exit";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
             // LoanReportMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
             this.ClientSize = new System.Drawing.Size(1511, 739);
+            this.Controls.Add(this.labelLoanTitleFront);
             this.Controls.Add(this.navLeft);
             this.Controls.Add(this.navRight);
             this.Controls.Add(this.panelLoanConfig);
-            this.Controls.Add(this.panelLoanDataDisplay);
-            this.Controls.Add(this.panelLoandDataGrid);
             this.Controls.Add(this.panelLoanData);
             this.Controls.Add(this.panelReport);
+            this.Controls.Add(this.panelLoandDataGrid);
+            this.Controls.Add(this.panelLoanDataDisplay);
             this.Controls.Add(this.inputLoanPanelSelection);
             this.Controls.Add(this.statusIndicationStrip);
             this.Controls.Add(this.controlsMenu);
@@ -1653,6 +1700,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.loanReportDataGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.navLeft)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.navRight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loanBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1677,15 +1725,10 @@
         private System.Windows.Forms.MenuStrip controlsMenu;
         private System.Windows.Forms.ToolStripMenuItem controlsFile;
         private System.Windows.Forms.ToolStripMenuItem controlsFileExit;
-        public System.Windows.Forms.TextBox inputCollectionAccount;
         private System.Windows.Forms.Label labelCollectionAccountSet;
-        public System.Windows.Forms.TextBox inputBeneficiary;
         private System.Windows.Forms.Label labelBeneficiarySet;
-        public System.Windows.Forms.TextBox inputLender;
         private System.Windows.Forms.Label labelLenderInfoSet;
         private System.Windows.Forms.Label labelCompanyInfoSelect;
-        private System.Windows.Forms.ComboBox inputCompanyInfo;
-        public System.Windows.Forms.TextBox inputLoanTitle;
         private System.Windows.Forms.Label labelLoanTitleSet;
         private System.Windows.Forms.Label labelReportType;
         private System.Windows.Forms.Button inputNewLoan;
@@ -1704,7 +1747,6 @@
         private System.Windows.Forms.Label labelCollectionAccountInfo;
         private System.Windows.Forms.Label labelInterestStructureInfo;
         private System.Windows.Forms.Label labelInterestStruct;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.Label labelTodaysDate;
         private System.Windows.Forms.Label labelTodayDateInfo;
         public System.Windows.Forms.ToolStripProgressBar statusProgressBar;
@@ -1758,6 +1800,16 @@
         private System.Windows.Forms.PictureBox navLeft;
         private System.Windows.Forms.PictureBox navRight;
         public System.Windows.Forms.TextBox textPaymentList;
+        private System.Windows.Forms.BindingSource loanBindingSource;
+        private System.Windows.Forms.ToolStripStatusLabel statusIndicationProgressLabel;
+        private System.Windows.Forms.TextBox inputCollectionAccount;
+        private System.Windows.Forms.TextBox inputBeneficiary;
+        private System.Windows.Forms.TextBox inputLender;
+        private System.Windows.Forms.ComboBox inputCompanyInfo;
+        private System.Windows.Forms.TextBox inputLoanTitle;
+        private System.Windows.Forms.Label labelLoanTitleFront;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
     }
 }
 

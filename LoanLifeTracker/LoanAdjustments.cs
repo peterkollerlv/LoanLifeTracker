@@ -12,40 +12,191 @@ namespace LoanLifeTracker
 {
     public partial class LoanAdjustments : Form
     {
-        LoanReportMain loanReportMain;
-        DataTable paymentsDataTable;
-        DataTable LoanDataTable;
-        private decimal paymentAmount;
-        private decimal paymentPrincipalAmount;
-        private decimal paymentInterestAmount;
+        protected LoanReportMain loanReportMainObj;
+        protected LoanReportData loanReportDataObj;
+        private DataTable paymentsDataTable;
         private decimal trackBarTick;
-        private List<Payment> paymentList;
+
+        public DateTime SelectedDate
+        {
+            get
+            {
+                return inputPaymentDate.Value.Date;
+            }
+            set
+            {
+                inputPaymentDate.Value = value;
+            }
+        }
+
         private Payment selectedPayment;
-        private decimal paymentMaxTotal;
-        private decimal paymentMaxInterest;
-        private decimal paymentMaxPrinciple;
-        private DateTime selectedPaymentDate;
 
+        public Payment SelectedPayment
+        {
+            get
+            {
+                return selectedPayment;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    paymentBindingSource.DataSource = value;
+                }
+                selectedPayment = value;
+            }
+        }
 
+        public decimal InputPaymentAmount
+        {
+            get
+            {
+                return FormatDigitInput.FormatToDecimal(inputPaymentAmount.Text);
+            }
+            set
+            {
+                foreach (Binding binding in paymentBindingSource.CurrencyManager.Bindings)
+                {
+                    if (binding.Control.Name == "inputPaymentAmount.Text")
+                    {
+                        binding.WriteValue();
+                    }
+                }
+                inputPaymentAmount.Text = value.ToString();
+            }
+        }
 
-        public LoanAdjustments(LoanReportMain loanReportMainPassed, DataTable loanDataTable)
+        public decimal InputInterestAmount
+        {
+            get
+            {
+                return FormatDigitInput.FormatToDecimal(inputPaymentInterestAmount.Text);
+            }
+            set
+            {
+                foreach (Binding binding in paymentBindingSource.CurrencyManager.Bindings)
+                {
+                    if (binding.Control.Name == "inputPaymentInterestAmount.Text")
+                    {
+                        binding.WriteValue();
+                    }
+                }
+                inputPaymentInterestAmount.Text = value.ToString();
+            }
+        }
+
+        public decimal InputPrincipalAmount
+        {
+            get
+            {
+                return FormatDigitInput.FormatToDecimal(inputPaymentPrincipalAmount.Text);
+            }
+            set
+            {
+                foreach (Binding binding in paymentBindingSource.CurrencyManager.Bindings)
+                {
+                    if (binding.Control.Name == "inputPaymentPrincipalAmount.Text")
+                    {
+                        binding.WriteValue();
+                    }
+                }
+                inputPaymentPrincipalAmount.Text = value.ToString();
+            }
+        }
+
+        public LoanAdjustments(LoanReportMain loanReportMainObj, LoanReportData loanReportDataObj)
         {
             InitializeComponent();
-            loanReportMain = loanReportMainPassed;
-            LoanDataTable = loanDataTable;
-            paymentList = loanReportMainPassed.LoanReportDataObj.PaymentsList;
-            panelPaymentAllocation.Visible = false;
+            this.loanReportMainObj = loanReportMainObj;
+            this.loanReportDataObj = loanReportDataObj;
+            SelectedDate = loanReportDataObj.ActiveLoan.LoanStartDate;
+            inputPaymentDate.MinDate = loanReportDataObj.ActiveLoan.LoanStartDate;
+            inputPaymentAmount.DataBindings.Add("Text", paymentBindingSource, "TotalPaymentAmount", true, DataSourceUpdateMode.Never, 0, "N2");
+            inputPaymentInterestAmount.DataBindings.Add("Text", paymentBindingSource, "InterestPaymentAmount", true, DataSourceUpdateMode.Never, 0, "N2");
+            inputPaymentPrincipalAmount.DataBindings.Add("Text", paymentBindingSource, "PrincipalPaymentAmount", true, DataSourceUpdateMode.Never, 0, "N2");
             gridPaymentList.Visible = false;
-            buttonCloseAddPayment.Visible = false;
+            panelInterestAmount.Visible = false;
+            panelPrincipalAmount.Visible = false;
             inputPaymentAllocationTrack.Visible = false;
-            selectedPaymentDate = inputPaymentDate.Value.Date;
             labelInterestPercent.Text = "";
             labelPrincipalPercent.Text = "";
-            textExistingPaymentSummary.Text = "";
-            getSelectedDatesPayment(selectedPaymentDate);
             createPaymentTable();
             addPaymentsToGrid();
-            updateTextBoxWithExistingPaymentData();
+            displayedControlsCheck();
+        }
+
+        private void displayedControlsCheck()
+        {
+            if (inputPaymentAmount.Text != "" && Convert.ToDecimal(inputPaymentAmount.Text) > 0)
+            {
+                buttonAddPayment.Visible = true;
+                if (inputPaymentAmount.Text != "" && Convert.ToDecimal(inputPaymentAmount.Text) > 0 && Convert.ToDecimal(inputPaymentAmount.Text) >= 400)
+                {
+                    inputPaymentAllocationTrack.Visible = true;
+                    panelInterestAmount.Visible = true;
+                    panelPrincipalAmount.Visible = true;
+                    trackBarTick = InputPaymentAmount / 400;
+                    updateAllocationPercent();
+                }
+                else if (inputPaymentAmount.Text != "" && Convert.ToDecimal(inputPaymentAmount.Text) > 0 && Convert.ToDecimal(inputPaymentAmount.Text) <= 400)
+                {
+                    panelInterestAmount.Visible = true;
+                    panelPrincipalAmount.Visible = true;
+                    inputPaymentAllocationTrack.Visible = false;
+                }
+            }
+            else
+            {
+                buttonAddPayment.Visible = false;
+            }
+        }
+
+        private void updateAllocationPercent()
+        {
+            if (InputInterestAmount > 0 && InputPrincipalAmount > 0 && InputPaymentAmount >= 100)
+            {
+                decimal onePercentOfPayment = InputPaymentAmount / 100;
+                decimal interestPercent = Math.Floor((InputInterestAmount / onePercentOfPayment));
+                labelInterestPercent.Text = interestPercent.ToString() + "%";
+                labelPrincipalPercent.Text = (100 - interestPercent).ToString() + "%";
+            }
+            else
+            {
+                labelInterestPercent.Text = "";
+                labelPrincipalPercent.Text = "";
+            }
+        }
+
+        private void setSelectedPayment(DateTime selectedDate)
+        {
+            if (loanReportDataObj.ActiveLoan.PaymentsList.Count > 0)
+            {
+                foreach (Payment payment in loanReportDataObj.ActiveLoan.PaymentsList)
+                {
+                    if (payment.PaymentDate == SelectedDate)
+                    {
+                        SelectedPayment = payment;
+                        buttonRemovePayment.Visible = true;
+                        break;
+                    }
+                    else if (payment.PaymentDate != SelectedDate) // && loanReportDataObj.ActiveLoan.PaymentsList.Contains(payment)
+                    {
+                        SelectedPayment = new Payment();
+                        SelectedPayment.LoanGUID = loanReportDataObj.ActiveLoan.LoanGuid;
+                        SelectedPayment.PaymentDate = SelectedDate;
+                        inputPaymentAmount.Text = "";
+                        inputPaymentInterestAmount.Text = "";
+                        inputPaymentPrincipalAmount.Text = "";
+                    }
+                }
+            }
+            else
+            {
+                buttonRemovePayment.Visible = false;
+                SelectedPayment = new Payment();
+                SelectedPayment.LoanGUID = loanReportDataObj.ActiveLoan.LoanGuid;
+                SelectedPayment.PaymentDate = SelectedDate;
+            }
         }
 
         private void createPaymentTable()
@@ -61,7 +212,8 @@ namespace LoanLifeTracker
 
         private void addPaymentsToGrid()
         {
-            foreach (Payment payment in paymentList)
+            paymentsDataTable.Rows.Clear();
+            foreach (Payment payment in loanReportDataObj.ActiveLoan.PaymentsList)
             {
                 DataRow paymentRow = paymentsDataTable.NewRow();
                 paymentRow[0] = payment.PaymentDate;
@@ -72,7 +224,10 @@ namespace LoanLifeTracker
             }
             paymentsDataTable.AcceptChanges();
             gridPaymentList.DataSource = paymentsDataTable;
-            gridPaymentList.Visible = true;
+            if (loanReportDataObj.ActiveLoan.PaymentsList.Count > 0)
+            {
+                gridPaymentList.Visible = true;
+            }
             formatPaymentColumnHeaders();
         }
 
@@ -81,80 +236,62 @@ namespace LoanLifeTracker
             gridPaymentList.ColumnHeadersDefaultCellStyle.Font = new Font(DataGridView.DefaultFont, FontStyle.Bold);
             gridPaymentList.Columns["paymentDate"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             gridPaymentList.Columns["paymentDate"].DefaultCellStyle.Format = "MMMM dd, yyyy";
-            gridPaymentList.Columns["totalPayment"].DefaultCellStyle.Format = "c2";
-            gridPaymentList.Columns["principalPayment"].DefaultCellStyle.Format = "c2";
-            gridPaymentList.Columns["interestPayment"].DefaultCellStyle.Format = "c2";
-            gridPaymentList.Columns["paymentDate"].HeaderText = "Payment Date";
-            gridPaymentList.Columns["totalPayment"].HeaderText = "Total Payment";
-            gridPaymentList.Columns["interestPayment"].HeaderText = "Interest Payment";
-            gridPaymentList.Columns["principalPayment"].HeaderText = "Principal Payment";
+            gridPaymentList.Columns["totalPayment"].DefaultCellStyle.Format = "N";
+            gridPaymentList.Columns["principalPayment"].DefaultCellStyle.Format = "N";
+            gridPaymentList.Columns["interestPayment"].DefaultCellStyle.Format = "N";
+            gridPaymentList.Columns["paymentDate"].HeaderText = "Payment Date \n(" + loanReportDataObj.ActiveLoan.LoanCurrency + ")";
+            gridPaymentList.Columns["totalPayment"].HeaderText = "Total Payment \n(" + loanReportDataObj.ActiveLoan.LoanCurrency + ")";
+            gridPaymentList.Columns["interestPayment"].HeaderText = "Interest Payment \n(" + loanReportDataObj.ActiveLoan.LoanCurrency + ")";
+            gridPaymentList.Columns["principalPayment"].HeaderText = "Principal Payment \n(" + loanReportDataObj.ActiveLoan.LoanCurrency + ")";
         }
 
-        private void updateAllocationPercent()
+        private void adjustAllocation()
         {
-            if (FormatDigitInput.FormatToDecimal(paymentInterestAmount) > 0 && FormatDigitInput.FormatToDecimal(paymentPrincipalAmount) > 0)
-                {
-                decimal onePercentOfPeyment = paymentAmount / 100;
-                labelInterestPercent.Text = FormatDigitInput.FormatToDecimal(Math.Floor((paymentInterestAmount / onePercentOfPeyment))).ToString() + "%";
-                labelPrincipalPercent.Text = FormatDigitInput.FormatToDecimal(Math.Floor((paymentPrincipalAmount / onePercentOfPeyment))).ToString() + "%";
-            }
-        }
-
-        private void buttonClosePrincipleAdjust_Click(object sender, EventArgs e)
-        {
-            //this.Hide();
-        }
-
-        private void buttonCloseAddPayment_Click(object sender, EventArgs e)
-        {
-
-            
-            Close();
-        }
-
-        private void buttonAddPayment_Click(object sender, EventArgs e)
-        {
-            bool paymentExists = paymentsDataTable.Rows.Contains(selectedPaymentDate);
-
-            if (!paymentExists)
+            if (InputPrincipalAmount > 0 && InputPrincipalAmount <= InputPaymentAmount && inputPaymentPrincipalAmount.Focused == true)
             {
-                paymentsDataTable.Rows.Add(selectedPaymentDate, paymentAmount, paymentInterestAmount, paymentPrincipalAmount);
-
-                Payment payment = new Payment();
-                payment.PaymentID = 1;
-                payment.PaymentDate = selectedPaymentDate;
-                payment.TotalPaymentAmount = paymentAmount;
-                payment.InterestPaymentAmount = paymentInterestAmount;
-                payment.PrincipalPaymentAmount = paymentPrincipalAmount;
-                paymentList.Add(payment);
-                inputPaymentDate.Value = selectedPaymentDate;
-                loanReportMain.textPaymentList.Text = "";
-
-
-              foreach (Payment individualPayment in paymentList)
+                inputPaymentInterestAmount.Text = (InputPaymentAmount - InputPrincipalAmount).ToString();
+                InputInterestAmount = InputPaymentAmount - InputPrincipalAmount;
+                if (inputPaymentAllocationTrack.Visible)
                 {
-                 
-                        loanReportMain.textPaymentList.Text += individualPayment.PaymentDate.ToShortDateString() + " " + individualPayment.TotalPaymentAmount + " " + individualPayment.InterestPaymentAmount + " " + individualPayment.PrincipalPaymentAmount + "\r\n";
+                    decimal setTrackValue;
+                    setTrackValue = InputInterestAmount / trackBarTick;
+                    inputPaymentAllocationTrack.Value = Convert.ToInt32(setTrackValue);
                 }
+                updateAllocationPercent();
             }
-            else if (paymentExists)
+            else if (InputPrincipalAmount > InputPaymentAmount && inputPaymentPrincipalAmount.Focused == true)
             {
-                paymentsDataTable.Rows.Find(selectedPaymentDate)[1] = paymentAmount;
-                paymentsDataTable.Rows.Find(selectedPaymentDate)[2] = paymentInterestAmount;
-                paymentsDataTable.Rows.Find(selectedPaymentDate)[3] = paymentPrincipalAmount;
+                MessageBox.Show("Principal exceeded the payment amount, please adjust the value.", "Payments");
             }
-            inputPaymentAllocationTrack.Value = 0;
-            inputPaymentAmount.Text = "";
-            inputPaymentInterestAmount.Text = "";
-            inputPaymentPrincipalAmount.Text = "";
-            labelInterestPercent.Text = "";
-            labelPrincipalPercent.Text = "";
-            gridPaymentList.DataSource = paymentsDataTable;
-            formatPaymentColumnHeaders();
-            gridPaymentList.Visible = true;
-            buttonCloseAddPayment.Visible = true;
-            loanReportMain.LoanReportDataObj.CalculateLoan();
 
+            else if (InputInterestAmount > 0 && InputInterestAmount <= InputPaymentAmount && inputPaymentInterestAmount.Focused == true)
+            {
+                inputPaymentPrincipalAmount.Text = (InputPaymentAmount - InputInterestAmount).ToString();
+                if (inputPaymentAllocationTrack.Visible)
+                {
+                    decimal setTrackValue;
+                    setTrackValue = InputInterestAmount / trackBarTick;
+                    inputPaymentAllocationTrack.Value = Convert.ToInt32(setTrackValue);
+                }
+                updateAllocationPercent();
+            }
+
+            else if (InputInterestAmount > InputPaymentAmount && inputPaymentInterestAmount.Focused == true)
+            {
+                MessageBox.Show("Interest exceeded the payment amount, please adjust the value.", "Payments");
+            }
+        }
+
+        private void updateTextBoxWithExistingPaymentData()
+        {
+            DataRow dateRow = loanReportDataObj.LoanDataTable.Rows.Find(SelectedDate);
+            if (dateRow != null)
+            {
+                labelSelectedDayInfo.Text = "Balance details of the selected day: \r\n" +
+                    "Principal Balance: " + loanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[1]).ToString() + "\r\n" +
+                    "Interest Balance: " + loanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[4]).ToString() + "\r\n" +
+         "Current Balance: " + loanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[9]).ToString() + "\r\n";
+            }
         }
 
         private void inputPaymentAllocationTrack_ValueChanged(object sender, EventArgs e)
@@ -163,80 +300,31 @@ namespace LoanLifeTracker
             {
                 decimal calculatedPrinciple;
                 decimal calculatedInterest;
-                
                 calculatedInterest = FormatDigitInput.FormatToDecimal(trackBarTick * inputPaymentAllocationTrack.Value);
-                paymentInterestAmount = calculatedInterest;
+                InputInterestAmount = calculatedInterest;
                 inputPaymentInterestAmount.Text = calculatedInterest.ToString();
-                calculatedPrinciple = FormatDigitInput.FormatToDecimal(paymentAmount - calculatedInterest);
-                paymentPrincipalAmount = calculatedPrinciple;
+                calculatedPrinciple = FormatDigitInput.FormatToDecimal(InputPaymentAmount - calculatedInterest);
+                InputPrincipalAmount = calculatedPrinciple;
                 inputPaymentPrincipalAmount.Text = calculatedPrinciple.ToString();
                 updateAllocationPercent();
             }
         }
+
         private void inputPaymentDate_ValueChanged(object sender, EventArgs e)
         {
-            selectedPaymentDate = inputPaymentDate.Value.Date;
+            setSelectedPayment(SelectedDate);
+            displayedControlsCheck();
             updateTextBoxWithExistingPaymentData();
-            getSelectedDatesPayment(selectedPaymentDate);
         }
 
-        private void getSelectedDatesPayment(DateTime selectedDate)
+        private void inputPaymentAmount_KeyUp(object sender, KeyEventArgs e)
         {
-            if (loanReportMain.LoanReportDataObj.getPaymentDetails(selectedPaymentDate) != null)
-            {
-                buttonRemovePayment.Visible = true;
-                selectedPayment = loanReportMain.LoanReportDataObj.getPaymentDetails(selectedPaymentDate);
-                textExistingPaymentSummary.Text += "Existing payment: "+selectedPayment.TotalPaymentAmount;
-            }
-
+            displayedControlsCheck();
         }
-
-        private void updateTextBoxWithExistingPaymentData()
-        {
-            textExistingPaymentSummary.Text = "";
-        DataRow dateRow = loanReportMain.LoanReportDataObj.LoanDataTable.Rows.Find(selectedPaymentDate);
-            if (dateRow != null)
-            {
-                textExistingPaymentSummary.Text = "Balance on date: \r\n" +
-                    "Principal Balance: "+ FormatDigitInput.FormatToDecimal(dateRow[1]).ToString()+ loanReportMain.LoanReportDataObj.LoanCurrency+"\r\n"+
-             "Interest Balance: " + FormatDigitInput.FormatToDecimal(dateRow[4]).ToString() + loanReportMain.LoanReportDataObj.LoanCurrency + "\r\n"+
-             "Current Balance: " + FormatDigitInput.FormatToDecimal(dateRow[9]).ToString() + loanReportMain.LoanReportDataObj.LoanCurrency + "\r\n";
-
-            }
-            }
 
         private void inputPaymentAmount_KeyPress(object sender, KeyPressEventArgs e)
         {
             FormatDigitInput.FilterKeypressToDigits(sender, e);
-        }
-
-        private void inputPaymentAmount_TextChanged(object sender, EventArgs e)
-        {
-            if(inputPaymentAmount.Text != "")
-            {
-                inputPaymentAmount.Text = inputPaymentAmount.Text.Trim();
-                paymentAmount = FormatDigitInput.FormatToDecimal(inputPaymentAmount.Text);
-                panelPaymentAllocation.Visible = true;
-                if (inputPaymentAmount.Focused)
-                {
-                    inputPaymentInterestAmount.Text = "";
-                    inputPaymentPrincipalAmount.Text = "";
-                    paymentInterestAmount = 0;
-                    paymentPrincipalAmount = 0;
-                    inputPaymentAllocationTrack.Value = 0;
-
-                }
-                if (paymentAmount >= 400)
-                {
-                    inputPaymentAllocationTrack.Visible = true;
-                    trackBarTick = paymentAmount / 400;
-                    
-                }
-                else if (paymentAmount <= 400)
-                {
-                    inputPaymentAllocationTrack.Visible = false;
-                }
-            }
         }
 
         private void inputPaymentInterestAmount_KeyPress(object sender, KeyPressEventArgs e)
@@ -244,82 +332,94 @@ namespace LoanLifeTracker
             FormatDigitInput.FilterKeypressToDigits(sender, e);
         }
 
-        private void LoanAdjustments_KeyPress(object sender, KeyPressEventArgs e)
+        private void inputPaymentPrincipalAmount_KeyPress(object sender, KeyPressEventArgs e)
         {
-            MessageBox.Show(e.KeyChar.ToString());
+            FormatDigitInput.FilterKeypressToDigits(sender, e);
+        }
+
+        private void inputPaymentAmount_TextChanged(object sender, EventArgs e)
+        {
+            if (inputPaymentAmount.Text != "" && Convert.ToDecimal(inputPaymentAmount.Text) > 0 && inputPaymentAmount.Focused == true)
+            {
+                inputPaymentInterestAmount.Text = "";
+                inputPaymentPrincipalAmount.Text = "";
+                inputPaymentAllocationTrack.Value = 0;
+            }
         }
 
         private void inputPaymentInterestAmount_TextChanged(object sender, EventArgs e)
         {
-            if(inputPaymentInterestAmount.Text != "")
-            {
-                inputPaymentInterestAmount.Text = inputPaymentInterestAmount.Text.Trim();
-                paymentInterestAmount = FormatDigitInput.FormatToDecimal(inputPaymentInterestAmount.Text);
-                updateAllocationPercent();
-                if (paymentInterestAmount <= paymentAmount && inputPaymentInterestAmount.Focused == true)
-                {
-                    inputPaymentPrincipalAmount.Text = (paymentAmount - paymentInterestAmount).ToString();
-                    if (inputPaymentAllocationTrack.Visible)
-                    {
-                        decimal setTrackValue;
-                        setTrackValue = paymentInterestAmount / trackBarTick;
-                        inputPaymentAllocationTrack.Value = Convert.ToInt32(setTrackValue);
-                    }
-                }
-                else if (paymentInterestAmount > paymentAmount && inputPaymentInterestAmount.Focused == true)
-                {
-                    MessageBox.Show("Interest exceeded the payment amount, please adjust the value.", "Payments");
-                }
-            }
-            
-            else
-            {
-                paymentInterestAmount = 0;
-            }
+            adjustAllocation();
         }
 
         private void inputPaymentPrincipalAmount_TextChanged(object sender, EventArgs e)
         {
-            if (inputPaymentPrincipalAmount.Text != "")
-            {
-                inputPaymentPrincipalAmount.Text = inputPaymentPrincipalAmount.Text.Trim();
-                paymentPrincipalAmount = FormatDigitInput.FormatToDecimal(inputPaymentPrincipalAmount.Text);
-                updateAllocationPercent();
-
-                if (paymentPrincipalAmount <= paymentAmount && inputPaymentPrincipalAmount.Focused == true)
-                {
-                    inputPaymentInterestAmount.Text = (paymentAmount - paymentPrincipalAmount).ToString();
-                    paymentInterestAmount = paymentAmount - paymentPrincipalAmount;
-                    if (inputPaymentAllocationTrack.Visible)
-                    {
-                        decimal setTrackValue;
-                        setTrackValue = paymentInterestAmount / trackBarTick;
-                        inputPaymentAllocationTrack.Value = Convert.ToInt32(setTrackValue);
-                    }
-                }
-                else if (paymentPrincipalAmount > paymentAmount && inputPaymentPrincipalAmount.Focused == true)
-                    {
-                        MessageBox.Show("Principal exceeded the payment amount, please adjust the value.", "Payments");
-                    }
-            }
-            else
-            {
-                paymentInterestAmount = 0;
-            }
+            adjustAllocation();
         }
 
-        private void inputPaymentAmount_Leave(object sender, EventArgs e)
+        private void panelPaymentAllocation_Leave(object sender, EventArgs e)
         {
-            inputPaymentAmount.Text = FormatDigitInput.FormatToDecimal(paymentAmount).ToString();
+            SelectedPayment.TotalPaymentAmount = InputPaymentAmount;
+            SelectedPayment.InterestPaymentAmount = InputInterestAmount;
+            SelectedPayment.PrincipalPaymentAmount = InputPrincipalAmount;
+            paymentBindingSource.ResetBindings(false);
+        }
+
+        private void buttonAddPayment_Click(object sender, EventArgs e)
+        {
+            if (!loanReportDataObj.ActiveLoan.PaymentsList.Contains(SelectedPayment))
+            {
+                loanReportDataObj.ActiveLoan.PaymentsList.Add(SelectedPayment);
+                addPaymentsToGrid();
+                loanReportMainObj.textPaymentList.Text = "";
+            }
+            else if (loanReportDataObj.ActiveLoan.PaymentsList.Contains(SelectedPayment))
+            {
+                paymentsDataTable.Rows.Find(SelectedDate)[1] = InputPaymentAmount;
+                paymentsDataTable.Rows.Find(SelectedDate)[2] = InputInterestAmount;
+                paymentsDataTable.Rows.Find(SelectedDate)[3] = InputPrincipalAmount;
+            }
+
+            loanReportMainObj.textPaymentList.Text = "Existing Payments: \r\n";
+            foreach (Payment individualPayment in loanReportDataObj.ActiveLoan.PaymentsList)
+            {
+                loanReportMainObj.textPaymentList.Text += individualPayment.PaymentDate.ToShortDateString() + " " + individualPayment.TotalPaymentAmount + " " + individualPayment.InterestPaymentAmount + " " + individualPayment.PrincipalPaymentAmount + "\r\n";
+            }
+            inputPaymentAllocationTrack.Value = 0;
+            labelInterestPercent.Text = "";
+            labelPrincipalPercent.Text = "";
+            updateAllocationPercent();
+            formatPaymentColumnHeaders();
+            gridPaymentList.Visible = true;
+            loanReportDataObj.CalculateLoan();
         }
 
         private void buttonRemovePayment_Click(object sender, EventArgs e)
         {
-            paymentList.Remove(selectedPayment);
-            paymentsDataTable.Rows.Find(selectedPaymentDate).Delete();
+            loanReportDataObj.ActiveLoan.PaymentsList.Remove(SelectedPayment);
+            paymentsDataTable.Rows.Find(SelectedDate).Delete();
             paymentsDataTable.AcceptChanges();
             addPaymentsToGrid();
-            loanReportMain.LoanReportDataObj.CalculateLoan();
+            loanReportDataObj.CalculateLoan();
+        }
+
+        private void buttonClosePrincipleAdjust_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void buttonCloseAddPayment_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void gridPaymentList_Click(object sender, EventArgs e)
+        {
+            int paymentRows = gridPaymentList.Rows.GetRowCount(DataGridViewElementStates.Selected);
+            if (paymentRows == 1)
+            {
+               inputPaymentDate.Value = Convert.ToDateTime(gridPaymentList.SelectedRows[paymentRows-1].Cells[0].Value);
+            }
         }
     }
 }
