@@ -134,6 +134,8 @@
             this.navRight = new System.Windows.Forms.PictureBox();
             this.labelLoanTitleFront = new System.Windows.Forms.Label();
             this.loanBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.groupLoanInput.SuspendLayout();
             this.groupReportControls.SuspendLayout();
             this.groupReportActions.SuspendLayout();
@@ -670,7 +672,8 @@
             this.controlsMenu.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.controlsMenu.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.controlsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.controlsFile});
+            this.controlsFile,
+            this.toolStripMenuItem1});
             this.controlsMenu.Location = new System.Drawing.Point(0, 0);
             this.controlsMenu.Name = "controlsMenu";
             this.controlsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -695,7 +698,7 @@
             this.controlsFileExit.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.controlsFileExit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
             this.controlsFileExit.Name = "controlsFileExit";
-            this.controlsFileExit.Size = new System.Drawing.Size(96, 22);
+            this.controlsFileExit.Size = new System.Drawing.Size(152, 22);
             this.controlsFileExit.Text = "Exit";
             this.controlsFileExit.Click += new System.EventHandler(this.controlsFileExit_Click);
             // 
@@ -1620,6 +1623,27 @@
             // 
             this.loanBindingSource.DataSource = typeof(LoanLifeTracker.Loan);
             // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.toolStripMenuItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2});
+            this.toolStripMenuItem1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(109, 20);
+            this.toolStripMenuItem1.Text = "Data Connection";
+            this.toolStripMenuItem1.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.toolStripMenuItem2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem2.Text = "Exit";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
             // LoanReportMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -1784,6 +1808,8 @@
         private System.Windows.Forms.ComboBox inputCompanyInfo;
         private System.Windows.Forms.TextBox inputLoanTitle;
         private System.Windows.Forms.Label labelLoanTitleFront;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
     }
 }
 
