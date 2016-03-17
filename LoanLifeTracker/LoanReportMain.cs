@@ -24,6 +24,7 @@ namespace LoanLifeTracker
         private List<Control> bindedControls;
         public LoanReportData LoanReportDataObj;
         private LoanAdjustments loanAdjustments;
+        private DatabaseLookup databaseLookupUi;
 
 
         public LoanReportMain()
@@ -499,9 +500,15 @@ namespace LoanLifeTracker
                 inputLoanPanelSelection.SelectedIndex = 2;
         }
 
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        private void inputSaveLoan_Click(object sender, EventArgs e)
         {
+            MessageBox.Show(DatabaseConnection.AddLoan(LoanReportDataObj.ActiveLoan));
+        }
 
+        private void inputOpenLoan_Click(object sender, EventArgs e)
+        {
+            databaseLookupUi = new DatabaseLookup(DatabaseConnection.getExistingLoans());
+            databaseLookupUi.Show();
         }
     }
 }

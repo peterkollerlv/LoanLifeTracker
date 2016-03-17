@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace LoanLifeTracker
 {
-    public class FormatDigitInput
+    static class FormatDigitInput
     {
         public static void FilterKeypressToDigits(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {

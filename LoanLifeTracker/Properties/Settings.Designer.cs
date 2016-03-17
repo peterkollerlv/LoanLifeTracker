@@ -22,5 +22,16 @@ namespace LoanLifeTracker.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("server=198.71.227.89;user id=cyberConnector;password=cyberConnector2016;persistse" +
+            "curityinfo=True;database=cyberHostBox")]
+        public string cyberHostBoxConnectionString {
+            get {
+                return ((string)(this["cyberHostBoxConnectionString"]));
+            }
+        }
     }
 }

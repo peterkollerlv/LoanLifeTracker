@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace LoanLifeTracker
 {
     public partial class LoanAdjustments : Form
@@ -173,17 +174,18 @@ namespace LoanLifeTracker
             {
                 foreach (Payment payment in loanReportDataObj.ActiveLoan.PaymentsList)
                 {
-                    if (payment.PaymentDate == SelectedDate)
+                    if (payment.PaymentDate == selectedDate)
                     {
                         SelectedPayment = payment;
                         buttonRemovePayment.Visible = true;
                         break;
                     }
-                    else if (payment.PaymentDate != SelectedDate) // && loanReportDataObj.ActiveLoan.PaymentsList.Contains(payment)
+                    else if (payment.PaymentDate != selectedDate) // && loanReportDataObj.ActiveLoan.PaymentsList.Contains(payment)
                     {
                         SelectedPayment = new Payment();
                         SelectedPayment.LoanGUID = loanReportDataObj.ActiveLoan.LoanGuid;
                         SelectedPayment.PaymentDate = SelectedDate;
+                        buttonRemovePayment.Visible = false;
                         inputPaymentAmount.Text = "";
                         inputPaymentInterestAmount.Text = "";
                         inputPaymentPrincipalAmount.Text = "";
@@ -391,16 +393,25 @@ namespace LoanLifeTracker
             updateAllocationPercent();
             formatPaymentColumnHeaders();
             gridPaymentList.Visible = true;
+            setSelectedPayment(SelectedDate);
             loanReportDataObj.CalculateLoan();
         }
 
         private void buttonRemovePayment_Click(object sender, EventArgs e)
         {
-            loanReportDataObj.ActiveLoan.PaymentsList.Remove(SelectedPayment);
-            paymentsDataTable.Rows.Find(SelectedDate).Delete();
-            paymentsDataTable.AcceptChanges();
-            addPaymentsToGrid();
-            loanReportDataObj.CalculateLoan();
+            if (Convert.ToDateTime(paymentsDataTable.Rows.Find(SelectedDate)[0]) != null)
+            {
+                loanReportDataObj.ActiveLoan.PaymentsList.Remove(SelectedPayment);
+                paymentsDataTable.Rows.Find(SelectedDate).Delete();
+                paymentsDataTable.AcceptChanges();
+                addPaymentsToGrid();
+                loanReportDataObj.CalculateLoan();
+               setSelectedPayment(SelectedDate);
+            }
+            else
+            {
+                MessageBox.Show("Please pick a date with a payment.");
+            }
         }
 
         private void buttonClosePrincipleAdjust_Click(object sender, EventArgs e)
@@ -419,6 +430,7 @@ namespace LoanLifeTracker
             if (paymentRows == 1)
             {
                inputPaymentDate.Value = Convert.ToDateTime(gridPaymentList.SelectedRows[paymentRows-1].Cells[0].Value);
+                setSelectedPayment(SelectedDate);
             }
         }
     }
