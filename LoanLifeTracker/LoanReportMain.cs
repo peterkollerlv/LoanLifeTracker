@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-//using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +24,7 @@ namespace LoanLifeTracker
         public LoanReportData LoanReportDataObj;
         private LoanAdjustments loanAdjustments;
         private DatabaseLookup databaseLookupUi;
+        private DatabaseConnection databaseConnection;
 
 
         public LoanReportMain()
@@ -228,7 +228,7 @@ namespace LoanLifeTracker
                 groupInterestConfig.Enabled = true;
                 inputInterestStructureSelection.SelectedIndex = 0;
                 labelInterestStructureInfo.Text = inputInterestStructureSelection.SelectedItem.ToString();
-                inputCompanyInfo.SelectedIndex = -1;
+                inputCompanyInfo.SelectedIndex = 0;
 
                 inputLoanPanelSelection.Visible = true;
                 LoanReportDataObj.CreateLoanObjects();
@@ -257,7 +257,7 @@ namespace LoanLifeTracker
                 navRight.Visible = false;
                 navLeft.Visible = false;
                 LoanCreated = false;
-                inputCompanyInfo.SelectedIndex = -1;
+                inputCompanyInfo.SelectedIndex = 0;
                 applicationInitialState();
             }
         }
@@ -502,12 +502,14 @@ namespace LoanLifeTracker
 
         private void inputSaveLoan_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(DatabaseConnection.AddLoan(LoanReportDataObj.ActiveLoan));
+            databaseConnection = new DatabaseConnection();
+            MessageBox.Show(databaseConnection.AddLoan(LoanReportDataObj.ActiveLoan));
+            databaseConnection = null;
         }
 
         private void inputOpenLoan_Click(object sender, EventArgs e)
         {
-            databaseLookupUi = new DatabaseLookup(DatabaseConnection.getExistingLoans());
+            databaseLookupUi = new DatabaseLookup(); //DatabaseConnection.getExistingLoans()
             databaseLookupUi.Show();
         }
     }

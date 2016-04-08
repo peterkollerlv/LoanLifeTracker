@@ -675,13 +675,14 @@ namespace LoanLifeTracker {
                                 this.columnloanGuid}, true));
                 this.columnloanGuid.AllowDBNull = false;
                 this.columnloanGuid.Unique = true;
-                this.columnloanGuid.MaxLength = 10;
-                this.columnloanTitle.MaxLength = 10;
-                this.columnloanBeneficiary.MaxLength = 10;
-                this.columnloanCollectionAccount.MaxLength = 10;
-                this.columnloanCompanyInfo.MaxLength = 10;
+                this.columnloanGuid.MaxLength = 100;
+                this.columnloanTitle.MaxLength = 100;
+                this.columnloanBeneficiary.MaxLength = 100;
+                this.columnloanCollectionAccount.MaxLength = 100;
+                this.columnloanCompanyInfo.MaxLength = 100;
                 this.columnloanCurrency.MaxLength = 10;
                 this.columnloanHasPenalty.AllowDBNull = false;
+                this.columnloanLender.MaxLength = 100;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -996,7 +997,7 @@ namespace LoanLifeTracker {
                                 this.columnloanGuid}, true));
                 this.columnloanGuid.AllowDBNull = false;
                 this.columnloanGuid.Unique = true;
-                this.columnloanGuid.MaxLength = 10;
+                this.columnloanGuid.MaxLength = 100;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

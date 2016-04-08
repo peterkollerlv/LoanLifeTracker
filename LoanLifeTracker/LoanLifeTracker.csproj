@@ -57,9 +57,9 @@
       <DependentUpon>cyberHostBoxDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="cyberHostBoxDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>cyberHostBoxDataSet.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="DatabaseConnection.cs" />
     <Compile Include="DatabaseLookup.cs">
@@ -105,9 +105,9 @@
       <DependentUpon>cyberHostBoxDataSet.xsd</DependentUpon>
     </None>
     <None Include="cyberHostBoxDataSet.xsd">
+      <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>cyberHostBoxDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </None>
     <None Include="cyberHostBoxDataSet.xss">
       <DependentUpon>cyberHostBoxDataSet.xsd</DependentUpon>

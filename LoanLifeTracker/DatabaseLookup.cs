@@ -19,24 +19,28 @@ namespace LoanLifeTracker
         public DatabaseLookup()
         {
             
+          //  populateDataGrid();
             InitializeComponent();
-        }
-
-
-
-        public DatabaseLookup(DataTable existingLoans)
-        {
-            //this.loanReportMain = loanReportMain;
-            //this.loanReportDataObj = loanReportDataObj;
-            this.existingLoans = existingLoans;
-            populateDataGrid();
-        }
-
-        private void populateDataGrid()
-        {
+            DatabaseConnection dataBaseConnection = new DatabaseConnection();
+            DataTable existingLoans = dataBaseConnection.ExistingLoans;
             gridExistingLoans.DataSource = existingLoans;
-
         }
+
+
+
+        //public DatabaseLookup(DataTable existingLoans)
+        //{
+        //    //this.loanReportMain = loanReportMain;
+        //    //this.loanReportDataObj = loanReportDataObj;
+        //    this.existingLoans = existingLoans;
+           
+        //}
+
+        //private void populateDataGrid()
+        //{
+           
+
+        //}
 
     }
 }

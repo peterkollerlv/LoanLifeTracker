@@ -11,9 +11,4 @@ namespace LoanLifeTracker
     }
 }
 
-namespace LoanLifeTracker.cyberHostBoxDataSetTableAdapters {
-    
-    
-    public partial class LoanLifeTrackerTableAdapter {
-    }
-}
+

@@ -234,35 +234,35 @@
               <xs:element name="loanGuid" msprop:Generator_ColumnVarNameInTable="columnloanGuid" msprop:Generator_ColumnPropNameInRow="loanGuid" msprop:Generator_ColumnPropNameInTable="loanGuidColumn" msprop:Generator_UserColumnName="loanGuid">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
-                    <xs:maxLength value="10" />
+                    <xs:maxLength value="100" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
               <xs:element name="loanTitle" msprop:Generator_ColumnVarNameInTable="columnloanTitle" msprop:Generator_ColumnPropNameInRow="loanTitle" msprop:Generator_ColumnPropNameInTable="loanTitleColumn" msprop:Generator_UserColumnName="loanTitle" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
-                    <xs:maxLength value="10" />
+                    <xs:maxLength value="100" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
               <xs:element name="loanBeneficiary" msprop:Generator_ColumnVarNameInTable="columnloanBeneficiary" msprop:Generator_ColumnPropNameInRow="loanBeneficiary" msprop:Generator_ColumnPropNameInTable="loanBeneficiaryColumn" msprop:Generator_UserColumnName="loanBeneficiary" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
-                    <xs:maxLength value="10" />
+                    <xs:maxLength value="100" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
               <xs:element name="loanCollectionAccount" msprop:Generator_ColumnVarNameInTable="columnloanCollectionAccount" msprop:Generator_ColumnPropNameInRow="loanCollectionAccount" msprop:Generator_ColumnPropNameInTable="loanCollectionAccountColumn" msprop:Generator_UserColumnName="loanCollectionAccount" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
-                    <xs:maxLength value="10" />
+                    <xs:maxLength value="100" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
               <xs:element name="loanCompanyInfo" msprop:Generator_ColumnVarNameInTable="columnloanCompanyInfo" msprop:Generator_ColumnPropNameInRow="loanCompanyInfo" msprop:Generator_ColumnPropNameInTable="loanCompanyInfoColumn" msprop:Generator_UserColumnName="loanCompanyInfo" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
-                    <xs:maxLength value="10" />
+                    <xs:maxLength value="100" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
@@ -279,7 +279,13 @@
               <xs:element name="loanPenaltyRate" msprop:Generator_ColumnVarNameInTable="columnloanPenaltyRate" msprop:Generator_ColumnPropNameInRow="loanPenaltyRate" msprop:Generator_ColumnPropNameInTable="loanPenaltyRateColumn" msprop:Generator_UserColumnName="loanPenaltyRate" type="xs:decimal" minOccurs="0" />
               <xs:element name="loanInterestRate" msprop:Generator_ColumnVarNameInTable="columnloanInterestRate" msprop:Generator_ColumnPropNameInRow="loanInterestRate" msprop:Generator_ColumnPropNameInTable="loanInterestRateColumn" msprop:Generator_UserColumnName="loanInterestRate" type="xs:decimal" minOccurs="0" />
               <xs:element name="loanInterestStructure" msprop:Generator_ColumnVarNameInTable="columnloanInterestStructure" msprop:Generator_ColumnPropNameInRow="loanInterestStructure" msprop:Generator_ColumnPropNameInTable="loanInterestStructureColumn" msprop:Generator_UserColumnName="loanInterestStructure" type="xs:int" minOccurs="0" />
-              <xs:element name="loanLender" msprop:Generator_ColumnVarNameInTable="columnloanLender" msprop:Generator_ColumnPropNameInRow="loanLender" msprop:Generator_ColumnPropNameInTable="loanLenderColumn" msprop:Generator_UserColumnName="loanLender" type="xs:string" minOccurs="0" />
+              <xs:element name="loanLender" msprop:Generator_ColumnVarNameInTable="columnloanLender" msprop:Generator_ColumnPropNameInRow="loanLender" msprop:Generator_ColumnPropNameInTable="loanLenderColumn" msprop:Generator_UserColumnName="loanLender" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
               <xs:element name="loanPaid" msprop:Generator_ColumnVarNameInTable="columnloanPaid" msprop:Generator_ColumnPropNameInRow="loanPaid" msprop:Generator_ColumnPropNameInTable="loanPaidColumn" msprop:Generator_UserColumnName="loanPaid" type="xs:boolean" minOccurs="0" />
               <xs:element name="loanSavedToDB" msprop:Generator_ColumnVarNameInTable="columnloanSavedToDB" msprop:Generator_ColumnPropNameInRow="loanSavedToDB" msprop:Generator_ColumnPropNameInTable="loanSavedToDBColumn" msprop:Generator_UserColumnName="loanSavedToDB" type="xs:boolean" minOccurs="0" />
               <xs:element name="loanStartDate" msprop:Generator_ColumnVarNameInTable="columnloanStartDate" msprop:Generator_ColumnPropNameInRow="loanStartDate" msprop:Generator_ColumnPropNameInTable="loanStartDateColumn" msprop:Generator_UserColumnName="loanStartDate" type="xs:dateTime" minOccurs="0" />
@@ -292,7 +298,7 @@
               <xs:element name="loanGuid" msprop:Generator_ColumnVarNameInTable="columnloanGuid" msprop:Generator_ColumnPropNameInRow="loanGuid" msprop:Generator_ColumnPropNameInTable="loanGuidColumn" msprop:Generator_UserColumnName="loanGuid">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
-                    <xs:maxLength value="10" />
+                    <xs:maxLength value="100" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>

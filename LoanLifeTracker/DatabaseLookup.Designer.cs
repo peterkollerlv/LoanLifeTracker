@@ -133,7 +133,7 @@
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.gridExistingLoans.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.gridExistingLoans.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridExistingLoans.Size = new System.Drawing.Size(477, 206);
+            this.gridExistingLoans.Size = new System.Drawing.Size(796, 325);
             this.gridExistingLoans.TabIndex = 65;
             // 
             // DatabaseLookup
@@ -141,7 +141,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(5F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
-            this.ClientSize = new System.Drawing.Size(484, 297);
+            this.ClientSize = new System.Drawing.Size(800, 409);
             this.Controls.Add(this.gridExistingLoans);
             this.Controls.Add(this.labelSelectedDayInfo);
             this.Font = new System.Drawing.Font("Arial Narrow", 8.25F);

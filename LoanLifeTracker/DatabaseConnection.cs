@@ -6,16 +6,44 @@ using System.Threading.Tasks;
 using System.Data;
 using MySql.Data;
 using MySql.Data.MySqlClient;
+using LoanLifeTracker.cyberHostBoxDataSetTableAdapters;
+
 
 namespace LoanLifeTracker
 {
 
-    static class DatabaseConnection
+      class DatabaseConnection
     {
-        static public string AddLoan(Loan activeLoan)
+         private DataTable existingLoans;
+         private cyberHostBoxDataSet.LoanLifeTrackerDataTable loanLifeTrackerDbTable;
+         private LoanLifeTrackerTableAdapter dbAdapter;
+         private DataSet loanDataSet;
+
+        public DatabaseConnection()
         {
-            cyberHostBoxDataSet.LoanLifeTrackerDataTable loanLifeTrackerDbTable = new cyberHostBoxDataSet.LoanLifeTrackerDataTable();
-            cyberHostBoxDataSetTableAdapters.LoanLifeTrackerTableAdapter dbAdapter = new cyberHostBoxDataSetTableAdapters.LoanLifeTrackerTableAdapter();
+            loanLifeTrackerDbTable = new cyberHostBoxDataSet.LoanLifeTrackerDataTable();
+            dbAdapter = new LoanLifeTrackerTableAdapter();
+
+            existingLoans = new DataTable();
+            loanDataSet = new DataSet();
+            dbAdapter.Connection.Open();
+            loanDataSet.Tables.Add(dbAdapter.GetData());
+            getExistingLoans();
+        }
+         public DataTable ExistingLoans
+        {
+            get
+            {
+                return existingLoans;
+            }
+            private set
+            {
+                existingLoans = value;
+            }
+        }
+         public string AddLoan(Loan activeLoan)
+        {
+
             try
             {
                 byte loanPenaltyConvert;
@@ -56,6 +84,7 @@ namespace LoanLifeTracker
                 activeLoan.LoanStartDate
                 );
                 dbAdapter.Update(loanLifeTrackerDbTable);
+                loanDataSet.AcceptChanges();
                 return "Loan \"" + activeLoan.LoanTitle + "\" has been saved.";
             }
             catch (Exception ex)
@@ -63,19 +92,29 @@ namespace LoanLifeTracker
                 return "Failed due to: " + ex.Message;
             }
         }
-        static public DataTable getExistingLoans()
+         public void getExistingLoans()
         {
-            DataTable existingLoans = new DataTable();
-            DataRow addRow;
+            dbAdapter.GetData();
+         
+            // foreach (DataRow dataRow in loanLifeTrackerDbTable.Rows)
+            DataView dataView = new DataView(loanDataSet.Tables[0]);
+
             existingLoans.Columns.Add("loanTitle", typeof(string));
             existingLoans.Columns.Add("loanStartDate", typeof(DateTime));
             existingLoans.Columns.Add("loanGuid", typeof(string));
-            addRow = existingLoans.NewRow();
-            addRow[0] = "test";
-            addRow[1] = DateTime.Now.Date;
-            addRow[2] = "testguid";
-            existingLoans.Rows.Add(addRow);
-            return existingLoans;
+
+            foreach (DataRow dataRow in dataView.Table.Rows)
+            {
+                DataRow addRow;
+ 
+
+                addRow = existingLoans.NewRow();
+                addRow[0] = dataRow.Field<string>("loanTitle");
+                addRow[1] = dataRow.Field<DateTime>("loanStartDate");
+                addRow[2] = dataRow.Field<string>("loanGuid");
+                existingLoans.Rows.Add(addRow);
+             
+            }
         }
 
     }

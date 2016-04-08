@@ -130,10 +130,10 @@
             this.navLeft = new System.Windows.Forms.PictureBox();
             this.navRight = new System.Windows.Forms.PictureBox();
             this.labelLoanTitleFront = new System.Windows.Forms.Label();
-            this.loanBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.controlsFile = new System.Windows.Forms.ToolStripMenuItem();
             this.controlsFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.controlsMenu = new System.Windows.Forms.MenuStrip();
+            this.loanBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupLoanInput.SuspendLayout();
             this.groupReportControls.SuspendLayout();
             this.groupReportActions.SuspendLayout();
@@ -154,8 +154,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.loanReportDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.navLeft)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.navRight)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.loanBindingSource)).BeginInit();
             this.controlsMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loanBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // labelReportStartDate
@@ -281,8 +281,7 @@
             this.inputCompanyInfo.ForeColor = System.Drawing.Color.Gainsboro;
             this.inputCompanyInfo.FormattingEnabled = true;
             this.inputCompanyInfo.Items.AddRange(new object[] {
-            "Freeway Entertainment Kft",
-            "Independent CAM Kft"});
+            "Freeway CAM B.V."});
             this.inputCompanyInfo.Location = new System.Drawing.Point(11, 86);
             this.inputCompanyInfo.Name = "inputCompanyInfo";
             this.inputCompanyInfo.Size = new System.Drawing.Size(271, 28);
@@ -397,10 +396,10 @@
             this.inputNewLoan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.inputNewLoan.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.inputNewLoan.ForeColor = System.Drawing.Color.Gainsboro;
-            this.inputNewLoan.Location = new System.Drawing.Point(3, 309);
+            this.inputNewLoan.Location = new System.Drawing.Point(150, 0);
             this.inputNewLoan.Margin = new System.Windows.Forms.Padding(4);
             this.inputNewLoan.Name = "inputNewLoan";
-            this.inputNewLoan.Size = new System.Drawing.Size(157, 28);
+            this.inputNewLoan.Size = new System.Drawing.Size(165, 28);
             this.inputNewLoan.TabIndex = 5;
             this.inputNewLoan.Text = "New Loan";
             this.inputNewLoan.UseVisualStyleBackColor = false;
@@ -412,10 +411,10 @@
             this.inputOpenLoan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.inputOpenLoan.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.inputOpenLoan.ForeColor = System.Drawing.Color.Gainsboro;
-            this.inputOpenLoan.Location = new System.Drawing.Point(3, 345);
+            this.inputOpenLoan.Location = new System.Drawing.Point(496, 0);
             this.inputOpenLoan.Margin = new System.Windows.Forms.Padding(4);
             this.inputOpenLoan.Name = "inputOpenLoan";
-            this.inputOpenLoan.Size = new System.Drawing.Size(157, 28);
+            this.inputOpenLoan.Size = new System.Drawing.Size(165, 28);
             this.inputOpenLoan.TabIndex = 6;
             this.inputOpenLoan.Text = "Open Loan";
             this.inputOpenLoan.UseVisualStyleBackColor = false;
@@ -427,10 +426,10 @@
             this.inputSaveLoan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.inputSaveLoan.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.inputSaveLoan.ForeColor = System.Drawing.Color.Gainsboro;
-            this.inputSaveLoan.Location = new System.Drawing.Point(3, 381);
+            this.inputSaveLoan.Location = new System.Drawing.Point(323, 0);
             this.inputSaveLoan.Margin = new System.Windows.Forms.Padding(4);
             this.inputSaveLoan.Name = "inputSaveLoan";
-            this.inputSaveLoan.Size = new System.Drawing.Size(157, 28);
+            this.inputSaveLoan.Size = new System.Drawing.Size(165, 28);
             this.inputSaveLoan.TabIndex = 7;
             this.inputSaveLoan.Text = "Save Loan";
             this.inputSaveLoan.UseVisualStyleBackColor = false;
@@ -629,7 +628,7 @@
             this.statusIndicationText,
             this.statusIndicationProgressLabel,
             this.statusProgressBar});
-            this.statusIndicationStrip.Location = new System.Drawing.Point(0, 717);
+            this.statusIndicationStrip.Location = new System.Drawing.Point(0, 726);
             this.statusIndicationStrip.Name = "statusIndicationStrip";
             this.statusIndicationStrip.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.statusIndicationStrip.Size = new System.Drawing.Size(1511, 22);
@@ -896,13 +895,11 @@
             // 
             this.panelLoanData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.panelLoanData.Controls.Add(this.inputNewLoan);
-            this.panelLoanData.Controls.Add(this.inputOpenLoan);
             this.panelLoanData.Controls.Add(this.groupLoanInput);
-            this.panelLoanData.Controls.Add(this.inputSaveLoan);
-            this.panelLoanData.Location = new System.Drawing.Point(0, 75);
+            this.panelLoanData.Controls.Add(this.labelLoanTitleFront);
+            this.panelLoanData.Location = new System.Drawing.Point(0, 84);
             this.panelLoanData.Name = "panelLoanData";
-            this.panelLoanData.Size = new System.Drawing.Size(315, 640);
+            this.panelLoanData.Size = new System.Drawing.Size(315, 639);
             this.panelLoanData.TabIndex = 20;
             // 
             // panelReport
@@ -911,7 +908,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.panelReport.Controls.Add(this.groupReportControls);
             this.panelReport.Controls.Add(this.groupReportActions);
-            this.panelReport.Location = new System.Drawing.Point(0, 75);
+            this.panelReport.Location = new System.Drawing.Point(0, 86);
             this.panelReport.Name = "panelReport";
             this.panelReport.Size = new System.Drawing.Size(315, 640);
             this.panelReport.TabIndex = 21;
@@ -925,9 +922,9 @@
             this.panelLoanConfig.Controls.Add(this.groupFinancialData);
             this.panelLoanConfig.Controls.Add(this.inputCalculateLoan);
             this.panelLoanConfig.Controls.Add(this.groupInterestConfig);
-            this.panelLoanConfig.Location = new System.Drawing.Point(0, 75);
+            this.panelLoanConfig.Location = new System.Drawing.Point(0, 84);
             this.panelLoanConfig.Name = "panelLoanConfig";
-            this.panelLoanConfig.Size = new System.Drawing.Size(315, 640);
+            this.panelLoanConfig.Size = new System.Drawing.Size(315, 639);
             this.panelLoanConfig.TabIndex = 22;
             // 
             // groupVaryingInterestTerm
@@ -1393,7 +1390,7 @@
             "Loan Data",
             "Loan Configuration",
             "Report"});
-            this.inputLoanPanelSelection.Location = new System.Drawing.Point(0, 24);
+            this.inputLoanPanelSelection.Location = new System.Drawing.Point(0, 33);
             this.inputLoanPanelSelection.Margin = new System.Windows.Forms.Padding(0);
             this.inputLoanPanelSelection.MaxDropDownItems = 3;
             this.inputLoanPanelSelection.Name = "inputLoanPanelSelection";
@@ -1410,9 +1407,9 @@
             this.panelLoanDataDisplay.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.panelLoanDataDisplay.Controls.Add(this.textPaymentList);
             this.panelLoanDataDisplay.Controls.Add(this.panelLoanDetails);
-            this.panelLoanDataDisplay.Location = new System.Drawing.Point(315, 24);
+            this.panelLoanDataDisplay.Location = new System.Drawing.Point(315, 27);
             this.panelLoanDataDisplay.Name = "panelLoanDataDisplay";
-            this.panelLoanDataDisplay.Size = new System.Drawing.Size(1196, 693);
+            this.panelLoanDataDisplay.Size = new System.Drawing.Size(1196, 699);
             this.panelLoanDataDisplay.TabIndex = 31;
             // 
             // textPaymentList
@@ -1471,7 +1468,7 @@
             this.panelLoanDetails.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.panelLoanDetails.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.panelLoanDetails.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.panelLoanDetails.Size = new System.Drawing.Size(1196, 693);
+            this.panelLoanDetails.Size = new System.Drawing.Size(1196, 699);
             this.panelLoanDetails.TabIndex = 0;
             this.panelLoanDetails.Visible = false;
             // 
@@ -1483,9 +1480,9 @@
             this.panelLoandDataGrid.BackgroundImage = global::LoanLifeTracker.Properties.Resources.FreewayLogoFullTransparent;
             this.panelLoandDataGrid.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.panelLoandDataGrid.Controls.Add(this.loanReportDataGrid);
-            this.panelLoandDataGrid.Location = new System.Drawing.Point(315, 24);
+            this.panelLoandDataGrid.Location = new System.Drawing.Point(315, 27);
             this.panelLoandDataGrid.Name = "panelLoandDataGrid";
-            this.panelLoandDataGrid.Size = new System.Drawing.Size(1196, 693);
+            this.panelLoandDataGrid.Size = new System.Drawing.Size(1196, 699);
             this.panelLoandDataGrid.TabIndex = 41;
             // 
             // loanReportDataGrid
@@ -1539,17 +1536,18 @@
             this.loanReportDataGrid.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.loanReportDataGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.loanReportDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.loanReportDataGrid.Size = new System.Drawing.Size(1196, 693);
+            this.loanReportDataGrid.Size = new System.Drawing.Size(1196, 699);
             this.loanReportDataGrid.TabIndex = 12;
             // 
             // navLeft
             // 
             this.navLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.navLeft.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.navLeft.Cursor = System.Windows.Forms.Cursors.PanWest;
             this.navLeft.Image = global::LoanLifeTracker.Properties.Resources.lltButtonLeft;
-            this.navLeft.Location = new System.Drawing.Point(10, 635);
+            this.navLeft.Location = new System.Drawing.Point(60, 0);
             this.navLeft.Name = "navLeft";
-            this.navLeft.Size = new System.Drawing.Size(75, 75);
+            this.navLeft.Size = new System.Drawing.Size(28, 28);
             this.navLeft.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.navLeft.TabIndex = 31;
             this.navLeft.TabStop = false;
@@ -1559,11 +1557,12 @@
             // navRight
             // 
             this.navRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.navRight.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.navRight.Cursor = System.Windows.Forms.Cursors.PanEast;
             this.navRight.Image = global::LoanLifeTracker.Properties.Resources.lltButtonRight;
-            this.navRight.Location = new System.Drawing.Point(230, 635);
+            this.navRight.Location = new System.Drawing.Point(109, 0);
             this.navRight.Name = "navRight";
-            this.navRight.Size = new System.Drawing.Size(75, 75);
+            this.navRight.Size = new System.Drawing.Size(28, 28);
             this.navRight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.navRight.TabIndex = 32;
             this.navRight.TabStop = false;
@@ -1577,16 +1576,12 @@
             this.labelLoanTitleFront.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.labelLoanTitleFront.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.labelLoanTitleFront.ForeColor = System.Drawing.Color.Gainsboro;
-            this.labelLoanTitleFront.Location = new System.Drawing.Point(5, 74);
+            this.labelLoanTitleFront.Location = new System.Drawing.Point(3, 0);
             this.labelLoanTitleFront.Name = "labelLoanTitleFront";
             this.labelLoanTitleFront.Size = new System.Drawing.Size(143, 23);
             this.labelLoanTitleFront.TabIndex = 42;
             this.labelLoanTitleFront.Text = "Loan Life Tracker";
             this.labelLoanTitleFront.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // loanBindingSource
-            // 
-            this.loanBindingSource.DataSource = typeof(LoanLifeTracker.Loan);
             // 
             // controlsFile
             // 
@@ -1596,7 +1591,7 @@
             this.controlsFileExit});
             this.controlsFile.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
             this.controlsFile.Name = "controlsFile";
-            this.controlsFile.Size = new System.Drawing.Size(39, 20);
+            this.controlsFile.Size = new System.Drawing.Size(44, 24);
             this.controlsFile.Text = "File";
             this.controlsFile.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
             // 
@@ -1605,32 +1600,39 @@
             this.controlsFileExit.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.controlsFileExit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(72)))), ((int)(((byte)(125)))));
             this.controlsFileExit.Name = "controlsFileExit";
-            this.controlsFileExit.Size = new System.Drawing.Size(96, 22);
+            this.controlsFileExit.Size = new System.Drawing.Size(101, 24);
             this.controlsFileExit.Text = "Exit";
             this.controlsFileExit.Click += new System.EventHandler(this.controlsFileExit_Click);
             // 
             // controlsMenu
             // 
             this.controlsMenu.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.controlsMenu.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.controlsMenu.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.controlsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.controlsFile});
             this.controlsMenu.Location = new System.Drawing.Point(0, 0);
             this.controlsMenu.Name = "controlsMenu";
             this.controlsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.controlsMenu.Size = new System.Drawing.Size(1511, 24);
+            this.controlsMenu.Size = new System.Drawing.Size(1511, 28);
             this.controlsMenu.TabIndex = 17;
             this.controlsMenu.Text = "menu";
+            // 
+            // loanBindingSource
+            // 
+            this.loanBindingSource.DataSource = typeof(LoanLifeTracker.Loan);
             // 
             // LoanReportMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
-            this.ClientSize = new System.Drawing.Size(1511, 739);
-            this.Controls.Add(this.labelLoanTitleFront);
+            this.ClientSize = new System.Drawing.Size(1511, 748);
+            this.Controls.Add(this.inputNewLoan);
+            this.Controls.Add(this.inputSaveLoan);
+            this.Controls.Add(this.inputOpenLoan);
             this.Controls.Add(this.navLeft);
             this.Controls.Add(this.navRight);
+            this.Controls.Add(this.controlsMenu);
             this.Controls.Add(this.panelLoanData);
             this.Controls.Add(this.panelLoanConfig);
             this.Controls.Add(this.panelReport);
@@ -1638,7 +1640,6 @@
             this.Controls.Add(this.panelLoanDataDisplay);
             this.Controls.Add(this.inputLoanPanelSelection);
             this.Controls.Add(this.statusIndicationStrip);
-            this.Controls.Add(this.controlsMenu);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.Black;
@@ -1655,6 +1656,7 @@
             this.statusIndicationStrip.ResumeLayout(false);
             this.statusIndicationStrip.PerformLayout();
             this.panelLoanData.ResumeLayout(false);
+            this.panelLoanData.PerformLayout();
             this.panelReport.ResumeLayout(false);
             this.panelLoanConfig.ResumeLayout(false);
             this.groupVaryingInterestTerm.ResumeLayout(false);
@@ -1676,9 +1678,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.loanReportDataGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.navLeft)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.navRight)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.loanBindingSource)).EndInit();
             this.controlsMenu.ResumeLayout(false);
             this.controlsMenu.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loanBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
