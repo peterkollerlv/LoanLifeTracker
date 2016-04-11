@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LoanLifeTracker
+namespace InterestTracker
 {
     public class Loan
     {

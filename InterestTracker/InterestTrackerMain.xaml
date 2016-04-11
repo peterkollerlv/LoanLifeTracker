@@ -6,101 +6,123 @@
         xmlns:local="clr-namespace:InterestTracker"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="InterestTracker.InterestTrackerMain"
         mc:Ignorable="d"
-        Title="InterestTrackerMain" Height="700" Width="1196" Background="SteelBlue">
+        Title="Interest Tracker" Height="700" Width="1196" Background="SteelBlue" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+
+    </Window.Resources>
+
     <Grid x:Name="groupMainWindow">
         <Grid.RowDefinitions>
-            <RowDefinition Height="22*"/>
-            <RowDefinition Height="25*"/>
-            <RowDefinition Height="592*"/>
+            <RowDefinition Height="22"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition/>
 
 
 
-            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="25*"/>
-            <ColumnDefinition Width="83*"/>
+            <ColumnDefinition Width="275"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TabControl x:Name="navMainTabControl" Grid.Column="1" Grid.RowSpan="4" Background="#FF13487D" BorderBrush="{x:Null}" BorderThickness="0">
-            <TabItem x:Name="navMainLoanData" Header="Loan Data" GotFocus="navMainLoanData_GotFocus" Background="SteelBlue" Foreground="#FF13487D" BorderBrush="{x:Null}">
-                <Grid x:Name="groupMainLoanData" Background="SteelBlue" Margin="0,0,0,26">
-                    <DataGrid x:Name="dataGridLoanDetails" HorizontalAlignment="Left" Margin="153,92,0,0" VerticalAlignment="Top" Height="298" Width="410" Background="SteelBlue" BorderBrush="#FF13487D"/>
+        <TabControl x:Name="navMainTabControl" Grid.Column="1" Grid.RowSpan="4" BorderBrush="{x:Null}" BorderThickness="0">
+            <TabItem x:Name="navMainLoanData" Header="Loan Data" GotFocus="navMainLoanData_GotFocus">
+                <Grid x:Name="groupMainLoanData" Margin="0,0,0,26">
+                    <DataGrid x:Name="dataGridLoanData" HorizontalAlignment="Left" Margin="153,92,0,0" VerticalAlignment="Top" Height="298" Width="410" BorderBrush="#FF13487D"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="navMainLoanDetails" Header="Loan Details" Background="SteelBlue" Foreground="#FF13487D" BorderBrush="{x:Null}">
-                <Grid x:Name="groupMainLoanDetails" Background="SteelBlue" Margin="0,0,0,25"/>
+            <TabItem x:Name="navMainLoanDetails" Header="Calculation">
+                <Grid x:Name="groupMainLoanDetails" Margin="0,0,0,25">
+                    <DataGrid x:Name="gridLoanCalculation" Margin="0,-10,0,10">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="loanDayDate" Binding="{x:Null}" ClipboardContentBinding="{x:Null}"/>
+                            <DataGridTextColumn x:Name="loanDayInterestRate" Binding="{x:Null}" ClipboardContentBinding="{x:Null}"/>
+                            <DataGridTextColumn x:Name="loanDayPrincipal" Binding="{x:Null}" ClipboardContentBinding="{x:Null}"/>
+                            <DataGridTextColumn x:Name="loanDayInterest" Binding="{x:Null}" ClipboardContentBinding="{x:Null}"/>
+                            <DataGridTextColumn x:Name="loanInterestBalance" Binding="{x:Null}" ClipboardContentBinding="{x:Null}"/>
+                            <DataGridTextColumn x:Name="loanDayCuIntrestBal" Binding="{x:Null}" ClipboardContentBinding="{x:Null}"/>
+                            <DataGridTextColumn x:Name="loanDayTotalPayment" Binding="{x:Null}" ClipboardContentBinding="{x:Null}"/>
+                            <DataGridTextColumn x:Name="loanDayInterestPayment" Binding="{x:Null}" ClipboardContentBinding="{x:Null}"/>
+                            <DataGridTextColumn x:Name="loanDayPrincipalPayment" Binding="{x:Null}" ClipboardContentBinding="{x:Null}"/>
+                            <DataGridTextColumn x:Name="loanDayCurrentBalance" Binding="{x:Null}" ClipboardContentBinding="{x:Null}"/>
+                            <DataGridTextColumn x:Name="loanDayComments" Binding="{x:Null}" ClipboardContentBinding="{x:Null}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
             </TabItem>
         </TabControl>
-        <Menu x:Name="menu" RenderTransformOrigin="0.5,0.5" Background="#FF13487D" Foreground="Gainsboro">
-            <MenuItem Header="_File" BorderBrush="SteelBlue" Background="#FF13487D" Foreground="Gainsboro" Height="22" Width="42" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <MenuItem Header="_Exit" BorderBrush="SteelBlue" Background="#FF13487D" Foreground="Gainsboro"/>
+        <Menu x:Name="menu" RenderTransformOrigin="0.5,0.5" Foreground="Gainsboro">
+            <MenuItem Header="_File" Foreground="Gainsboro" Height="22" Width="42" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <MenuItem Header="_Exit"/>
             </MenuItem>
 
         </Menu>
-        <StatusBar Grid.Row="3" Grid.ColumnSpan="2" Background="SteelBlue">
-            <Label x:Name="statusIndicationText" Width="330" Content="Status indication" Foreground="Gainsboro"/>
-            <Separator Margin="0" Width="641" Background="{x:Null}"/>
-            <ProgressBar x:Name="statusProgressBar" Width="202" HorizontalAlignment="Right" Background="SteelBlue" Foreground="#FF13487D" BorderBrush="{x:Null}" Height="30"/>
+        <StatusBar Grid.Row="3" Grid.ColumnSpan="2">
+            <Label x:Name="statusIndicationText" Width="330" Content="Status indication"/>
+            <Separator Margin="0" Width="641" Background="SteelBlue"/>
+            <ProgressBar x:Name="statusProgressBar" Width="202" HorizontalAlignment="Right" BorderBrush="{x:Null}" Height="30" Background="SteelBlue"/>
         </StatusBar>
-        <TabControl x:Name="navTabControl" Grid.Row="2" Background="SteelBlue" Foreground="Gainsboro">
-            <TabItem x:Name="navLoanData" Header="Loan Data" GotFocus="navLoanData_GotFocus" Background="SteelBlue" Foreground="#FF13487D">
-                <Grid x:Name="groupLoanData" Background="SteelBlue" Margin="0,0,0,27">
+        <TabControl x:Name="navTabControl" Grid.Row="2" Foreground="Gainsboro">
+            <TabItem x:Name="navLoanData" Header="Loan Data" GotFocus="navLoanData_GotFocus">
+                <Grid x:Name="groupLoanData" Margin="0,0,0,0">
 
-                    <TextBox x:Name="inputLoanTitle" Height="22" Margin="10,32,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="Gainsboro" BorderBrush="SteelBlue" Foreground="#FF13487D"/>
-                    <Label x:Name="labelLoanTitleSet" Content="Title" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Foreground="Gainsboro"/>
-                    <ComboBox x:Name="inputCompanyInfo" Margin="10,80,10,0" VerticalAlignment="Top" SelectedIndex="0" Background="#FF13487D" Foreground="#FF13487D" BorderBrush="SteelBlue">
-                        <ComboBoxItem x:Name="FreewayCAMBV" Content="Freeway CAM B.V." Background="#FF13487D" BorderBrush="SteelBlue"/>
+                    <TextBox x:Name="inputLoanTitle" Height="22" Margin="10,32,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <Label x:Name="labelLoanTitleSet" Content="Title" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"/>
+                    <ComboBox x:Name="inputCompanyInfo" ItemContainerStyle="{StaticResource ContainerStyle}" Margin="10,80,10,0" VerticalAlignment="Top" SelectedIndex="0">
+
+                        <ComboBoxItem x:Name="FreewayCAMBV" Content="Freeway CAM B.V."/>
                     </ComboBox>
-                    <Label x:Name="labelCompanyInfoSelect" Content="Company Info" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top" Foreground="Gainsboro"/>
-                    <TextBox x:Name="inputLender" Height="22" Margin="10,128,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="Gainsboro" BorderBrush="SteelBlue" Foreground="#FF13487D"/>
-                    <Label x:Name="labelLenderInfoSet" Content="Lender" HorizontalAlignment="Left" Margin="10,102,0,0" VerticalAlignment="Top" Foreground="Gainsboro"/>
-                    <TextBox x:Name="inputBeneficiary" Height="22" Margin="10,176,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="Gainsboro" BorderBrush="SteelBlue" Foreground="#FF13487D"/>
-                    <Label x:Name="labelBeneficiarySet" Content="Beneficiary" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top" Foreground="Gainsboro"/>
-                    <TextBox x:Name="inputCollectionAccount" Height="22" Margin="10,224,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="Gainsboro" BorderBrush="SteelBlue" Foreground="#FF13487D"/>
-                    <Label x:Name="labelCollectionAccountSet" Content="Collection Account" HorizontalAlignment="Left" Margin="10,198,0,0" VerticalAlignment="Top" Foreground="Gainsboro"/>
+                    <Label x:Name="labelCompanyInfoSelect" Content="Company Info" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="inputLender" Height="22" Margin="10,128,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <Label x:Name="labelLenderInfoSet" Content="Lender" HorizontalAlignment="Left" Margin="10,102,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="inputBeneficiary" Height="22" Margin="10,176,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <Label x:Name="labelBeneficiarySet" Content="Beneficiary" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="inputCollectionAccount" Height="22" Margin="10,224,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <Label x:Name="labelCollectionAccountSet" Content="Collection Account" HorizontalAlignment="Left" Margin="10,198,0,0" VerticalAlignment="Top"/>
 
                 </Grid>
             </TabItem>
-            <TabItem x:Name="navLoanConfiguration" Header="Loan Configuration" Foreground="#FF13487D" Background="SteelBlue">
-                <Grid x:Name="groupLoanConfiguration" Background="SteelBlue">
+            <TabItem x:Name="navLoanConfiguration" Header="Loan Configuration">
+                <Grid x:Name="groupLoanConfiguration">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="177*"/>
                         <RowDefinition Height="194*"/>
                         <RowDefinition Height="223*"/>
                     </Grid.RowDefinitions>
-                    <Button x:Name="inputCalculateLoan" Content="Calculate Loan" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="249" Height="25" Background="#FF13487D" Foreground="Gainsboro" BorderBrush="SteelBlue"/>
-                    <Label x:Name="lableLoanStartDate" Content="Loan Start Date" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Background="SteelBlue" Foreground="Gainsboro"/>
-                    <Label x:Name="labelLoanDuration" Content="Projected Duration" HorizontalAlignment="Left" Margin="152,35,0,0" VerticalAlignment="Top" Width="107" Background="SteelBlue" Foreground="Gainsboro"/>
-                    <DatePicker x:Name="inputLoanStartDate" HorizontalAlignment="Left" Margin="10,61,0,0" VerticalAlignment="Top" Width="142" FirstDayOfWeek="Monday" Background="SteelBlue" BorderBrush="{x:Null}" Foreground="#FF13487D" BorderThickness="0,1,0,0" Height="24"/>
-                    <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="24" Margin="157,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="58" Background="Gainsboro" BorderBrush="SteelBlue" Foreground="#FF13487D"/>
-                    <Label x:Name="labelYears" Content="Years" HorizontalAlignment="Left" Margin="220,61,0,0" VerticalAlignment="Top" Width="49" Height="24" Background="SteelBlue" Foreground="Gainsboro"/>
-                    <Label x:Name="labelCurrencySelection" Content="Currency" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Width="77" Height="24" Background="SteelBlue" Foreground="Gainsboro"/>
-                    <Label x:Name="labelInitialLoanAmount" Content="Initial Loan Amount" HorizontalAlignment="Left" Margin="92,85,0,0" VerticalAlignment="Top" Width="118" Height="24" Background="SteelBlue" Foreground="Gainsboro"/>
-                    <Button x:Name="buttonOpenAddPayment" Content="Payments" HorizontalAlignment="Left" Margin="10,138,0,0" VerticalAlignment="Top" Width="91" Height="25" RenderTransformOrigin="0.582,-0.72" Background="#FF13487D" Foreground="Gainsboro" BorderBrush="SteelBlue"/>
-                    <Button x:Name="buttonOpenDrawDown" Content="Draw Down" HorizontalAlignment="Left" Margin="171,138,0,0" VerticalAlignment="Top" Width="88" Height="25" Background="#FF13487D" Foreground="Gainsboro" BorderBrush="SteelBlue"/>
-                    <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="10,109,0,0" VerticalAlignment="Top" Width="77" SelectedIndex="0" Height="24" Background="SteelBlue" Foreground="#FF13487D">
-                        <ComboBoxItem x:Name="USD" Foreground="#FF13487D" Background="Gainsboro" Content="USD"/>
+                    <Button x:Name="inputCalculateLoan" Content="Calculate Loan" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="249" Height="25"/>
+                    <Label x:Name="lableLoanStartDate" Content="Loan Start Date" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="labelLoanDuration" Content="Projected Duration" HorizontalAlignment="Left" Margin="147,35,0,0" VerticalAlignment="Top" Width="112"/>
+                    <DatePicker x:Name="inputLoanStartDate" HorizontalAlignment="Left" Margin="10,61,0,0" VerticalAlignment="Top" Width="140" FirstDayOfWeek="Monday" BorderThickness="0,1,0,0" Height="24"/>
+                    <TextBox x:Name="inputLoanDuration" KeyDown="FilterKeypressToDigits" HorizontalAlignment="Left" Height="24" Margin="147,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="58"/>
+                    <Label x:Name="labelYears" Content="Years" HorizontalAlignment="Left" Margin="210,62,0,0" VerticalAlignment="Top" Width="49" Height="24"/>
+                    <Label x:Name="labelCurrencySelection" Content="Currency" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Width="77" Height="24"/>
+                    <Label x:Name="labelInitialLoanAmount" Content="Initial Loan Amount" HorizontalAlignment="Left" Margin="92,85,0,0" VerticalAlignment="Top" Width="118" Height="24"/>
+                    <Button x:Name="buttonOpenAddPayment" Content="Payments" HorizontalAlignment="Left" Margin="10,138,0,0" VerticalAlignment="Top" Width="91" Height="25" RenderTransformOrigin="0.582,-0.72"/>
+                    <Button x:Name="buttonOpenDrawDown" Content="Draw Down" HorizontalAlignment="Left" Margin="171,138,0,0" VerticalAlignment="Top" Width="88" Height="25"/>
+                    <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="10,109,0,0" VerticalAlignment="Top" Width="77" SelectedIndex="0" Height="24">
+                        <ComboBoxItem x:Name="USD" Content="USD"/>
                         <ComboBoxItem x:Name="EUR" Content="EUR"/>
                         <ComboBoxItem x:Name="CAD" Content="CAD"/>
                         <ComboBoxItem x:Name="AUD" Content="AUD"/>
                     </ComboBox>
-                    <TextBox x:Name="inputInitialLoanAmount" HorizontalAlignment="Left" Height="24" Margin="92,109,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" Background="Gainsboro" BorderBrush="SteelBlue" Foreground="#FF13487D"/>
-                    <TextBox x:Name="inputInterestRate" HorizontalAlignment="Left" Height="23" Margin="10,58,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="58" Background="Gainsboro" Foreground="#FF13487D" BorderBrush="SteelBlue"/>
-                    <Label x:Name="lableInterestRate" Content="Interest Rate" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="77" Height="24" Grid.Row="1" Background="SteelBlue" Foreground="Gainsboro"/>
-                    <Label x:Name="labelInterestPercent" Content="%" HorizontalAlignment="Left" Margin="73,58,0,0" VerticalAlignment="Top" Width="22" Height="23" Grid.Row="1" Foreground="Gainsboro" Background="SteelBlue"/>
-                    <CheckBox x:Name="inputInterestPenaltyChk" Content="Loan has penalty date" HorizontalAlignment="Left" Margin="10,86,0,0" Grid.Row="1" VerticalAlignment="Top" Width="157" Background="SteelBlue" BorderBrush="{x:Null}" BorderThickness="0" Foreground="Gainsboro"/>
-                    <Grid x:Name="groupInterestPenalty" HorizontalAlignment="Left" Height="58" Margin="10,106,0,0" Grid.Row="1" VerticalAlignment="Top" Width="259">
-                        <Label x:Name="labelInitialLoanAmount_Copy" Content="Initial Loan Amount" HorizontalAlignment="Left" VerticalAlignment="Top" Width="118" Height="24" Background="SteelBlue" Foreground="Gainsboro"/>
-                        <DatePicker x:Name="inputInterestPenaltyStart" HorizontalAlignment="Left" Margin="0,24,0,0" VerticalAlignment="Top" Width="140" Background="SteelBlue" BorderBrush="{x:Null}" Foreground="#FF13487D" BorderThickness="0" Height="24"/>
+                    <TextBox x:Name="inputInitialLoanAmount" HorizontalAlignment="Left" Height="24" Margin="92,109,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167"/>
+                    <TextBox x:Name="inputInterestRate" HorizontalAlignment="Left" Height="23" Margin="10,58,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="58"/>
+                    <Label x:Name="lableInterestRate" Content="Interest Rate" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="85" Height="24" Grid.Row="1"/>
+                    <Label x:Name="labelInterestPercent" Content="%" HorizontalAlignment="Left" Margin="73,58,0,0" VerticalAlignment="Top" Width="22" Height="23" Grid.Row="1"/>
+                    <CheckBox x:Name="inputInterestPenaltyChk" Content="Loan has penalty date" HorizontalAlignment="Left" Margin="117,58,0,0" Grid.Row="1" VerticalAlignment="Top" IsChecked="True" Width="142"/>
 
-                        <Label x:Name="labelInterestPenaltyRate" Content="Penalty Rate" HorizontalAlignment="Left" Margin="140,-2,0,0" VerticalAlignment="Top" Width="107" Background="SteelBlue" Foreground="Gainsboro"/>
-                        <TextBox x:Name="inputInterestPenaltyRate" HorizontalAlignment="Left" Height="24" Margin="145,24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="58" Background="Gainsboro" BorderBrush="SteelBlue" Foreground="#FF13487D"/>
-                        <Label x:Name="labelPenaltyPercent" Content="%" HorizontalAlignment="Left" Margin="208,24,0,0" VerticalAlignment="Top" Width="22" Height="24" Background="SteelBlue" Foreground="Gainsboro"/>
+                    <Grid x:Name="groupInterestPenalty" HorizontalAlignment="Left" Height="58" Margin="10,106,0,0" Grid.Row="1" VerticalAlignment="Top" Width="259">
+                        <Label x:Name="labelInterestPenalty" Content="Interest Penalty Start Date" HorizontalAlignment="Left" VerticalAlignment="Top" Width="157" Height="24"/>
+                        <DatePicker x:Name="inputInterestPenaltyStart" HorizontalAlignment="Left" Margin="0,24,0,0" VerticalAlignment="Top" Width="140" BorderThickness="0" Height="24"/>
+
+                        <Label x:Name="labelInterestPenaltyRate" Content="Penalty Rate" HorizontalAlignment="Left" Margin="162,-2,0,0" VerticalAlignment="Top" Width="97"/>
+                        <TextBox x:Name="inputInterestPenaltyRate" HorizontalAlignment="Left" Height="24" Margin="162,24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="58" BorderBrush="SteelBlue" Foreground="#FF13487D"/>
+                        <Label x:Name="labelPenaltyPercent" Content="%" HorizontalAlignment="Left" Margin="225,24,0,0" VerticalAlignment="Top" Width="22" Height="24"/>
 
                     </Grid>
 
-                    <Expander x:Name="expanderInterestStructure" Header="Interest Structure" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Height="255" Width="71" BorderThickness="0" Background="SteelBlue" Foreground="Gainsboro" BorderBrush="{x:Null}" Grid.RowSpan="2">
-                        <Grid>
+                    <Expander x:Name="expanderInterestStructure" Header="Interest Structure" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top"  Width="132" BorderThickness="0" Grid.RowSpan="2">
+                        <Grid Margin="0,0,10,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
@@ -108,23 +130,23 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TreeView x:Name="inputInterestStructureSelection" Height="233" Background="SteelBlue" Foreground="Gainsboro" BorderBrush="#FF13487D">
-                                <TreeViewItem Grid.Row="0" Grid.Column="0" Header="360" Background="SteelBlue" Foreground="Gainsboro">
-                                    <RadioButton GroupName="interestStructure" Tag="360fixed" Background="SteelBlue" Foreground="Gainsboro" BorderBrush="#FF13487D" Content="Fixed Interest"/>
-                                    <TreeViewItem Header="Compund Interest" Background="SteelBlue" BorderBrush="#FF13487D" Foreground="Gainsboro">
-                                        <RadioButton GroupName="interestStructure" Tag="360compDay" Background="SteelBlue" BorderBrush="#FF13487D" Foreground="Gainsboro" Content="Daily"/>
-                                        <RadioButton GroupName="interestStructure" Tag="360compMonth" Background="SteelBlue" Foreground="Gainsboro" BorderBrush="#FF13487D" Content="Monthly"/>
-                                        <RadioButton GroupName="interestStructure" Tag="360compQuater" Background="SteelBlue" BorderBrush="#FF13487D" Foreground="Gainsboro" Content="Quaterly"/>
-                                        <RadioButton GroupName="interestStructure" Tag="360compYear" Background="SteelBlue" BorderBrush="#FF13487D" Foreground="Gainsboro" Content="Yearly"/>
+                            <TreeView x:Name="inputInterestStructureSelection" Margin="0,0,-131,-177" Grid.RowSpan="2">
+                                <TreeViewItem Grid.Row="0" Grid.Column="0" Header="360">
+                                    <RadioButton x:Name="_360fixed" GroupName="interestStructure" Tag="360fixed" Content="Fixed Interest"/>
+                                    <TreeViewItem Header="Compund Interest">
+                                        <RadioButton x:Name="_360compDay" GroupName="interestStructure" Tag="360compDay" Content="Daily"/>
+                                        <RadioButton x:Name="_360compMonth" GroupName="interestStructure" Tag="360compMonth" Content="Monthly"/>
+                                        <RadioButton x:Name="_360compQuater" GroupName="interestStructure" Tag="360compQuater" Content="Quaterly"/>
+                                        <RadioButton x:Name="_360compYear" GroupName="interestStructure" Tag="360compYear" Content="Yearly"/>
                                     </TreeViewItem>
                                 </TreeViewItem>
-                                <TreeViewItem Grid.Row="1" Grid.Column="0"  Header="365/366" Background="SteelBlue" BorderBrush="#FF13487D" Foreground="Gainsboro">
-                                    <RadioButton  GroupName="interestStructure" Tag="365fixed" Foreground="Gainsboro" Background="SteelBlue" BorderBrush="#FF13487D" Content="Fixed Interest"/>
-                                    <TreeViewItem Header="Compund Interest" Foreground="Gainsboro" Background="SteelBlue" BorderBrush="#FF13487D">
-                                        <RadioButton GroupName="interestStructure" Tag="365compDay" Background="SteelBlue" BorderBrush="#FF13487D" Foreground="Gainsboro" Content="Daily"/>
-                                        <RadioButton GroupName="interestStructure" Tag="365compMonth" Foreground="Gainsboro" Background="SteelBlue" BorderBrush="#FF13487D" Content="Monthly"/>
-                                        <RadioButton GroupName="interestStructure" Tag="365compQuater" Foreground="Gainsboro" Background="SteelBlue" BorderBrush="#FF13487D" Content="Quaterly"/>
-                                        <RadioButton GroupName="interestStructure" Tag="365compYear" Foreground="Gainsboro" Background="SteelBlue" BorderBrush="#FF13487D" Content="Yearly"/>
+                                <TreeViewItem Grid.Row="1" Grid.Column="0"  Header="365/366">
+                                    <RadioButton  x:Name="_365fixed" GroupName="interestStructure" Tag="365fixed" Content="Fixed Interest"/>
+                                    <TreeViewItem Header="Compund Interest">
+                                        <RadioButton x:Name="_365compDay" GroupName="interestStructure" Tag="365compDay" Content="Daily"/>
+                                        <RadioButton x:Name="_365compMonth" GroupName="interestStructure" Tag="365compMonth" Content="Monthly"/>
+                                        <RadioButton x:Name="_365compQuater" GroupName="interestStructure" Tag="365compQuater" Content="Quaterly"/>
+                                        <RadioButton x:Name="_365compYear" GroupName="interestStructure" Tag="365compYear" Content="Yearly"/>
                                     </TreeViewItem>
                                 </TreeViewItem>
                             </TreeView>
@@ -133,20 +155,31 @@
                     </Expander>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="navLoanReports" Header="Reports" Background="SteelBlue" Foreground="#FF13487D">
+            <TabItem x:Name="navLoanReports" Header="Reports">
                 <Grid>
-                    <Label x:Name="labelReportType" HorizontalAlignment="Left" VerticalAlignment="Top" Background="SteelBlue" Foreground="Gainsboro" Content="Report Type" RenderTransformOrigin="0.228,0.218" Margin="10,0,0,0"/>
-                    <ComboBox x:Name="inputCompanyInfo_Copy" Margin="10,26,10,0" VerticalAlignment="Top" SelectedIndex="0" Background="#FF13487D" Foreground="#FF13487D" BorderBrush="SteelBlue">
+                    <Label x:Name="labelReportType" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Report Type" RenderTransformOrigin="0.228,0.218" Margin="10,0,0,0"/>
+                    <ComboBox x:Name="inputReportType" Margin="10,26,10,0" VerticalAlignment="Top" SelectedIndex="0">
                         <ComboBoxItem x:Name="FreewayCAMBV1" Content="Detailed Report" Background="#FF13487D" BorderBrush="SteelBlue"/>
                         <ComboBoxItem Content="Summary Report"/>
                         <ComboBoxItem Content="Payment Report"/>
                     </ComboBox>
-
+                    <Label x:Name="labelReportStartDate" Content="Report Start Date" HorizontalAlignment="Left" Margin="10,53,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="lableReportEndDate" Content="Report End Date" HorizontalAlignment="Left" Margin="10,111,0,0" VerticalAlignment="Top"/>
+                    <DatePicker x:Name="inputReportStartDate" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top"/>
+                    <DatePicker x:Name="inputReportEndDate" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top"/>
+                    <Button x:Name="buttonExportToPdf" Content="Export To PDF" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="103"/>
+                    <UniformGrid x:Name="reportSpan" Rows="4" Columns="1" Margin="166,82,10,402" >
+                        <RadioButton GroupName="reportSpan" Content="Daily View"></RadioButton>
+                        <RadioButton GroupName="reportSpan" Content="Weekly View"></RadioButton>
+                        <RadioButton GroupName="reportSpan" Content="Monthly View"></RadioButton>
+                        <RadioButton GroupName="reportSpan" Content="Yearly View"></RadioButton>
+                    </UniformGrid>
+                    <CheckBox x:Name="inputDisplayPaymentsChk" Content="Show Payments" HorizontalAlignment="Left" Margin="10,169,0,0" VerticalAlignment="Top"/>
 
                 </Grid>
             </TabItem>
 
         </TabControl>
-        <Label x:Name="labelLoanTitleFront" Content="Interest Tracker" Grid.Row="1" Background="SteelBlue" Foreground="Gainsboro"/>
+        <Label x:Name="labelLoanTitleFront" Content="Interest Tracker" Grid.Row="1" Foreground="Gainsboro"/>
     </Grid>
 </Window>

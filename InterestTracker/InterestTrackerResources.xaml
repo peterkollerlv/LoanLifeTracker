@@ -1,0 +1,206 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:InterestTracker">
+    <!--Dark Blue
+	#FF13487D
+						
+	Light Blue
+	#FF4682B4
+						
+	Light Gray
+	#FFDCDCDC
+    
+    -->
+    <Style TargetType="Window">
+        <Setter Property="BorderBrush" Value="#FF4682B4"/>
+    </Style>
+    
+    <Style TargetType="Grid">
+        <Setter Property="Background" Value="#FF4682B4"/>
+    </Style>
+
+    <Style TargetType="Button">
+        <Setter Property="Background" Value="#FF13487D"/>
+        <Setter Property="Foreground" Value="#FFDCDCDC"/>
+        <Setter Property="BorderBrush" Value="#FF4682B4"/>
+        <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="Background" Value="#FF4682B4"/>
+                <Setter Property="Foreground" Value="#FF13487D"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Label">
+        <Setter Property="Background" Value="#FF4682B4"/>
+        <Setter Property="Foreground" Value="#FFDCDCDC"/>
+        <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <Style TargetType="TextBox">
+        <Setter Property="Background" Value="#FFDCDCDC"/>
+        <Setter Property="Foreground" Value="#FF13487D"/>
+        <Setter Property="MaxLength" Value="100"/>
+        <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <Style TargetType="ComboBox" >
+        <Setter Property="Background" Value="#FF13487D"/>
+        <Setter Property="Foreground" Value="#FF13487D"/>
+    </Style>
+
+    <Style TargetType="ComboBoxItem" x:Key="ContainerStyle">
+        <Setter Property="Background" Value="#FF13487D"/>
+        <Setter Property="Foreground" Value="#FF13487D"/>
+    </Style>
+
+    <Style TargetType="CheckBox">
+        <Setter Property="Background" Value="#FFDCDCDC"/>
+        <Setter Property="Foreground" Value="#FFDCDCDC"/>
+        <Setter Property="BorderBrush" Value="#FFDCDCDC"/>
+        <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <Style TargetType="Expander">
+        <Setter Property="Background" Value="#FF4682B4"/>
+        <Setter Property="Foreground" Value="#FFDCDCDC"/>
+        <Style.Triggers>
+            <Trigger Property="IsExpanded" Value="false">
+                <Setter Property="Height" Value="20"/>
+
+            </Trigger>
+            <Trigger Property="IsExpanded" Value="true">
+                <Setter Property="Height" Value="200"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="TreeView">
+        <Setter Property="Background" Value="#FF4682B4"/>
+        <Setter Property="Foreground" Value="#FFDCDCDC"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#FF13487D"/>
+    </Style>
+
+    <Style TargetType="TreeViewItem">
+        <Setter Property="Background" Value="#FF4682B4"/>
+        <Setter Property="Foreground" Value="#FFDCDCDC"/>
+        <Setter Property="Margin" Value="3"/>
+        <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <Style TargetType="RadioButton">
+        <Setter Property="Background" Value="#FF4682B4"/>
+        <Setter Property="Foreground" Value="#FFDCDCDC"/>
+        <Setter Property="BorderBrush" Value="#FFDCDCDC"/>
+        <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <Style TargetType="Menu">
+        <Setter Property="Background" Value="#FF4682B4"/>
+        <Setter Property="Foreground" Value="#FFDCDCDC"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <!--<Setter Property="BorderBrush" Value="#FF13487D"/>
+        <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="FontSize" Value="12"/>-->
+    </Style>
+
+    <Style TargetType="MenuItem">
+        <Setter Property="Background" Value="#FF4682B4"/>
+        <Setter Property="Foreground" Value="#FFDCDCDC"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <Style TargetType="DatePicker">
+        <Setter Property="Background" Value="#FF4682B4"/>
+        <Setter Property="Foreground" Value="#FFDCDCDC"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Width" Value="140"/>
+        <Setter Property="Height" Value="24"/>
+        
+        <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="FontSize" Value="12"/>
+        
+    </Style>
+
+    <!--<Style TargetType="TabItem">
+        <Setter Property="Foreground" Value="#FF13487D"/>
+    </Style>-->
+
+    <Style TargetType="Separator">
+        <Setter Property="Background" Value="#FF4682B4"/>
+    </Style>
+
+    <Style TargetType="ProgressBar">
+        <Setter Property="Background" Value="#FF4682B4"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="#FF13487D"/>
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+
+    <Style TargetType="StatusBar">
+        <Setter Property="Background" Value="#FF4682B4"/>
+    </Style>
+
+    <Style TargetType="TabControl">
+        <Setter Property="Background" Value="#FF4682B4"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+
+    <Style TargetType="TabItem">
+        <!--<Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Grid Name="Panel">
+                        <ContentPresenter x:Name="ContentSite"
+                                         Margin="0"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="false">
+                            <Setter TargetName="Panel" Property="Background" Value="#FF4682B4"/>
+                            -->
+        <!--<Setter TargetName="Panel" Property="Foreground" Value="#FFDCDCDC"/>
+                            <Setter TargetName="Panel" Property="BorderBrush" Value="#FF13487D"/>-->
+        <!--
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter TargetName="Panel" Property="Background" Value="#FFDCDCDC"/>
+                            -->
+        <!--<Setter TargetName="Panel" Property="Foreground" Value="#FF13487D"/>
+                            <Setter TargetName="Panel" Property="BorderBrush" Value="#FF4682B4"/>-->
+        <!--
+                        </Trigger>
+                    </ControlTemplate.Triggers>                          
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>-->
+        <Setter Property="Background" Value="#FF4682B4"/>
+        <Setter Property="Foreground" Value="#FFDCDCDC"/>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="true">
+                <Setter Property="Background" Value="#FF4682B4"/>
+                <Setter Property="Foreground" Value="#FF13487D"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="Background" Value="#FF4682B4"/>
+                <Setter Property="Foreground" Value="#FF13487D"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="DataGrid">
+        <Setter Property="Background" Value="#FF4682B4"/>
+    </Style>
+    
+    
+</ResourceDictionary>

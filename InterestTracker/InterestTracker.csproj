@@ -39,6 +39,7 @@
       <HintPath>..\iTextSharp\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -67,13 +68,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FormatDigitInput.cs" />
     <Compile Include="InterestTrackerMain.xaml.cs">
       <DependentUpon>InterestTrackerMain.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="InterestTrackerResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Loan.cs" />
+    <Compile Include="LoanReportData.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

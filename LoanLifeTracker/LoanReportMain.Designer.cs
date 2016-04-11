@@ -86,6 +86,7 @@
             this.labelCollectionAccountInfo = new System.Windows.Forms.Label();
             this.labelLoanStartDateInfo = new System.Windows.Forms.Label();
             this.panelLoanData = new System.Windows.Forms.Panel();
+            this.labelLoanTitleFront = new System.Windows.Forms.Label();
             this.panelReport = new System.Windows.Forms.Panel();
             this.panelLoanConfig = new System.Windows.Forms.Panel();
             this.groupVaryingInterestTerm = new System.Windows.Forms.GroupBox();
@@ -129,7 +130,6 @@
             this.loanReportDataGrid = new System.Windows.Forms.DataGridView();
             this.navLeft = new System.Windows.Forms.PictureBox();
             this.navRight = new System.Windows.Forms.PictureBox();
-            this.labelLoanTitleFront = new System.Windows.Forms.Label();
             this.controlsFile = new System.Windows.Forms.ToolStripMenuItem();
             this.controlsFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.controlsMenu = new System.Windows.Forms.MenuStrip();
@@ -902,6 +902,20 @@
             this.panelLoanData.Size = new System.Drawing.Size(315, 639);
             this.panelLoanData.TabIndex = 20;
             // 
+            // labelLoanTitleFront
+            // 
+            this.labelLoanTitleFront.AutoSize = true;
+            this.labelLoanTitleFront.BackColor = System.Drawing.Color.Transparent;
+            this.labelLoanTitleFront.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelLoanTitleFront.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelLoanTitleFront.ForeColor = System.Drawing.Color.Gainsboro;
+            this.labelLoanTitleFront.Location = new System.Drawing.Point(3, 0);
+            this.labelLoanTitleFront.Name = "labelLoanTitleFront";
+            this.labelLoanTitleFront.Size = new System.Drawing.Size(143, 23);
+            this.labelLoanTitleFront.TabIndex = 42;
+            this.labelLoanTitleFront.Text = "Loan Life Tracker";
+            this.labelLoanTitleFront.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // panelReport
             // 
             this.panelReport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1569,20 +1583,6 @@
             this.navRight.Visible = false;
             this.navRight.Click += new System.EventHandler(this.navRight_Click);
             // 
-            // labelLoanTitleFront
-            // 
-            this.labelLoanTitleFront.AutoSize = true;
-            this.labelLoanTitleFront.BackColor = System.Drawing.Color.Transparent;
-            this.labelLoanTitleFront.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.labelLoanTitleFront.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.labelLoanTitleFront.ForeColor = System.Drawing.Color.Gainsboro;
-            this.labelLoanTitleFront.Location = new System.Drawing.Point(3, 0);
-            this.labelLoanTitleFront.Name = "labelLoanTitleFront";
-            this.labelLoanTitleFront.Size = new System.Drawing.Size(143, 23);
-            this.labelLoanTitleFront.TabIndex = 42;
-            this.labelLoanTitleFront.Text = "Loan Life Tracker";
-            this.labelLoanTitleFront.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // controlsFile
             // 
             this.controlsFile.BackColor = System.Drawing.SystemColors.InactiveCaption;
@@ -1633,9 +1633,9 @@
             this.Controls.Add(this.navLeft);
             this.Controls.Add(this.navRight);
             this.Controls.Add(this.controlsMenu);
-            this.Controls.Add(this.panelLoanData);
-            this.Controls.Add(this.panelLoanConfig);
             this.Controls.Add(this.panelReport);
+            this.Controls.Add(this.panelLoanConfig);
+            this.Controls.Add(this.panelLoanData);
             this.Controls.Add(this.panelLoandDataGrid);
             this.Controls.Add(this.panelLoanDataDisplay);
             this.Controls.Add(this.inputLoanPanelSelection);

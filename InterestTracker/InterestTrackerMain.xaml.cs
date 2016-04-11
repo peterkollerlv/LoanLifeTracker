@@ -20,9 +20,22 @@ namespace InterestTracker
     /// </summary>
     public partial class InterestTrackerMain : Window
     {
+
+        //loan properties
+        Loan activeLoan = new Loan(true);
+
+
+        public string LoanTitle { get { return activeLoan.LoanTitle; } set { inputLoanTitle.Text = value; activeLoan.LoanTitle = value; } }
+
+
         public InterestTrackerMain()
         {
+           
+            this.KeyDown += new KeyEventHandler(FilterKeypressToDigits);
             InitializeComponent();
+            activeLoan.LoanTitle = this.LoanTitle;
+
+
         }
 
 
@@ -36,6 +49,18 @@ namespace InterestTracker
         private void navMainLoanData_GotFocus(object sender, RoutedEventArgs e)
         {
             navTabControl.SelectedItem = navLoanData;
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+        public void FilterKeypressToDigits(object sender, KeyEventArgs e)
+        {
+            if (!char.IsControl(e.Key) && ((char)KeyInterop.VirtualKeyFromKey(e.Key)) && e.Key != Key.Back) // (char)KeyInterop.VirtualKeyFromKey(e.Key) != '.') //&& (sender as System.Windows.Controls.TextBox)sender.Text.IndexOf('.') > -1
+            {
+                e.Handled = true;
+            }
         }
     }
 }
