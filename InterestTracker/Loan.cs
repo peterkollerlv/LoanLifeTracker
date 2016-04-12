@@ -17,7 +17,7 @@ namespace InterestTracker
             LoanInterestRate = 5;
             loanInterestPenaltyRate = 10;
             LoanCurrency = "USD";
-            PaymentsList = new List<Payment>();
+            LoanPaymentsList = new List<Payment>();
         }
 
         //constructor for existing loans
@@ -25,7 +25,7 @@ namespace InterestTracker
         public Loan(Guid existingGuid)
         {
             LoanGuid = existingGuid;
-            PaymentsList = new List<Payment>();
+            LoanPaymentsList = new List<Payment>();
         }
 
         //fields & properies
@@ -121,6 +121,19 @@ namespace InterestTracker
             }
         }
 
+        private DateTime loanPaidDate;
+        public DateTime LoanPaidDate
+        {
+            get
+            {
+                return loanPaidDate.Date;
+            }
+            set
+            {
+                loanPaidDate = value.Date;
+            }
+        }
+
         private decimal loanInitialLoanAmount;
         public decimal LoanInitialLoanAmount
         {
@@ -131,6 +144,19 @@ namespace InterestTracker
             set
             {
                 loanInitialLoanAmount = value;
+            }
+        }
+
+        private decimal loanInterestRate;
+        public decimal LoanInterestRate
+        {
+            get
+            {
+                return loanInterestRate;
+            }
+            set
+            {
+                loanInterestRate = value;
             }
         }
 
@@ -147,17 +173,17 @@ namespace InterestTracker
             }
         }
 
-        private bool loanHasPenalty;
-        public bool LoanHasPenalty
+        private bool loanHasIntersetPenalty;
+        public bool LoanHasInterestPenalty
         {
             get
             {
-                return loanHasPenalty;
+                return loanHasIntersetPenalty;
             }
 
             set
             {
-                loanHasPenalty = value;
+                loanHasIntersetPenalty = value;
             }
         }
 
@@ -175,18 +201,6 @@ namespace InterestTracker
             }
         }
 
-        private decimal loanInterestRate;
-        public decimal LoanInterestRate
-        {
-            get
-            {
-                return loanInterestRate;
-            }
-            set
-            {
-                loanInterestRate = value;
-            }
-        }
 
         private decimal loanInterestPenaltyRate;
         public decimal LoanInterestPenaltyRate
@@ -201,8 +215,8 @@ namespace InterestTracker
             }
         }
 
-        private int loanInterestStructure;
-        public int LoanInterestStructure
+        private string loanInterestStructure;
+        public string LoanInterestStructure
         {
             get
             {
@@ -214,16 +228,16 @@ namespace InterestTracker
             }
         }
 
-        private List<Payment> paymentsList;
-        public List<Payment> PaymentsList
+        private List<Payment> loanpaymentsList;
+        public List<Payment> LoanPaymentsList
         {
             get
             {
-                return paymentsList;
+                return loanpaymentsList;
             }
             set
             {
-                paymentsList = value;
+                loanpaymentsList = value;
             }
         }
 

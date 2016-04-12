@@ -9,20 +9,22 @@ namespace InterestTracker
 {
     public class LoanReportData
     {
-        protected List<Payment> paymentsList;
+        
         private Loan activeLoan;
-        InterestTrackerMain LoanReportMainObj;
-        public LoanReportData(InterestTrackerMain loanReportMain)
+       // InterestTrackerMain LoanReportMainObj;
+
+        //public LoanReportData(InterestTrackerMain loanReportMain)
+        public LoanReportData()
         {
-            LoanReportMainObj = loanReportMain;
+            //LoanReportMainObj = loanReportMain;
             ReportType = 0;
-            LoanReportDataGrid = LoanReportMainObj.gridLoanCalculation;
-            LoanReportDataGrid.ItemsSource = null;
+           // LoanReportDataGrid = LoanReportMainObj.gridLoanCalculation;
+          //  LoanReportDataGrid.ItemsSource = null;
             principalBalance = 0;
-            
+
         }
 
-        //loanData properties
+        //Loan specific properties properties
 
         public Loan ActiveLoan
         {
@@ -36,147 +38,241 @@ namespace InterestTracker
             }
         }
 
-        public int LoanDuration
+       
+        public Guid LoanGuid
         {
-            get { return Int32.Parse(LoanReportMainObj.inputLoanDuration.Text); }
+            get { return ActiveLoan.LoanGuid; }
+            set { ActiveLoan.LoanGuid = value; }
         }
-        public DateTime ReportStartDate
+
+        public string Title
         {
-            get { return LoanReportMainObj.inputReportStartDate.SelectedDate.Value; }
+            get { return ActiveLoan.LoanTitle; }
+            set { ActiveLoan.LoanTitle = value; }
         }
-        public DateTime ReportEndDate
+
+       public string CompanyInfo
         {
-            get { return LoanReportMainObj.inputReportEndDate.SelectedDate.Value; }
+            get { return ActiveLoan.LoanCompanyInfo; }
+            set { ActiveLoan.LoanCompanyInfo = value; }
         }
-        public TimeSpan ReportTimeSpan
+       public string Lender
         {
-            get { return ReportEndDate.Subtract(ReportStartDate); }
+            get { return ActiveLoan.LoanLender; }
+            set { ActiveLoan.LoanLender = value; }
         }
-        public int ReportType
+
+        public string Beneficiary
         {
-            get { return LoanReportMainObj.inputReportType.SelectedIndex; }
-            set { LoanReportMainObj.inputReportType.SelectedIndex = value; }
+            get { return ActiveLoan.LoanBeneficiary; }
+            set { ActiveLoan.LoanBeneficiary = value; }
         }
+
+        public string CollectionAccount
+        {
+            get { return ActiveLoan.LoanCollectionAccount; }
+            set { ActiveLoan.LoanCollectionAccount = value; }
+        }
+
+        public DateTime StartDate
+        {
+            get { return ActiveLoan.LoanStartDate; }
+            set { ActiveLoan.LoanStartDate = value; }
+        }
+
+        public DateTime EndDate
+        {
+            get
+            {
+                if (ActiveLoan.LoanPaid)
+                {
+                    return ActiveLoan.LoanPaidDate;
+                }
+                else
+                {
+                    return StartDate.AddYears(LoanDuration);
+                }
+            }
+
+            set { ActiveLoan.LoanPaidDate = value; }
+        }
+
+        public decimal InitialLoanAmount
+        {
+            get { return ActiveLoan.LoanInitialLoanAmount; }
+            set { ActiveLoan.LoanInitialLoanAmount = value; }
+        }
+
+        public decimal InterestRate
+        {
+            get { return ActiveLoan.LoanInterestRate; }
+            set { ActiveLoan.LoanInterestRate = value; }
+        }
+
+        public string Currency
+        {
+            get { return ActiveLoan.LoanCurrency; }
+            set { ActiveLoan.LoanCurrency = value; }
+        }
+
+        public bool HasInterestPenalty
+        {
+            get { return ActiveLoan.LoanHasInterestPenalty; }
+            set { ActiveLoan.LoanHasInterestPenalty = value; }
+        }
+
+        public DateTime InterestPenaltyDate
+        {
+            get { return ActiveLoan.LoanInterestPenaltyDate; }
+            set { ActiveLoan.LoanInterestPenaltyDate = value; }
+        }
+
+        public decimal InterestPenaltyRate
+        {
+            get { return ActiveLoan.LoanInterestPenaltyRate; }
+            set { ActiveLoan.LoanInterestPenaltyRate = value; }
+        }
+
         public string InterestStructureSelection
         {
-            get {
-             
-                    return LoanReportMainObj.inputInterestStructureSelection.SelectedItem.ToString(); }
+            get { return ActiveLoan.LoanInterestStructure; }
+            set { ActiveLoan.LoanInterestStructure = value; }
         }
-        public bool InterestPenaltyChk
+
+    public List<Payment> PaymentList
         {
-            
-            get {
-               
-                return (bool)LoanReportMainObj.inputInterestPenaltyChk.IsChecked; }
+            get { return ActiveLoan.LoanPaymentsList; }
+            set { ActiveLoan.LoanPaymentsList = value; }
         }
+
+
+        public bool Paid
+        {
+            get { return ActiveLoan.LoanPaid; }
+            set { ActiveLoan.LoanPaid = value; }
+        }
+
+        public bool ActiveLoanSavedToDb
+        {
+            get { return ActiveLoan.LoanSavedToDb; }
+            set { ActiveLoan.LoanSavedToDb = value; }
+        }
+
+
+
+        //calculation specific properties
+
+        private int loanDuration;
+        public int LoanDuration
+        {
+            get { return loanDuration; }
+            set { loanDuration = value; }
+        }
+        private DateTime reportStartDate;
+        public DateTime ReportStartDate
+        {
+            get { return reportStartDate; }
+            set { reportStartDate = value; }
+        }
+        private DateTime reportEndDate;
+        public DateTime ReportEndDate
+        {
+            get { return reportEndDate; }
+            set { reportEndDate = value; }
+        }
+        private TimeSpan reportTimeSpan;
+        public TimeSpan ReportTimeSpan
+        {
+            get
+            {
+                reportTimeSpan = ReportEndDate.Subtract(ReportStartDate);
+                return reportTimeSpan;
+            }
+        }
+        private int reportType;
+        public int ReportType
+        {
+            get { return reportType; }
+            set { reportType = value; }
+        }
+
+  
+        private bool displayPaymentsChk;
         public bool DisplayPaymentsChk
         {
-            get { return (bool)LoanReportMainObj.inputDisplayPaymentsChk.IsChecked; }
+            get { return displayPaymentsChk; }
+            set { displayPaymentsChk = value; }
         }
+        public TimeSpan loanTimeSpan;
         public TimeSpan LoanTimeSpan
         {
-            get { return LoanEndDate.Subtract(ActiveLoan.LoanStartDate); }
+            get
+            {
+                loanTimeSpan = EndDate.Subtract(ActiveLoan.LoanStartDate);
+                return loanTimeSpan;
+            }
         }
-        public DateTime LoanEndDate
-        {
-            get { return ActiveLoan.LoanStartDate.AddYears(LoanDuration); }
-            set { }
-        }
-        public decimal RecuringPaymentAmount { get; set; }
+
         public DataGrid LoanReportDataGrid { get; set; }
+
 
         private decimal principalBalance;
         public decimal PrincipalBalance
         {
-            get
-            {
-                return principalBalance;
-            } set
-            {
-                principalBalance = value;
-            }
+            get { return principalBalance; }
+            set { principalBalance = value; }
         }
 
         private decimal interestBalance;
         public decimal InterestBalance
         {
-            get
-            {
-                return interestBalance;
-            }
-            private set { interestBalance = value; }
+            get { return interestBalance; }
+            set { interestBalance = value; }
         }
 
         private decimal cumulativeInterestBalance;
         public decimal CumulativeInterestBalance
         {
-            get
-            {
-                return cumulativeInterestBalance;
-            }
-            private set
-            {
-                cumulativeInterestBalance = value;
-            }
+            get { return cumulativeInterestBalance; }
+            set { cumulativeInterestBalance = value; }
         }
 
         private decimal currentBalance;
-        public decimal CurrentBalance { get
-            {
-                return currentBalance;
-            }
+        public decimal CurrentBalance
+        {
+            get { return currentBalance; }
             private set { currentBalance = value; }
         }
 
-        public string SelectedTabControl;
+
+
+        // public string SelectedTabControl;
         public DataTable LoanDataTable;
         public bool RegenerateLoanTable;
         public bool LoanGenerated;
 
 
+        // not implemented yet
+
+        //private decimal recuringPaymentAmount;
+        //public decimal RecuringPaymentAmount
+        //{
+        //    get { return recuringPaymentAmount; }
+        //    set { recuringPaymentAmount = value; }
+        //}
+
+
         //Generate the loan objects, and populate the data grid colums
 
-        public void CreateLoanObjects()
-        {
-            LoanDataTable = new DataTable();
-           // paymentsList = new List<Payment>();
-            //firstRowSet = false;
-            LoanDataTable.Columns.Add("loanDayDate", typeof(DateTime));
-            LoanDataTable.Columns.Add("loanDayPrincipal", typeof(decimal));
-            LoanDataTable.Columns.Add("loanDayInterestRate", typeof(decimal));
-            LoanDataTable.Columns.Add("loanDayInterest", typeof(decimal));
+        public void createNewLoan()
+        {         
+                ActiveLoan = new Loan(true);  
 
-            LoanDataTable.Columns.Add("loanInterestBalance", typeof(decimal));
-
-            LoanDataTable.Columns.Add("loanDayCuIntrestBal", typeof(decimal));
-            LoanDataTable.Columns.Add("loanDayTotalPayment", typeof(decimal)); ;
-            LoanDataTable.Columns.Add("loanDayInterestPayment", typeof(decimal));
-            LoanDataTable.Columns.Add("loanDayPrincipalPayment", typeof(decimal)); ;
-            LoanDataTable.Columns.Add("loanDayCurrentBalance", typeof(decimal));
-            LoanDataTable.Columns.Add("loanDayComments", typeof(string));
-            LoanDataTable.PrimaryKey = new DataColumn[] { LoanDataTable.Columns["loanDayDate"] };
         }
 
-        public Loan setActiveLoan(bool newLoan)
+        public void setExistingLoanActive(Loan selectedLoan)
         {
-            if(newLoan)
-            {
-                ActiveLoan = new Loan(true);
-                ActiveLoan.PaymentsList = new List<Payment>();
-                return ActiveLoan;
-            }
-            else if(!newLoan)
-            {
-                //need to implement with existing loans from DB need to be able to pull payments as well
-                MessageBox.Show("Please holder for existing loan");
-                return ActiveLoan;
-            }
-            else
-            {
-                return null;
-            }
-            
+            ActiveLoan = selectedLoan;
         }
 
         // interest structure and rate calculation
@@ -189,38 +285,38 @@ namespace InterestTracker
             switch (InterestStructureSelection)
             {
                 case "_365fixed":
-                    interest = (PrincipalBalance) * InterestRate(date) / numberOfDaysInDateYear;
+                    interest = (PrincipalBalance) * calculateInterestRate(date) / numberOfDaysInDateYear;
                     goto default;
                 case "_360fixed":
-                    interest = (PrincipalBalance * InterestRate(date)) / 360;
+                    interest = (PrincipalBalance * calculateInterestRate(date)) / 360;
                     goto default;
                 case "_365compDay":
-                    interest = (PrincipalBalance * InterestRate(date)) / numberOfDaysInDateYear;
+                    interest = (PrincipalBalance * calculateInterestRate(date)) / numberOfDaysInDateYear;
                     goto default;
                 default:
                     return FormatDigitInput.FormatToDecimal(interest);
             }
         }
 
-        private decimal InterestRate(DateTime interestOnGivenDay)
+        private decimal calculateInterestRate(DateTime interestOnGivenDay)
         {
             decimal returnInteresRate;
-            if (InterestPenaltyChk)
+            if (HasInterestPenalty)
             {
                 if (interestOnGivenDay < ActiveLoan.LoanInterestPenaltyDate)
                 {
-                    returnInteresRate = (Int32.Parse(LoanReportMainObj.inputInterestRate.Text)) / 100;
+                    returnInteresRate = InterestRate / 100;
                     return returnInteresRate;
                 }
                 else
                 {
-                    returnInteresRate = (Int32.Parse(LoanReportMainObj.inputInterestRate.Text)) / 100;
+                    returnInteresRate = InterestPenaltyRate / 100;
                     return returnInteresRate;
                 }
             }
             else
             {
-                returnInteresRate = (Int32.Parse(LoanReportMainObj.inputInterestRate.Text)) / 100;
+                returnInteresRate = InterestRate / 100;
                 return returnInteresRate;
             }
         }
@@ -231,12 +327,24 @@ namespace InterestTracker
         {
             try
             {
-                //if (LoanReportMain.LoanCreated)
+                LoanDataTable = new DataTable();  
+                LoanDataTable.Columns.Add("loanDayDate", typeof(DateTime));
+                LoanDataTable.Columns.Add("loanDayPrincipal", typeof(decimal));
+                LoanDataTable.Columns.Add("loanDayInterestRate", typeof(decimal));
+                LoanDataTable.Columns.Add("loanDayInterest", typeof(decimal));
+                LoanDataTable.Columns.Add("loanInterestBalance", typeof(decimal));
+                LoanDataTable.Columns.Add("loanDayCuIntrestBal", typeof(decimal));
+                LoanDataTable.Columns.Add("loanDayTotalPayment", typeof(decimal)); ;
+                LoanDataTable.Columns.Add("loanDayInterestPayment", typeof(decimal));
+                LoanDataTable.Columns.Add("loanDayPrincipalPayment", typeof(decimal)); ;
+                LoanDataTable.Columns.Add("loanDayCurrentBalance", typeof(decimal));
+                LoanDataTable.Columns.Add("loanDayComments", typeof(string));
+                LoanDataTable.PrimaryKey = new DataColumn[] { LoanDataTable.Columns["loanDayDate"] };
 
-                DateTime indexingDate = ActiveLoan.LoanStartDate;
-                DateTime indexEndDate = LoanEndDate;
-                LoanReportMainObj.statusProgressBar.Maximum = LoanTimeSpan.Days;
-                LoanReportMainObj.statusProgressBar.Value = 0;
+                DateTime indexingDate = StartDate;
+                DateTime indexEndDate = EndDate;
+                //LoanReportMainObj.statusProgressBar.Maximum = LoanTimeSpan.Days;
+                //LoanReportMainObj.statusProgressBar.Value = 0;
                 PrincipalBalance = 0;
                 InterestBalance = 0;
                 CumulativeInterestBalance = 0;
@@ -244,10 +352,10 @@ namespace InterestTracker
 
                 //testing nulling the data source
                 LoanGenerated = false;
-                if (RegenerateLoanTable)
-                {
+                //if (RegenerateLoanTable)
+                //{
 
-                    for (DateTime currentDate = ActiveLoan.LoanStartDate; currentDate < LoanEndDate; currentDate = currentDate.AddDays(1), LoanReportMainObj.statusProgressBar.Value += 1)
+                    for (DateTime currentDate = ActiveLoan.LoanStartDate; currentDate < EndDate; currentDate = currentDate.AddDays(1) ) //LoanReportMainObj.statusProgressBar.Value += 1
                     {
                         bool rowExists = LoanDataTable.Rows.Contains(currentDate);
 
@@ -267,17 +375,17 @@ namespace InterestTracker
                             }
                         }
                     }
-                    LoanReportMainObj.statusProgressBar.Value = 0;
+                   // LoanReportMainObj.statusProgressBar.Value = 0;
                     LoanDataTable.AcceptChanges();
                     //LoanReportMainObj.loanReportDataGrid.DataSource = LoanDataTable;
                     // SetColumnHeaders();
                     LoanGenerated = true;
-                    SortDataGridToReport(ActiveLoan.LoanStartDate, LoanEndDate, 2);
-                }
-                else if (!RegenerateLoanTable)
-                {
-                    MessageBox.Show("Loan is not regenerated with new start date");
-                }
+                    SortDataGridToReport(ActiveLoan.LoanStartDate, EndDate, 2);
+               // }
+                //else if (!RegenerateLoanTable)
+                //{
+                //    MessageBox.Show("Loan is not regenerated with new start date");
+                //}
 
             }
             catch (OverflowException e)
@@ -290,7 +398,7 @@ namespace InterestTracker
         private DataRow addDateRow(DateTime currentDate)
         {
             DataRow dateRow = LoanDataTable.NewRow();
-            
+
             if (currentDate == ActiveLoan.LoanStartDate) //first day of the loan
             {
                 PrincipalBalance = ActiveLoan.LoanInitialLoanAmount;
@@ -352,31 +460,31 @@ namespace InterestTracker
                     {
                         PrincipalBalance = PrincipalBalance + InterestBalance;
                         CurrentBalance = PrincipalBalance;
-                    }     
-                    
-                    
-                                 
+                    }
+
+
+
                     goto default;
 
                 default:
                     dateRow[0] = currentDate;
-                    dateRow[1] = FormatDigitInput.FormatToDecimal(PrincipalBalance); 
-                    dateRow[2] = InterestRate(currentDate); 
-                    dateRow[3] = FormatDigitInput.FormatToDecimal(dailyInterest); 
-                    dateRow[4] = FormatDigitInput.FormatToDecimal(InterestBalance); 
-                    dateRow[5] = FormatDigitInput.FormatToDecimal(CumulativeInterestBalance); 
-         
+                    dateRow[1] = FormatDigitInput.FormatToDecimal(PrincipalBalance);
+                    dateRow[2] = calculateInterestRate(currentDate);
+                    dateRow[3] = FormatDigitInput.FormatToDecimal(dailyInterest);
+                    dateRow[4] = FormatDigitInput.FormatToDecimal(InterestBalance);
+                    dateRow[5] = FormatDigitInput.FormatToDecimal(CumulativeInterestBalance);
+
                     if (paymentExists(currentDate))
                     {
-                        dateRow[6] = FormatDigitInput.FormatToDecimal(getPaymentDetails(currentDate).TotalPaymentAmount); 
-                        dateRow[7] = FormatDigitInput.FormatToDecimal(getPaymentDetails(currentDate).InterestPaymentAmount); 
-                        dateRow[8] = FormatDigitInput.FormatToDecimal(getPaymentDetails(currentDate).PrincipalPaymentAmount); 
+                        dateRow[6] = FormatDigitInput.FormatToDecimal(getPaymentDetails(currentDate).TotalPaymentAmount);
+                        dateRow[7] = FormatDigitInput.FormatToDecimal(getPaymentDetails(currentDate).InterestPaymentAmount);
+                        dateRow[8] = FormatDigitInput.FormatToDecimal(getPaymentDetails(currentDate).PrincipalPaymentAmount);
                     }
                     else
                     {
-                        dateRow[6] = 0; 
-                        dateRow[7] = 0; 
-                        dateRow[8] = 0; 
+                        dateRow[6] = 0;
+                        dateRow[7] = 0;
+                        dateRow[8] = 0;
                     }
                     dateRow[9] = FormatDigitInput.FormatToDecimal(CurrentBalance);
                     return dateRow;
@@ -385,20 +493,20 @@ namespace InterestTracker
 
         public Payment getPaymentDetails(DateTime currentDate)
         {
-            foreach (Payment paymentDetail in ActiveLoan.PaymentsList)
+            foreach (Payment paymentDetail in ActiveLoan.LoanPaymentsList)
             {
                 if (paymentDetail.PaymentDate == currentDate)
                 {
                     return paymentDetail;
                 }
             }
-                return null;
+            return null;
         }
         private bool paymentExists(DateTime currentDate)
         {
-            foreach (Payment paymentDetail in ActiveLoan.PaymentsList)
+            foreach (Payment paymentDetail in ActiveLoan.LoanPaymentsList)
             {
-                if(paymentDetail.PaymentDate == currentDate)
+                if (paymentDetail.PaymentDate == currentDate)
                 {
                     return true;
                 }
@@ -510,7 +618,8 @@ namespace InterestTracker
                             }
                             goto default;
                         default:
-                             DataView viewReport = reportScope.AsDataView();
+                            DataView viewReport = reportScope.AsDataView();
+                            
                             LoanReportDataGrid.ItemsSource = viewReport;
                             SetColumnHeaders();
                             break;
@@ -523,11 +632,28 @@ namespace InterestTracker
 
         public void SetColumnHeaders()
         {
-            if(LoanReportDataGrid.ItemsSource != null)
+            if (LoanReportDataGrid.ItemsSource != null)
             {
+ 
+                DataGridTextColumn dateColumns = LoanReportDataGrid.Columns[0] as DataGridTextColumn;
+                dateColumns.Binding.StringFormat = "MM/dd/yyyy";
+
+                LoanReportDataGrid.Columns[0].Header = "Start Date";
+                LoanReportDataGrid.Columns[1].Header = "Principal \n(" + ActiveLoan.LoanCurrency + ")"; 
+                LoanReportDataGrid.Columns[2].Header = "Interest Rate";
+                LoanReportDataGrid.Columns[3].Header = "Daily Interest \n(" + ActiveLoan.LoanCurrency + ")"; 
+                LoanReportDataGrid.Columns[4].Header = "Interest Balance\n(" + ActiveLoan.LoanCurrency + ")";
+                LoanReportDataGrid.Columns[5].Header = "Cumulative Interest \n(" + ActiveLoan.LoanCurrency + ")";
+                LoanReportDataGrid.Columns[6].Header = "Total Payment \n(" + ActiveLoan.LoanCurrency + ")";
+                LoanReportDataGrid.Columns[7].Header = "Interest Payment \n(" + ActiveLoan.LoanCurrency + ")";
+                LoanReportDataGrid.Columns[8].Header = "Principal Payment \n(" + ActiveLoan.LoanCurrency + ")";
+                LoanReportDataGrid.Columns[9].Header = "Current Balance \n(" + ActiveLoan.LoanCurrency + ")";
+                LoanReportDataGrid.Columns[10].Header = "Comments";
+
+
                 //LoanReportDataGrid.ColumnHeaderStyle.Resources = new Font(DataGridView.DefaultFont, FontStyle.Bold);
-                //LoanReportDataGrid.Columns[0].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-                //LoanReportDataGrid.Columns[0]..Format = "MMMM dd, yyyy";
+                //  LoanReportDataGrid.Columns[0].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
                 //LoanReportDataGrid.Columns["loanDayInterestRate"].DefaultCellStyle.Format = "p2";   // #0.00 %
                 //LoanReportDataGrid.Columns["loanDayPrincipal"].DefaultCellStyle.Format = "N";
                 //LoanReportDataGrid.Columns["loanDayInterest"].DefaultCellStyle.Format = "N";
