@@ -77,9 +77,30 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LoanCalculation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LoanDrawDown.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LoanPayments.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Loan.cs" />
+    <Compile Include="LoanCalculation.xaml.cs">
+      <DependentUpon>LoanCalculation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LoanDrawDown.xaml.cs">
+      <DependentUpon>LoanDrawDown.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LoanPayments.xaml.cs">
+      <DependentUpon>LoanPayments.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LoanReportData.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

@@ -44,8 +44,10 @@
         <Setter Property="Background" Value="#FFDCDCDC"/>
         <Setter Property="Foreground" Value="#FF13487D"/>
         <Setter Property="MaxLength" Value="100"/>
+        <Setter Property="Padding" Value="3"/>
         <Setter Property="FontFamily" Value="Arial"/>
-        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontSize" Value="14"/>
+        
     </Style>
 
     <Style TargetType="ComboBox" >
@@ -106,8 +108,8 @@
     <Style TargetType="Menu">
         <Setter Property="Background" Value="#FF4682B4"/>
         <Setter Property="Foreground" Value="#FFDCDCDC"/>
-        <Setter Property="BorderBrush" Value="#FFDCDCDC"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <!--<Setter Property="BorderBrush" Value="#FFDCDCDC"/>-->
+        <Setter Property="BorderThickness" Value="0"/>
         <!--<Setter Property="BorderBrush" Value="#FF13487D"/>
         <Setter Property="FontFamily" Value="Arial"/>
         <Setter Property="FontSize" Value="12"/>-->
@@ -116,7 +118,7 @@
     <Style TargetType="MenuItem">
         <Setter Property="Background" Value="#FF4682B4"/>
         <Setter Property="Foreground" Value="#FFDCDCDC"/>
-        <Setter Property="BorderBrush" Value="#FFDCDCDC"/>
+       
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="FontFamily" Value="Arial"/>
         <Setter Property="FontSize" Value="12"/>
@@ -130,8 +132,7 @@
             <Trigger Property="IsMouseOver" Value="false">
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="Background" Value="#FF4682B4"/>
-                <Setter Property="Foreground" Value="#FFDCDCDC"/>
-                <Setter Property="BorderBrush" Value="#FFDCDCDC"/>
+                <Setter Property="Foreground" Value="#FFDCDCDC"/>               
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -141,11 +142,15 @@
         <Setter Property="Foreground" Value="#FFDCDCDC"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Width" Value="140"/>
-        <Setter Property="Height" Value="24"/>
-        
+        <Setter Property="Height" Value="26"/>
+        <Setter Property="Padding" Value="3"/>
         <Setter Property="FontFamily" Value="Arial"/>
-        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontSize" Value="14"/>
         
+    </Style>
+
+    <Style TargetType="CalendarItem">
+        <Setter Property="Foreground" Value="#FFDCDCDC"/>
     </Style>
 
     <!--<Style TargetType="TabItem">
@@ -217,19 +222,33 @@
     <Style TargetType="DataGrid">
         <Setter Property="Background" Value="#FF4682B4"/>
         <Setter Property="ColumnWidth" Value="*"/>
+        <Setter Property="RowHeaderWidth" Value="0"/>
+        <Setter Property="VerticalGridLinesBrush" Value="#FF13487D"/>
+        <Setter Property="HorizontalGridLinesBrush" Value="#FF13487D"/>
+        <Setter Property="CanUserAddRows" Value="False"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="BorderThickness" Value="0"/>
     </Style>
     
     <Style TargetType="DataGridColumnHeader">
         <Setter Property="Background" Value="#FF4682B4"/>
-        <Setter Property="Foreground" Value="#FF13487D"/>
+        <Setter Property="Foreground" Value="#FFDCDCDC"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <!--<Setter Property="BorderBrush" Value="#FF13487D"/>-->
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Height" Value="60"/>
         <Setter Property="ContentTemplate">
+            
             <Setter.Value>
                 <DataTemplate>
                     <TextBlock TextWrapping="Wrap" Text="{Binding}"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
+     
     </Style>
     
     
@@ -237,6 +256,7 @@
     <Style TargetType="DataGridCell">
         <Setter Property="Background" Value="#FF4682B4"/>
         <Setter Property="Foreground" Value="#FFDCDCDC"/>
+        <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
     </Style>

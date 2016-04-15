@@ -196,6 +196,8 @@ namespace InterestTracker
             set { reportType = value; }
         }
 
+        public int ReportSpan { get; set; }
+
   
         private bool displayPaymentsChk;
         public bool DisplayPaymentsChk
@@ -284,13 +286,13 @@ namespace InterestTracker
 
             switch (InterestStructureSelection)
             {
-                case "_365fixed":
+                case "365fixed":
                     interest = (PrincipalBalance) * calculateInterestRate(date) / numberOfDaysInDateYear;
                     goto default;
-                case "_360fixed":
+                case "360fixed":
                     interest = (PrincipalBalance * calculateInterestRate(date)) / 360;
                     goto default;
-                case "_365compDay":
+                case "365compDay":
                     interest = (PrincipalBalance * calculateInterestRate(date)) / numberOfDaysInDateYear;
                     goto default;
                 default:
@@ -327,6 +329,7 @@ namespace InterestTracker
         {
             try
             {
+                LoanReportDataGrid.Visibility = Visibility.Hidden;
                 LoanDataTable = new DataTable();  
                 LoanDataTable.Columns.Add("loanDayDate", typeof(DateTime));
                 LoanDataTable.Columns.Add("loanDayPrincipal", typeof(decimal));
@@ -618,9 +621,9 @@ namespace InterestTracker
                             }
                             goto default;
                         default:
-                            DataView viewReport = reportScope.AsDataView();
-                            
+                            DataView viewReport = reportScope.AsDataView();                            
                             LoanReportDataGrid.ItemsSource = viewReport;
+                            
                             SetColumnHeaders();
                             break;
                     }
@@ -634,48 +637,30 @@ namespace InterestTracker
         {
             if (LoanReportDataGrid.ItemsSource != null)
             {
- 
-                DataGridTextColumn dateColumns = LoanReportDataGrid.Columns[0] as DataGridTextColumn;
-                dateColumns.Binding.StringFormat = "MM/dd/yyyy";
-
                 LoanReportDataGrid.Columns[0].Header = "Start Date";
-                LoanReportDataGrid.Columns[1].Header = "Principal \n(" + ActiveLoan.LoanCurrency + ")"; 
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[0]).Binding.StringFormat = "MM/dd/yyyy";
+                LoanReportDataGrid.Columns[1].Header = "Principal \n(" + ActiveLoan.LoanCurrency + ")";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[1]).Binding.StringFormat = "N";
                 LoanReportDataGrid.Columns[2].Header = "Interest Rate";
-                LoanReportDataGrid.Columns[3].Header = "Daily Interest \n(" + ActiveLoan.LoanCurrency + ")"; 
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[2]).Binding.StringFormat = "p2";
+                LoanReportDataGrid.Columns[3].Header = "Daily Interest \n(" + ActiveLoan.LoanCurrency + ")";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[3]).Binding.StringFormat = "N";
                 LoanReportDataGrid.Columns[4].Header = "Interest Balance\n(" + ActiveLoan.LoanCurrency + ")";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[4]).Binding.StringFormat = "N";
                 LoanReportDataGrid.Columns[5].Header = "Cumulative Interest \n(" + ActiveLoan.LoanCurrency + ")";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[5]).Binding.StringFormat = "N";
                 LoanReportDataGrid.Columns[6].Header = "Total Payment \n(" + ActiveLoan.LoanCurrency + ")";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[6]).Binding.StringFormat = "N";
                 LoanReportDataGrid.Columns[7].Header = "Interest Payment \n(" + ActiveLoan.LoanCurrency + ")";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[7]).Binding.StringFormat = "N";
                 LoanReportDataGrid.Columns[8].Header = "Principal Payment \n(" + ActiveLoan.LoanCurrency + ")";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[8]).Binding.StringFormat = "N";
                 LoanReportDataGrid.Columns[9].Header = "Current Balance \n(" + ActiveLoan.LoanCurrency + ")";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[9]).Binding.StringFormat = "N";
                 LoanReportDataGrid.Columns[10].Header = "Comments";
 
+                LoanReportDataGrid.Visibility = Visibility.Visible;
 
-                //LoanReportDataGrid.ColumnHeaderStyle.Resources = new Font(DataGridView.DefaultFont, FontStyle.Bold);
-                //  LoanReportDataGrid.Columns[0].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-
-                //LoanReportDataGrid.Columns["loanDayInterestRate"].DefaultCellStyle.Format = "p2";   // #0.00 %
-                //LoanReportDataGrid.Columns["loanDayPrincipal"].DefaultCellStyle.Format = "N";
-                //LoanReportDataGrid.Columns["loanDayInterest"].DefaultCellStyle.Format = "N";
-                //LoanReportDataGrid.Columns["loanInterestBalance"].DefaultCellStyle.Format = "N";
-                //LoanReportDataGrid.Columns["loanDayCuIntrestBal"].DefaultCellStyle.Format = "N";
-                //LoanReportDataGrid.Columns["loanDayTotalPayment"].DefaultCellStyle.Format = "N";
-                //LoanReportDataGrid.Columns["loanDayInterestPayment"].DefaultCellStyle.Format = "N";
-                //LoanReportDataGrid.Columns["loanDayPrincipalPayment"].DefaultCellStyle.Format = "N";
-                //LoanReportDataGrid.Columns["loanDayCurrentBalance"].DefaultCellStyle.Format = "N";
-
-
-                //LoanReportDataGrid.Columns["loanDayDate"].HeaderText = "Date"; // Index 0
-                //LoanReportDataGrid.Columns["loanDayPrincipal"].HeaderText = "Principal \n(" + ActiveLoan.LoanCurrency + ")"; // Index 1
-                //LoanReportDataGrid.Columns["loanDayInterestRate"].HeaderText = "Interest Rate"; // Index 2
-                //LoanReportDataGrid.Columns["loanDayInterest"].HeaderText = "Daily Interest \n(" + ActiveLoan.LoanCurrency + ")"; // Index 3
-                //LoanReportDataGrid.Columns["loanInterestBalance"].HeaderText = "Interest Balance\n(" + ActiveLoan.LoanCurrency + ")"; // Index 4
-                //LoanReportDataGrid.Columns["loanDayCuIntrestBal"].HeaderText = "Cumulative Interest \n(" + ActiveLoan.LoanCurrency + ")"; // Index 5
-                //LoanReportDataGrid.Columns["loanDayTotalPayment"].HeaderText = "Total Payment \n(" + ActiveLoan.LoanCurrency + ")"; // Index 6
-                //LoanReportDataGrid.Columns["loanDayInterestPayment"].HeaderText = "Interest Payment \n(" + ActiveLoan.LoanCurrency + ")"; // Index 7
-                //LoanReportDataGrid.Columns["loanDayPrincipalPayment"].HeaderText = "Principal Payment \n(" + ActiveLoan.LoanCurrency + ")"; // Index 8
-                //LoanReportDataGrid.Columns["loanDayCurrentBalance"].HeaderText = "Current Balance \n(" + ActiveLoan.LoanCurrency + ")"; // Index 9
-                //LoanReportDataGrid.Columns["loanDayComments"].HeaderText = "Comments"; // Index 10
             }
         }
     }
