@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InterestTracker"
-        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="InterestTracker.InterestTrackerMain"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Name="InterestTrackerMainWindow" x:Class="InterestTracker.InterestTrackerMain"
         mc:Ignorable="d"
         Title="Interest Tracker" Height="737" Width="1394" Background="SteelBlue" WindowStartupLocation="CenterScreen">
     <Window.Resources>
@@ -13,8 +13,8 @@
 
     <Grid x:Name="groupMainWindow">
         <Grid.RowDefinitions>
-            <RowDefinition Height="22"/>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="27"/>
             <RowDefinition/>
 
 
@@ -28,28 +28,47 @@
         <TabControl x:Name="navMainTabControl" Grid.Column="1" Grid.RowSpan="4" BorderBrush="{x:Null}" BorderThickness="0">
             <TabItem x:Name="navMainLoanData" Header="Loan Data" GotFocus="navMainLoanData_GotFocus">
                 <Grid x:Name="groupMainLoanData" Margin="0,0,0,26">
-                    <Label x:Name="labelTitle" Content="Label" HorizontalAlignment="Left" Margin="133,66,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="labelTitle" Content="Title:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="labelCompanyInfo" Content="Company Info:" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="labelLender" Content="Lender:" HorizontalAlignment="Left" Margin="10,58,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="labeBeneficiary" Content="Beneficiary:" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="labelCollectionAccount" Content="Collection Account:" HorizontalAlignment="Left" Margin="10,106,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="labelInitialAmount" Content="Initial Loan Amount:" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="labelLoanStartDate" Content="Loan Start Date:" HorizontalAlignment="Left" Margin="10,154,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="labelInterestStructure" Content="Interest Structure:" HorizontalAlignment="Left" Margin="10,178,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="loanGuid" Content="Today's Date:" HorizontalAlignment="Left" Margin="10,202,0,0" VerticalAlignment="Top"/>
+                    <Grid HorizontalAlignment="Left" Height="344" Margin="10,296,0,0" VerticalAlignment="Top" Width="1087">
+                        <DataGrid x:Name="openLoansDataGrid"/>
+                    </Grid>
                 </Grid>
             </TabItem>
             <TabItem x:Name="navMainLoanDetails" Header="Loan Details">
-                <Grid x:Name="groupMainLoanDetails" Margin="0,0,0,0">
+                <Grid x:Name="groupMainLoanDetails" Margin="0,0,0,30">
                     <Frame x:Name="loanDetails" NavigationUIVisibility="Hidden" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top">
-                        
+
                     </Frame>
-    
+
                 </Grid>
             </TabItem>
         </TabControl>
-        <Menu x:Name="menu" RenderTransformOrigin="0.5,0.5" Foreground="Gainsboro">
-            <MenuItem Header="_File" Height="22" Width="42" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+        <Menu x:Name="menu" RenderTransformOrigin="0.5,0.5" Foreground="Gainsboro" Margin="0,0,135,0" Grid.Column="0" Grid.Row="0">
+            <MenuItem x:Name="fileMenu" Header="_File" Height="22" Width="42" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <MenuItem Header="_Exit" Name="exitApplication"/>
             </MenuItem>
-            <MenuItem Header="_Loan Actions">
+            <MenuItem x:Name="loanActionMenu" Header="_Loan Actions">
                 <MenuItem Header="_New Loan" Name="inputNewLoan" Click="inputNewLoan_Click"/>
-                <MenuItem Header="_Open Loan" Name="inputOpenLoan"/>
-                <MenuItem Header="_Save Loan" Name="inputSaveLoan"/>
+                <MenuItem Header="_Open Loan" Name="inputOpenLoan" Click="inputOpenLoan_Click"/>
+                <MenuItem Header="_Save Loan" Name="inputSaveLoan" Click="inputSaveLoan_Click"/>
             </MenuItem>
+
+
         </Menu>
+
+
+
+
+
 
         <StatusBar Grid.Row="3" Grid.ColumnSpan="2">
             <Label x:Name="statusIndicationText" Width="330" Content="Status indication"/>
@@ -59,20 +78,24 @@
         <TabControl x:Name="navTabControl" Grid.Row="2" Foreground="Gainsboro">
             <TabItem x:Name="navLoanData" Header="Loan Data" GotFocus="navLoanData_GotFocus">
                 <Grid x:Name="groupLoanData" Margin="0,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="118*"/>
+                        <ColumnDefinition Width="153*"/>
+                    </Grid.ColumnDefinitions>
 
-                    <TextBox x:Name="inputLoanTitle" Height="22" Margin="10,32,10,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="inputLoanTitle_TextChanged"/>
+                    <TextBox x:Name="inputLoanTitle" Height="22" Margin="10,32,10,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="inputLoanTitle_TextChanged" Grid.ColumnSpan="2"/>
                     <Label x:Name="labelLoanTitleSet" Content="Title" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"/>
-                    <ComboBox x:Name="inputCompanyInfo" ItemContainerStyle="{StaticResource ContainerStyle}" Margin="10,80,10,0" VerticalAlignment="Top" SelectedIndex="0">
+                    <ComboBox x:Name="inputCompanyInfo" ItemContainerStyle="{StaticResource ContainerStyle}" Margin="10,80,10,0" VerticalAlignment="Top" SelectedIndex="0" SelectionChanged="inputCompanyInfo_SelectionChanged" Grid.ColumnSpan="2">
 
                         <ComboBoxItem x:Name="FreewayCAMBV" Content="Freeway CAM B.V."/>
                     </ComboBox>
                     <Label x:Name="labelCompanyInfoSelect" Content="Company Info" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="inputLender" Height="22" Margin="10,128,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <TextBox x:Name="inputLender" Height="22" Margin="10,128,10,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="inputLender_TextChanged" Grid.ColumnSpan="2"/>
                     <Label x:Name="labelLenderInfoSet" Content="Lender" HorizontalAlignment="Left" Margin="10,102,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="inputBeneficiary" Height="22" Margin="10,176,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <TextBox x:Name="inputBeneficiary" Height="22" Margin="10,176,10,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="inputBeneficiary_TextChanged" Grid.ColumnSpan="2"/>
                     <Label x:Name="labelBeneficiarySet" Content="Beneficiary" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="inputCollectionAccount" Height="22" Margin="10,224,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-                    <Label x:Name="labelCollectionAccountSet" Content="Collection Account" HorizontalAlignment="Left" Margin="10,198,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="inputCollectionAccount" Height="22" Margin="10,224,10,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="inputCollectionAccount_TextChanged" Grid.ColumnSpan="2"/>
+                    <Label x:Name="labelCollectionAccountSet" Content="Collection Account" HorizontalAlignment="Left" Margin="10,198,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
 
                 </Grid>
             </TabItem>
@@ -85,9 +108,9 @@
                     <Label x:Name="lableLoanStartDate" Content="Loan Start Date" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Height="24" Width="94"/>
                     <Label x:Name="labelLoanDuration" Content="Projected Duration" HorizontalAlignment="Left" Margin="147,35,0,0" VerticalAlignment="Top" Width="112" Height="24"/>
                     <DatePicker x:Name="inputLoanStartDate" HorizontalAlignment="Left" Margin="10,61,0,0" VerticalAlignment="Top" Width="140" FirstDayOfWeek="Monday" BorderThickness="0,1,0,0" Height="24" SelectedDateChanged="inputLoanStartDate_SelectedDateChanged"/>
-                    
+
                     <TextBox x:Name="inputLoanDuration" HorizontalAlignment="Left" Height="24" Margin="147,61,0,0" TextWrapping="Wrap" Width="58" PreviewTextInput="inputLoanDuration_PreviewTextInput" TextChanged="inputLoanDuration_TextChanged" Text="5" VerticalAlignment="Top" PreviewKeyDown="inputLoanDuration_PreviewKeyDown"/>
-                    
+
                     <Label x:Name="labelYears" Content="Years" HorizontalAlignment="Left" Margin="210,62,0,0" VerticalAlignment="Top" Width="49" Height="24"/>
                     <Label x:Name="labelCurrencySelection" Content="Currency" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Width="77" Height="24"/>
                     <Label x:Name="labelInitialLoanAmount" Content="Initial Loan Amount" HorizontalAlignment="Left" Margin="92,85,0,0" VerticalAlignment="Top" Width="118" Height="24"/>
@@ -128,21 +151,21 @@
                             </Grid.ColumnDefinitions>
                             <TreeView x:Name="inputInterestStructureSelection" Margin="0,0,-131,-177" Grid.RowSpan="2">
                                 <TreeViewItem Grid.Row="0" Grid.Column="0" Header="360">
-                                    <RadioButton x:Name="_360fixed" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="360fixed" Content="Fixed Interest" IsChecked="True"/>
+                                    <RadioButton x:Name="fixed360" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="360 Fixed Interest" Content="Fixed Interest" IsChecked="True"/>
                                     <TreeViewItem Header="Compund Interest">
-                                        <RadioButton x:Name="_360compDay" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="360compDay" Content="Daily"/>
-                                        <RadioButton x:Name="_360compMonth" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="360compMonth" Content="Monthly"/>
-                                        <RadioButton x:Name="_360compQuater" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="360compQuater" Content="Quaterly"/>
-                                        <RadioButton x:Name="_360compYear" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="360compYear" Content="Yearly"/>
+                                        <RadioButton x:Name="compDay360" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="360 Compound Daily" Content="Daily"/>
+                                        <RadioButton x:Name="compMonth360" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="360 Compound Monthly" Content="Monthly"/>
+                                        <RadioButton x:Name="compQuarter360" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="360 Compound Quarterly" Content="Quarterly"/>
+                                        <RadioButton x:Name="compYear360" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="360 Compound Yearly" Content="Yearly"/>
                                     </TreeViewItem>
                                 </TreeViewItem>
                                 <TreeViewItem Grid.Row="1" Grid.Column="0"  Header="365/366">
-                                    <RadioButton  x:Name="_365fixed" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="365fixed" Content="Fixed Interest"/>
+                                    <RadioButton  x:Name="fixed365" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="365 Fixed" Content="Fixed Interest"/>
                                     <TreeViewItem Header="Compund Interest">
-                                        <RadioButton x:Name="_365compDay" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="365compDay" Content="Daily"/>
-                                        <RadioButton x:Name="_365compMonth" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="365compMonth" Content="Monthly"/>
-                                        <RadioButton x:Name="_365compQuater" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="365compQuater" Content="Quaterly"/>
-                                        <RadioButton x:Name="_365compYear" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="365compYear" Content="Yearly"/>
+                                        <RadioButton x:Name="compDay365" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="365 Compound Daily" Content="Daily"/>
+                                        <RadioButton x:Name="compMonth365" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="365 Compound Monthly" Content="Monthly"/>
+                                        <RadioButton x:Name="compQuarter365" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="365 Compound Quarterly" Content="Quarterly"/>
+                                        <RadioButton x:Name="compYear365" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="365 Compound Yearly" Content="Yearly"/>
                                     </TreeViewItem>
                                 </TreeViewItem>
                             </TreeView>
@@ -177,5 +200,18 @@
 
         </TabControl>
         <Label x:Name="labelLoanTitleFront" Content="Interest Tracker" Grid.Row="1" Foreground="Gainsboro" Margin="0,0,135,0"/>
+        <Expander x:Name="loginExpander" Grid.RowSpan="4" Grid.ColumnSpan="2"  Header="Login" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto"  Height="Auto" Padding="0"   Margin="205,0,0,0" >
+            <Grid Height="Auto" Width="Auto" Margin="0,0,0,0" Panel.ZIndex="5" VerticalAlignment="Top" HorizontalAlignment="Left" Background="#FF13487D">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Name="labelUsername" Content="User Name" Margin="3,3,3,3" Background="#FF13487D" VerticalAlignment="Top" Height="Auto" Width="Auto" Grid.Row="0"/>
+                <TextBox x:Name="inputUserName" Margin="3,27,3,3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="Auto" Text="kollerpeter" ></TextBox>
+                <Label Name="labelPassword" Content="Password" Margin="3,51,3,3" Background="#FF13487D" VerticalAlignment="Top" Height="Auto" Width="Auto" Grid.Row="0"/>
+                <PasswordBox Name="inputPassword" Margin="3,75,3,3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="Auto" Password="M3926GremnkY" ></PasswordBox>
+                <Button Content="Login" Background="#FF4682B4" Name="buttonLogin" Margin="3,105,3,3" VerticalAlignment="Top" HorizontalAlignment="Center" Width="60" Height="24" Click="buttonLogin_Click"/>
+            </Grid>
+        </Expander>
     </Grid>
 </Window>

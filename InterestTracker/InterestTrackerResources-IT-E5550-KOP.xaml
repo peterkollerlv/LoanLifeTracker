@@ -50,18 +50,6 @@
         
     </Style>
 
-    <Style TargetType="PasswordBox">
-        <Setter Property="Background" Value="#FFDCDCDC"/>
-        <Setter Property="Foreground" Value="#FF13487D"/>
-        <Setter Property="MaxLength" Value="100"/>
-        <Setter Property="Padding" Value="3"/>
-        <Setter Property="FontFamily" Value="Arial"/>
-        <Setter Property="FontSize" Value="14"/>
-
-    </Style>
-
-    
-
     <Style TargetType="ComboBox" >
         <Setter Property="Background" Value="#FF13487D"/>
         <Setter Property="Foreground" Value="#FF13487D"/>
@@ -235,13 +223,9 @@
         <Setter Property="Background" Value="#FF4682B4"/>
         <Setter Property="ColumnWidth" Value="*"/>
         <Setter Property="RowHeaderWidth" Value="0"/>
-        <Setter Property="VerticalGridLinesBrush" Value="#FF4682B4"/>
+        <Setter Property="VerticalGridLinesBrush" Value="#FF13487D"/>
         <Setter Property="HorizontalGridLinesBrush" Value="#FF13487D"/>
-        <Setter Property="CanUserAddRows" Value="False"/>
-        <Setter Property="IsReadOnly" Value="True"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="SelectionMode" Value="Single"/>
-        <Setter Property="SelectionUnit" Value="FullRow"/>
+
     </Style>
     
     <Style TargetType="DataGridColumnHeader">
@@ -274,10 +258,6 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
     </Style>
-
-    <Style TargetType="ListView">
-        <Setter Property="Background" Value="#FF4682B4"/>
-        <Setter Property="BorderThickness" Value="0"/>
-    </Style>
+    
     
 </ResourceDictionary>

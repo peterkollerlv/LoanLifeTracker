@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Data.Objects;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -29,28 +27,20 @@ namespace InterestTracker
         LoanCalculation loanCalculation;
         LoanPayments loanPayments;
         LoanDrawDown loanDrawDown;
-        DatabaseConnection dbConnection;
-
-        CollectionViewSource loanReportDataViewSource;
-
-        private string tableNames;
 
         public InterestTrackerMain()
         {
 
             LoanReportDataObj = new LoanReportData();
             LoanReportDataObj.createNewLoan();
-            dbConnection = new DatabaseConnection();
             InitializeComponent();
-
             inputLoanStartDate.SelectedDate = DateTime.Now.Date;
             inputInterestPenaltyStart.SelectedDate = DateTime.Now.Date;
-
-            //loanCalculation = new LoanCalculation(LoanReportDataObj);
-            //loanPayments = new LoanPayments(LoanReportDataObj);
-            //loanDrawDown = new LoanDrawDown();
+            loanCalculation = new LoanCalculation();
+            loanPayments = new LoanPayments();
+            loanDrawDown = new LoanDrawDown();
             loanDetails.Content = loanCalculation;
-
+            LoanReportDataObj.LoanReportDataGrid = loanCalculation.gridLoanCalculation;
 
         }
         public string LoanTitle { get { return LoanReportDataObj.Title; } set { inputLoanTitle.Text = value; LoanReportDataObj.Title = value; } }
@@ -75,14 +65,12 @@ namespace InterestTracker
         private void navLoanReports_GotFocus(object sender, RoutedEventArgs e)
         {
             navMainTabControl.SelectedItem = navMainLoanDetails;
-            loanDetails.Content = loanCalculation;
         }
 
         private void inputCalculateLoan_Click(object sender, RoutedEventArgs e)
         {
             if (LoanReportDataObj.ActiveLoan != null)
             {
-                loanDetails.Content = new LoanCalculation(LoanReportDataObj);
                 LoanReportDataObj.CalculateLoan();
             }
         }
@@ -100,8 +88,7 @@ namespace InterestTracker
         private void interestStructureChecked_Checked(object sender, RoutedEventArgs e)
         {
             var radioButton = (RadioButton)sender;
-            LoanReportDataObj.InterestStructureSelection = radioButton.Name.ToString();
-            labelInterestStructure.Content = "Interest Structure: " + radioButton.Tag.ToString();
+            LoanReportDataObj.InterestStructureSelection = radioButton.Tag.ToString();
             // MessageBox.Show(LoanReportDataObj.InterestStructureSelection);
         }
 
@@ -119,7 +106,6 @@ namespace InterestTracker
                 inputReportStartDate.DisplayDateStart = inputLoanStartDate.SelectedDate;
                 inputReportEndDate.SelectedDate = inputLoanStartDate.SelectedDate.Value.AddYears(Int32.Parse(inputLoanDuration.Text));
             }
-            labelLoanStartDate.Content = "Loan Start Date: " + inputLoanStartDate.SelectedDate.Value.ToLongDateString();
         }
 
         private void inputCurrencySelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -176,7 +162,11 @@ namespace InterestTracker
             }
         }
 
-
+        private void inputLoanTitle_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            labelTitle.Content = inputLoanTitle.Text;
+            LoanReportDataObj.Title = inputLoanTitle.Text;
+        }
 
         private void inputInitialLoanAmount_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -188,7 +178,6 @@ namespace InterestTracker
             if (inputInitialLoanAmount.Text.Length > 0)
             {
                 LoanReportDataObj.InitialLoanAmount = Decimal.Parse(inputInitialLoanAmount.Text);
-                labelInitialAmount.Content = "Initial Loan Amount: " + ((ComboBoxItem)inputCurrencySelection.SelectedItem).Content + " " + inputInitialLoanAmount.Text;
             }
         }
 
@@ -291,115 +280,17 @@ namespace InterestTracker
 
         private void buttonOpenAddPayment_Click(object sender, RoutedEventArgs e)
         {
-            loanDetails.Content = new LoanPayments(LoanReportDataObj);
+            loanDetails.Content = new LoanPayments();
         }
 
         private void buttonOpenCalculation_Click(object sender, RoutedEventArgs e)
         {
-            loanDetails.Content = new LoanCalculation(LoanReportDataObj);
-            LoanReportDataObj.CalculateLoan();
+            loanDetails.Content = loanCalculation;
         }
 
         private void buttonOpenDrawDown_Click(object sender, RoutedEventArgs e)
         {
             loanDetails.Content = loanDrawDown;
-        }
-
-        private void inputOpenLoan_Click(object sender, RoutedEventArgs e)
-        {
-
-            bool connected = dbConnection.OpenConnection();
-
-         if(connected)
-            {
-                // foreach (DataRow row in dbConnection.LoanDataSet.Tables[0].Rows)
-                openLoansDataGrid.Items.Clear();
-                DataTable openLoansTable = new DataTable();
-                openLoansTable.Columns.Add("title");
-                openLoansTable.Columns.Add("lender");
-                openLoansTable.Columns.Add("beneficiary");
-                openLoansTable.Columns.Add("collectionAccount");
-                openLoansTable.Columns.Add("startDate");
-
-
-                foreach (DataRow row in dbConnection.LoanDataSet.Tables["LoanLifeTracker"].Rows)
-                    {
-                    string date = row.Field<DateTime>("loanStartDate").ToShortDateString();
-                    List<string> loanRow = new List<string> { row.Field<string>("loanTitle") , row.Field<string>("loanLender"), row.Field<string>("loanBeneficiary"), row.Field<string>("loanCollectionAccount"), date };
-                    DataRow newRow = openLoansTable.NewRow();
-
-                    for (int i = 0; i < loanRow.Count; i++)
-                    {
-                        newRow[i] = loanRow[i];
-                    }
-                    openLoansTable.Rows.Add(newRow);
-               
-                }
-
-                openLoansDataGrid.ItemsSource = openLoansTable.AsDataView();
-                openLoansDataGrid.Columns[0].Header = "Title";
-                openLoansDataGrid.Columns[1].Header = "Lender";
-                openLoansDataGrid.Columns[2].Header = "Beneficifiary";
-                openLoansDataGrid.Columns[3].Header = "Collection Account";
-                openLoansDataGrid.Columns[4].Header = "Start Date";
-                openLoansDataGrid.Items.Refresh();
-            }
-            //{LoanLifeTracker}
-        }
-
-        private void inputSaveLoan_Click(object sender, RoutedEventArgs e)
-        {
-            // dbConnection = new DatabaseConnection();
-            dbConnection.AddLoan(LoanReportDataObj.ActiveLoan);
-        }
-
-        //private void Window_Loaded(object sender, RoutedEventArgs e)
-        //{
-
-        //    loanReportDataViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("loanReportDataViewSource")));
-        //    if(this.LoanReportDataObj != null)
-        //    { 
-        //    loanReportDataViewSource.Source = LoanReportDataObj;
-        //        // Load data by setting the CollectionViewSource.Source property:
-        //    }
-
-        //}
-
-        private void inputCompanyInfo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            labelCompanyInfo.Content = "Company Info: " + ((ComboBoxItem)inputCompanyInfo.SelectedItem).Content;
-        }
-
-        private void inputLender_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            labelLender.Content = "Lender: " + inputLender.Text;
-        }
-
-        private void inputLoanTitle_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            labelTitle.Content = "Title: " + inputLoanTitle.Text;
-            LoanReportDataObj.Title = inputLoanTitle.Text;
-        }
-
-        private void inputBeneficiary_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            labeBeneficiary.Content = "Beneficiary: " + inputBeneficiary.Text;
-        }
-
-        private void inputCollectionAccount_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            labelCollectionAccount.Content = "Collection Account: " + inputCollectionAccount.Text;
-        }
-
-        private void buttonLogin_Click(object sender, RoutedEventArgs e)
-        {
-            dbConnection.dBConnInfo.MySqlUserName = inputUserName.Text;
-            dbConnection.dBConnInfo.MySqlPassword = inputPassword.Password;
-            bool connectionSucess = dbConnection.OpenConnection();
-            MessageBox.Show(connectionSucess.ToString());
-
-            //inputUserName.Text = "";
-            //inputPassword.Password = "";
         }
     }
 }

@@ -252,12 +252,6 @@ namespace InterestTracker
         public DataTable LoanDataTable;
         public bool RegenerateLoanTable;
         public bool LoanGenerated;
-        private EnumerableRowCollection<DataRow> reportScope;
-        public EnumerableRowCollection<DataRow> ReportScope
-        {
-            get { return reportScope; }
-            set { reportScope = value; }
-        }
 
 
         // not implemented yet
@@ -292,13 +286,13 @@ namespace InterestTracker
 
             switch (InterestStructureSelection)
             {
-                case "fixed365":
+                case "365fixed":
                     interest = (PrincipalBalance) * calculateInterestRate(date) / numberOfDaysInDateYear;
                     goto default;
-                case "fixed360":
+                case "360fixed":
                     interest = (PrincipalBalance * calculateInterestRate(date)) / 360;
                     goto default;
-                case "compDay365":
+                case "365compDay":
                     interest = (PrincipalBalance * calculateInterestRate(date)) / numberOfDaysInDateYear;
                     goto default;
                 default:
@@ -446,7 +440,7 @@ namespace InterestTracker
 
             switch (InterestStructureSelection)
             {
-                case "fixed365":
+                case "_365fixed":
                     {
                         if (getLastDayOfMonth(currentDate) == currentDate.Day)
                         {
@@ -454,12 +448,12 @@ namespace InterestTracker
                         }
                         goto default;
                     }
-                case "fixed360":
+                case "_360fixed":
                     {
-                        goto case "fixed365";
+                        goto case "_365fixed";
                     }
 
-                case "compDay365":
+                case "_365compDay":
 
                     if (currentDate.Day == 1)
                     {
@@ -558,10 +552,8 @@ namespace InterestTracker
             {
                 if (ReportType == 0)
                 {
-                    //EnumerableRowCollection<DataRow> reportScope = from displayDate in LoanDataTable.AsEnumerable()
-                    ReportScope = from displayDate in LoanDataTable.AsEnumerable()
-
-                    where displayDate.Field<DateTime>("loanDayDate") <= reportEnd && displayDate.Field<DateTime>("loanDayDate") >= reportStart
+                    EnumerableRowCollection<DataRow> reportScope = from displayDate in LoanDataTable.AsEnumerable()
+                                                                   where displayDate.Field<DateTime>("loanDayDate") <= reportEnd && displayDate.Field<DateTime>("loanDayDate") >= reportStart
                                                                    select displayDate;
                     switch (reportDisplayRange)
                     {
@@ -570,7 +562,7 @@ namespace InterestTracker
                         case 1:
                             if (DisplayPaymentsChk)
                             {
-                                ReportScope = from displayDate in LoanDataTable.AsEnumerable()
+                                reportScope = from displayDate in LoanDataTable.AsEnumerable()
                                               where displayDate.Field<DateTime>("loanDayDate") <= reportEnd && displayDate.Field<DateTime>("loanDayDate") >= reportStart
                                               where displayDate.Field<DateTime>("loanDayDate").Year == displayDate.Field<DateTime>("loanDayDate").Year &&
                                               displayDate.Field<DateTime>("loanDayDate").Month == displayDate.Field<DateTime>("loanDayDate").Month &&
@@ -580,7 +572,7 @@ namespace InterestTracker
                             }
                             else if (!DisplayPaymentsChk)
                             {
-                                ReportScope = from displayDate in LoanDataTable.AsEnumerable()
+                                reportScope = from displayDate in LoanDataTable.AsEnumerable()
                                               where displayDate.Field<DateTime>("loanDayDate") <= reportEnd && displayDate.Field<DateTime>("loanDayDate") >= reportStart
                                               where displayDate.Field<DateTime>("loanDayDate").Year == displayDate.Field<DateTime>("loanDayDate").Year &&
                                               displayDate.Field<DateTime>("loanDayDate").Month == displayDate.Field<DateTime>("loanDayDate").Month &&
@@ -591,7 +583,7 @@ namespace InterestTracker
                         case 2:
                             if (DisplayPaymentsChk)
                             {
-                                ReportScope = from displayDate in LoanDataTable.AsEnumerable()
+                                reportScope = from displayDate in LoanDataTable.AsEnumerable()
                                               where displayDate.Field<DateTime>("loanDayDate") <= reportEnd && displayDate.Field<DateTime>("loanDayDate") >= reportStart
                                               where displayDate.Field<DateTime>("loanDayDate").Year == displayDate.Field<DateTime>("loanDayDate").Year &&
                                               displayDate.Field<DateTime>("loanDayDate").Month == displayDate.Field<DateTime>("loanDayDate").Month
@@ -601,7 +593,7 @@ namespace InterestTracker
                             }
                             else if (!DisplayPaymentsChk)
                             {
-                                ReportScope = from displayDate in LoanDataTable.AsEnumerable()
+                                reportScope = from displayDate in LoanDataTable.AsEnumerable()
                                               where displayDate.Field<DateTime>("loanDayDate") <= reportEnd && displayDate.Field<DateTime>("loanDayDate") >= reportStart
                                               where displayDate.Field<DateTime>("loanDayDate").Year == displayDate.Field<DateTime>("loanDayDate").Year &&
                                               displayDate.Field<DateTime>("loanDayDate").Month == displayDate.Field<DateTime>("loanDayDate").Month
@@ -612,7 +604,7 @@ namespace InterestTracker
                         case 3:
                             if (DisplayPaymentsChk)
                             {
-                                ReportScope = from displayDate in LoanDataTable.AsEnumerable()
+                                reportScope = from displayDate in LoanDataTable.AsEnumerable()
                                               where displayDate.Field<DateTime>("loanDayDate") <= reportEnd && displayDate.Field<DateTime>("loanDayDate") >= reportStart
                                               where displayDate.Field<DateTime>("loanDayDate").Year == displayDate.Field<DateTime>("loanDayDate").Year &&
                                               displayDate.Field<DateTime>("loanDayDate").DayOfYear == getLastDayOfYear(displayDate.Field<DateTime>("loanDayDate")) || displayDate.Field<decimal>("loanDayTotalPayment") != 0 ||
@@ -621,7 +613,7 @@ namespace InterestTracker
                             }
                             else if (!DisplayPaymentsChk)
                             {
-                                ReportScope = from displayDate in LoanDataTable.AsEnumerable()
+                                reportScope = from displayDate in LoanDataTable.AsEnumerable()
                                               where displayDate.Field<DateTime>("loanDayDate") <= reportEnd && displayDate.Field<DateTime>("loanDayDate") >= reportStart
                                               where displayDate.Field<DateTime>("loanDayDate").Year == displayDate.Field<DateTime>("loanDayDate").Year &&
                                               displayDate.Field<DateTime>("loanDayDate").DayOfYear == getLastDayOfYear(displayDate.Field<DateTime>("loanDayDate"))
@@ -629,10 +621,8 @@ namespace InterestTracker
                             }
                             goto default;
                         default:
-                            DataView viewReport = ReportScope.AsDataView();
-                            LoanReportDataGrid.ItemsSource = null;
-                            LoanReportDataGrid.ItemsSource = viewReport;
-                            
+                            DataView viewReport = reportScope.AsDataView();                            
+                            LoanReportDataGrid.ItemsSource = viewReport;                            
                             SetColumnHeaders();
                             break;
                     }
@@ -644,36 +634,33 @@ namespace InterestTracker
 
         public void SetColumnHeaders()
         {
-            //if (LoanReportDataGrid.ItemsSource != null)
-            //{
-              
-            //    LoanReportDataGrid.AutoGenerateColumns = true;
-                
-            //    LoanReportDataGrid.Columns[0].Header = "Start Date";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[0]).Binding.StringFormat = "MM/dd/yyyy";
-            //    LoanReportDataGrid.Columns[1].Header = "Principal \n(" + ActiveLoan.LoanCurrency + ")";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[1]).Binding.StringFormat = "N";
-            //    LoanReportDataGrid.Columns[2].Header = "Interest Rate";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[2]).Binding.StringFormat = "p2";
-            //    LoanReportDataGrid.Columns[3].Header = "Daily Interest \n(" + ActiveLoan.LoanCurrency + ")";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[3]).Binding.StringFormat = "N";
-            //    LoanReportDataGrid.Columns[4].Header = "Interest Balance\n(" + ActiveLoan.LoanCurrency + ")";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[4]).Binding.StringFormat = "N";
-            //    LoanReportDataGrid.Columns[5].Header = "Cumulative Interest \n(" + ActiveLoan.LoanCurrency + ")";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[5]).Binding.StringFormat = "N";
-            //    LoanReportDataGrid.Columns[6].Header = "Total Payment \n(" + ActiveLoan.LoanCurrency + ")";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[6]).Binding.StringFormat = "N";
-            //    LoanReportDataGrid.Columns[7].Header = "Interest Payment \n(" + ActiveLoan.LoanCurrency + ")";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[7]).Binding.StringFormat = "N";
-            //    LoanReportDataGrid.Columns[8].Header = "Principal Payment \n(" + ActiveLoan.LoanCurrency + ")";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[8]).Binding.StringFormat = "N";
-            //    LoanReportDataGrid.Columns[9].Header = "Current Balance \n(" + ActiveLoan.LoanCurrency + ")";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[9]).Binding.StringFormat = "N";
-            //    LoanReportDataGrid.Columns[10].Header = "Comments";
+            if (LoanReportDataGrid.ItemsSource != null)
+            {
+                LoanReportDataGrid.Columns[0].Header = "Start Date";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[0]).Binding.StringFormat = "MM/dd/yyyy";
+                LoanReportDataGrid.Columns[1].Header = "Principal \n(" + ActiveLoan.LoanCurrency + ")";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[1]).Binding.StringFormat = "N";
+                LoanReportDataGrid.Columns[2].Header = "Interest Rate";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[2]).Binding.StringFormat = "p2";
+                LoanReportDataGrid.Columns[3].Header = "Daily Interest \n(" + ActiveLoan.LoanCurrency + ")";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[3]).Binding.StringFormat = "N";
+                LoanReportDataGrid.Columns[4].Header = "Interest Balance\n(" + ActiveLoan.LoanCurrency + ")";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[4]).Binding.StringFormat = "N";
+                LoanReportDataGrid.Columns[5].Header = "Cumulative Interest \n(" + ActiveLoan.LoanCurrency + ")";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[5]).Binding.StringFormat = "N";
+                LoanReportDataGrid.Columns[6].Header = "Total Payment \n(" + ActiveLoan.LoanCurrency + ")";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[6]).Binding.StringFormat = "N";
+                LoanReportDataGrid.Columns[7].Header = "Interest Payment \n(" + ActiveLoan.LoanCurrency + ")";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[7]).Binding.StringFormat = "N";
+                LoanReportDataGrid.Columns[8].Header = "Principal Payment \n(" + ActiveLoan.LoanCurrency + ")";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[8]).Binding.StringFormat = "N";
+                LoanReportDataGrid.Columns[9].Header = "Current Balance \n(" + ActiveLoan.LoanCurrency + ")";
+                ((DataGridTextColumn)LoanReportDataGrid.Columns[9]).Binding.StringFormat = "N";
+                LoanReportDataGrid.Columns[10].Header = "Comments";
 
-            //    LoanReportDataGrid.Visibility = Visibility.Visible;
+                LoanReportDataGrid.Visibility = Visibility.Visible;
 
-           // }
+            }
         }
     }
 }
