@@ -12,6 +12,7 @@ namespace InterestTracker
         public Payment(Guid loanGuid)
         {
             this.LoanGUID = loanGuid;
+            this.PaymentGuid = Guid.NewGuid();
         }
         private DateTime paymentDate;
         private decimal totalPaymentAmount = 0;
@@ -75,6 +76,20 @@ namespace InterestTracker
                 {
                     this.principalPaymentAmount = value;
                     NotifyPropertyChanged("PrincipalPaymentAmount");
+                }
+            }
+        }
+
+        private Guid paymentGuid;
+        public Guid PaymentGuid
+        {
+            get { return this.paymentGuid; }
+            set
+            {
+                if(value != this.paymentGuid)
+                {
+                    this.paymentGuid = value;
+                    NotifyPropertyChanged("PaymentGuid");
                 }
             }
         }

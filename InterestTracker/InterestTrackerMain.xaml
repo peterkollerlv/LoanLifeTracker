@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:InterestTracker"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Name="InterestTrackerMainWindow" x:Class="InterestTracker.InterestTrackerMain"
         mc:Ignorable="d"
-        Title="Interest Tracker" Height="737" Width="1394" Background="SteelBlue" WindowStartupLocation="CenterScreen">
+        Title="Interest Tracker" Height="737" Width="1394" Background="SteelBlue" WindowStartupLocation="CenterScreen" Loaded="InterestTrackerMainWindow_Loaded">
     <Window.Resources>
 
     </Window.Resources>
@@ -37,8 +37,12 @@
                     <Label x:Name="labelLoanStartDate" Content="Loan Start Date:" HorizontalAlignment="Left" Margin="10,154,0,0" VerticalAlignment="Top"/>
                     <Label x:Name="labelInterestStructure" Content="Interest Structure:" HorizontalAlignment="Left" Margin="10,178,0,0" VerticalAlignment="Top"/>
                     <Label x:Name="loanGuid" Content="Today's Date:" HorizontalAlignment="Left" Margin="10,202,0,0" VerticalAlignment="Top"/>
-                    <Grid HorizontalAlignment="Left" Height="344" Margin="10,296,0,0" VerticalAlignment="Top" Width="1087">
-                        <DataGrid x:Name="openLoansDataGrid"/>
+                    <Grid HorizontalAlignment="Left" Height="Auto" Margin="10,296,0,0" VerticalAlignment="Top" Width="Auto" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="33*"/>
+                        </Grid.RowDefinitions>
+                        <DataGrid x:Name="openLoansDataGrid" ItemsSource="{Binding ExistingLoans, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectionChanged="openLoansDataGrid_SelectionChanged" Grid.RowSpan="2" Margin="0,0,0,0" AutoGenerateColumns="False"/>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -58,8 +62,9 @@
             </MenuItem>
             <MenuItem x:Name="loanActionMenu" Header="_Loan Actions">
                 <MenuItem Header="_New Loan" Name="inputNewLoan" Click="inputNewLoan_Click"/>
-                <MenuItem Header="_Open Loan" Name="inputOpenLoan" Click="inputOpenLoan_Click"/>
+                <MenuItem Header="_Refresh Loans" Name="inputRefreshLoans" Click="inputRefreshLoans_Click"/>
                 <MenuItem Header="_Save Loan" Name="inputSaveLoan" Click="inputSaveLoan_Click"/>
+                <MenuItem Header="_Remove Loan" Name="inputRemoveLoan" Click="inputRemoveLoan_Click"/>
             </MenuItem>
 
 
@@ -71,31 +76,40 @@
 
 
         <StatusBar Grid.Row="3" Grid.ColumnSpan="2">
-            <Label x:Name="statusIndicationText" Width="330" Content="Status indication"/>
-            <Separator Margin="0" Width="641" Background="SteelBlue"/>
-            <ProgressBar x:Name="statusProgressBar" Width="202" HorizontalAlignment="Right" BorderBrush="{x:Null}" Height="30" Background="SteelBlue"/>
+            <Grid Width="1376" Height="Auto">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="250"/>
+                    <ColumnDefinition Width="*" MinWidth="100"/>
+                    <ColumnDefinition Width="*" MinWidth="100" MaxWidth="400"/>
+                    <ColumnDefinition Width="200" MinWidth="200"/>
+                </Grid.ColumnDefinitions>
+                <Label x:Name="statusIndicationText" Content="{Binding ActiveGuid, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Margin="0,0,0,0"/>
+                <Label x:Name="processIndicationText" Content="Process Status" Grid.Column="2" Margin="0,0,0,0" HorizontalContentAlignment="Right"/>
+                <Separator Margin="0,0,0,0" Width="Auto"  Grid.Column="1" Background="SteelBlue" HorizontalAlignment="Right"/>
+                <ProgressBar x:Name="statusProgressBar" Minimum="0" Maximum="100" Width="200" Height="20" Grid.Column="3" HorizontalContentAlignment="Right" BorderBrush="{x:Null}"  Margin="0,0,0,0" Panel.ZIndex="5"/>
+            </Grid>
         </StatusBar>
         <TabControl x:Name="navTabControl" Grid.Row="2" Foreground="Gainsboro">
             <TabItem x:Name="navLoanData" Header="Loan Data" GotFocus="navLoanData_GotFocus">
                 <Grid x:Name="groupLoanData" Margin="0,0,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="118*"/>
-                        <ColumnDefinition Width="153*"/>
-                    </Grid.ColumnDefinitions>
+                    <!--<Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="163*"/>
+                        <ColumnDefinition Width="108*"/>
+                    </Grid.ColumnDefinitions>-->
 
-                    <TextBox x:Name="inputLoanTitle" Height="22" Margin="10,32,10,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="inputLoanTitle_TextChanged" Grid.ColumnSpan="2"/>
-                    <Label x:Name="labelLoanTitleSet" Content="Title" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"/>
-                    <ComboBox x:Name="inputCompanyInfo" ItemContainerStyle="{StaticResource ContainerStyle}" Margin="10,80,10,0" VerticalAlignment="Top" SelectedIndex="0" SelectionChanged="inputCompanyInfo_SelectionChanged" Grid.ColumnSpan="2">
+                    <TextBox x:Name="inputLoanTitle" Margin="10,30,10,0" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"  TextWrapping="Wrap" VerticalAlignment="Top" GotFocus="inputLoanTitle_GotFocus" TextChanged="inputLoanTitle_TextChanged"/>
+                    <Label x:Name="labelLoanTitleSet" Content="Title" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Height="24" Width="32"/>
+                    <ComboBox x:Name="inputCompanyInfo" ItemContainerStyle="{StaticResource ContainerStyle}" Margin="10,78,10,0" VerticalAlignment="Top" SelectedIndex="0" SelectionChanged="inputCompanyInfo_SelectionChanged" Height="22">
 
                         <ComboBoxItem x:Name="FreewayCAMBV" Content="Freeway CAM B.V."/>
                     </ComboBox>
-                    <Label x:Name="labelCompanyInfoSelect" Content="Company Info" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="inputLender" Height="22" Margin="10,128,10,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="inputLender_TextChanged" Grid.ColumnSpan="2"/>
-                    <Label x:Name="labelLenderInfoSet" Content="Lender" HorizontalAlignment="Left" Margin="10,102,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="inputBeneficiary" Height="22" Margin="10,176,10,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="inputBeneficiary_TextChanged" Grid.ColumnSpan="2"/>
-                    <Label x:Name="labelBeneficiarySet" Content="Beneficiary" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="inputCollectionAccount" Height="22" Margin="10,224,10,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="inputCollectionAccount_TextChanged" Grid.ColumnSpan="2"/>
-                    <Label x:Name="labelCollectionAccountSet" Content="Collection Account" HorizontalAlignment="Left" Margin="10,198,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <Label x:Name="labelCompanyInfoSelect" Content="Company Info" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top"  Width="85"/>
+                    <TextBox x:Name="inputLender"  Margin="10,124,10,0" Text="{Binding Lender, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="inputLender_TextChanged"/>
+                    <Label x:Name="labelLenderInfoSet" Content="Lender" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top"  Width="47"/>
+                    <TextBox x:Name="inputBeneficiary"  Margin="10,172,10,0" Text="{Binding Beneficiary, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="inputBeneficiary_TextChanged"/>
+                    <Label x:Name="labelBeneficiarySet" Content="Beneficiary" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top"  Width="69"/>
+                    <TextBox x:Name="inputCollectionAccount"  Margin="10,220,10,0" Text="{Binding CollectionAccount, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="inputCollectionAccount_TextChanged"/>
+                    <Label x:Name="labelCollectionAccountSet" Content="Collection Account" HorizontalAlignment="Left" Margin="10,196,0,0" VerticalAlignment="Top"  Width="109"/>
 
                 </Grid>
             </TabItem>
@@ -107,7 +121,7 @@
                     <Button x:Name="inputCalculateLoan" Content="Calculate Loan" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="249" Height="25" Click="inputCalculateLoan_Click"/>
                     <Label x:Name="lableLoanStartDate" Content="Loan Start Date" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Height="24" Width="94"/>
                     <Label x:Name="labelLoanDuration" Content="Projected Duration" HorizontalAlignment="Left" Margin="147,35,0,0" VerticalAlignment="Top" Width="112" Height="24"/>
-                    <DatePicker x:Name="inputLoanStartDate" HorizontalAlignment="Left" Margin="10,61,0,0" VerticalAlignment="Top" Width="140" FirstDayOfWeek="Monday" BorderThickness="0,1,0,0" Height="24" SelectedDateChanged="inputLoanStartDate_SelectedDateChanged"/>
+                    <DatePicker x:Name="inputLoanStartDate" HorizontalAlignment="Left" SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}" Margin="10,61,0,0" VerticalAlignment="Top" Width="140" FirstDayOfWeek="Monday" BorderThickness="0,1,0,0" Height="24" SelectedDateChanged="inputLoanStartDate_SelectedDateChanged"/>
 
                     <TextBox x:Name="inputLoanDuration" HorizontalAlignment="Left" Height="24" Margin="147,61,0,0" TextWrapping="Wrap" Width="58" PreviewTextInput="inputLoanDuration_PreviewTextInput" TextChanged="inputLoanDuration_TextChanged" Text="5" VerticalAlignment="Top" PreviewKeyDown="inputLoanDuration_PreviewKeyDown"/>
 
@@ -118,24 +132,30 @@
                     <Button x:Name="buttonOpenDrawDown" Content="Draw Down" HorizontalAlignment="Left" Margin="168,168,0,0" VerticalAlignment="Top" Width="91" Height="25" Click="buttonOpenDrawDown_Click"/>
                     <Button x:Name="buttonOpenCalculation" Content="Calculation" HorizontalAlignment="Left" Margin="168,198,0,0" VerticalAlignment="Top" Width="91" Height="25" Click="buttonOpenCalculation_Click"/>
 
-                    <ComboBox x:Name="inputCurrencySelection" HorizontalAlignment="Left" Margin="10,109,0,0" VerticalAlignment="Top" Width="77" SelectedIndex="0" Height="24" SelectionChanged="inputCurrencySelection_SelectionChanged">
-                        <ComboBoxItem x:Name="USD" Content="USD"/>
+                    <ComboBox x:Name="inputCurrencySelection" HorizontalAlignment="Left"
+                              SelectedItem="{Binding Currency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                              SelectedValuePath="{Binding SelectedValuePath}"
+                              DisplayMemberPath="Curreny"
+                    Margin="10,109,0,0" VerticalAlignment="Top" Width="77" Height="24" SelectionChanged="inputCurrencySelection_SelectionChanged">
+                        <!--<ComboBoxItem x:Name="USD">USD</ComboBoxItem>-->
+                        <ComboBoxItem x:Name="USD"  Content="USD"/>
                         <ComboBoxItem x:Name="EUR" Content="EUR"/>
                         <ComboBoxItem x:Name="CAD" Content="CAD"/>
                         <ComboBoxItem x:Name="AUD" Content="AUD"/>
                     </ComboBox>
-                    <TextBox x:Name="inputInitialLoanAmount" HorizontalAlignment="Left" Height="24" Margin="92,109,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" PreviewTextInput="inputInitialLoanAmount_PreviewTextInput" TextChanged="inputInitialLoanAmount_TextChanged" Text="5000" PreviewKeyDown="inputInitialLoanAmount_PreviewKeyDown"/>
-                    <TextBox x:Name="inputInterestRate" HorizontalAlignment="Left" Height="23" Margin="10,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="58" PreviewTextInput="inputInterestRate_PreviewTextInput" TextChanged="inputInterestRate_TextChanged" Text="5.25" PreviewKeyDown="inputInterestRate_PreviewKeyDown"/>
+                    <TextBox x:Name="inputInitialLoanAmount" HorizontalAlignment="Left" Text="{Binding InitialLoanAmount, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N}}"                             
+                             Height="24" Margin="92,109,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" PreviewTextInput="inputInitialLoanAmount_PreviewTextInput" TextChanged="inputInitialLoanAmount_TextChanged" PreviewKeyDown="inputInitialLoanAmount_PreviewKeyDown"/>
+                    <TextBox x:Name="inputInterestRate" HorizontalAlignment="Left"  Text="{Binding InterestRate, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N}}" Height="23" Margin="10,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="58" PreviewTextInput="inputInterestRate_PreviewTextInput" TextChanged="inputInterestRate_TextChanged"  PreviewKeyDown="inputInterestRate_PreviewKeyDown"/>
                     <Label x:Name="lableInterestRate" Content="Interest Rate" HorizontalAlignment="Left" Margin="10,163,0,0" VerticalAlignment="Top" Width="85" Height="24"/>
                     <Label x:Name="labelInterestPercent" Content="%" HorizontalAlignment="Left" Margin="73,187,0,0" VerticalAlignment="Top" Width="22" Height="23"/>
-                    <CheckBox x:Name="inputInterestPenaltyChk" Content="Loan has penalty date" HorizontalAlignment="Left" Margin="10,215,0,0" VerticalAlignment="Top" Width="142" Height="15" Click="inputInterestPenaltyChk_Click"/>
+                    <CheckBox x:Name="inputInterestPenaltyChk" Content="Loan has penalty date" IsChecked="{Binding HasInterestPenalty, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="10,215,0,0" VerticalAlignment="Top" Width="142" Height="15" Click="inputInterestPenaltyChk_Click"/>
 
                     <Grid x:Name="groupInterestPenalty" HorizontalAlignment="Left" Height="58" Margin="10,235,0,0" VerticalAlignment="Top" Width="259">
                         <Label x:Name="labelInterestPenalty" Content="Interest Penalty Start Date" HorizontalAlignment="Left" VerticalAlignment="Top" Width="157" Height="24"/>
-                        <DatePicker x:Name="inputInterestPenaltyStart" HorizontalAlignment="Left" Margin="0,24,0,0" VerticalAlignment="Top" Width="140" BorderThickness="0" Height="24" SelectedDateChanged="inputInterestPenaltyStart_SelectedDateChanged"/>
+                        <DatePicker x:Name="inputInterestPenaltyStart" HorizontalAlignment="Left" SelectedDate="{Binding InterestPenaltyDate, UpdateSourceTrigger=PropertyChanged}" Margin="0,24,0,0" VerticalAlignment="Top" Width="140" BorderThickness="0" Height="24" SelectedDateChanged="inputInterestPenaltyStart_SelectedDateChanged"/>
 
                         <Label x:Name="labelInterestPenaltyRate" Content="Penalty Rate" HorizontalAlignment="Left" Margin="162,-2,0,0" VerticalAlignment="Top" Width="97"/>
-                        <TextBox x:Name="inputInterestPenaltyRate" HorizontalAlignment="Left" Height="24" Margin="162,24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="58" BorderBrush="SteelBlue" Foreground="#FF13487D" Text="10.50" PreviewTextInput="inputInterestPenaltyRate_PreviewTextInput" TextChanged="inputInterestPenaltyRate_TextChanged" PreviewKeyDown="inputInterestPenaltyRate_PreviewKeyDown"/>
+                        <TextBox x:Name="inputInterestPenaltyRate" HorizontalAlignment="Left" Text="{Binding InterestPenaltyRate, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N}}" Margin="162,24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="58" BorderBrush="SteelBlue" Foreground="#FF13487D" PreviewTextInput="inputInterestPenaltyRate_PreviewTextInput" TextChanged="inputInterestPenaltyRate_TextChanged" PreviewKeyDown="inputInterestPenaltyRate_PreviewKeyDown"/>
                         <Label x:Name="labelPenaltyPercent" Content="%" HorizontalAlignment="Left" Margin="225,24,0,0" VerticalAlignment="Top" Width="22" Height="24"/>
 
                     </Grid>
@@ -184,16 +204,18 @@
                     </ComboBox>
                     <Label x:Name="labelReportStartDate" Content="Report Start Date" HorizontalAlignment="Left" Margin="10,53,0,0" VerticalAlignment="Top"/>
                     <Label x:Name="lableReportEndDate" Content="Report End Date" HorizontalAlignment="Left" Margin="10,111,0,0" VerticalAlignment="Top"/>
-                    <DatePicker x:Name="inputReportStartDate" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top" SelectedDateChanged="inputReportStartDate_SelectedDateChanged"/>
-                    <DatePicker x:Name="inputReportEndDate" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" SelectedDateChanged="inputReportEndDate_SelectedDateChanged"/>
-                    <Button x:Name="buttonExportToPdf" Content="Export To PDF" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="103"/>
-                    <UniformGrid x:Name="reportSpan" Rows="4" Columns="1" Margin="166,82,10,419" >
-                        <RadioButton GroupName="reportSpan" Checked="reportSpan_Check" Tag="0" Content="Daily View"></RadioButton>
+                    <DatePicker x:Name="inputReportStartDate" SelectedDate="{Binding ReportStartDate, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top" SelectedDateChanged="inputReportStartDate_SelectedDateChanged"/>
+                    <DatePicker x:Name="inputReportEndDate" SelectedDate="{Binding ReportEndDate, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" SelectedDateChanged="inputReportEndDate_SelectedDateChanged"/>
+                    <Button x:Name="buttonExportToPdf" Content="Export To PDF" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="103" Click="buttonExportToPdf_Click"/>
+                    <Button x:Name="buttonExportToExcel" Content="Export To Excel" HorizontalAlignment="Left" Margin="10,212,0,0" VerticalAlignment="Top" Width="103" Click="buttonExportToExcel_Click"/>
+                    
+                    <UniformGrid x:Name="reportSpan" Rows="4" Columns="1" Margin="166,85,0,0" HorizontalAlignment="Left" Width="95" Height="102" VerticalAlignment="Top" >
+                        <RadioButton GroupName="reportSpan" Checked="reportSpan_Check" Tag="0" Content="Daily View" Height="26" VerticalAlignment="Top"></RadioButton>
                         <RadioButton GroupName="reportSpan" Checked="reportSpan_Check" Tag="1" Content="Weekly View"></RadioButton>
                         <RadioButton GroupName="reportSpan" Checked="reportSpan_Check" Tag="2" Content="Monthly View" IsChecked="True"></RadioButton>
                         <RadioButton GroupName="reportSpan"  Checked="reportSpan_Check" Tag="3" Content="Yearly View"></RadioButton>
                     </UniformGrid>
-                    <CheckBox x:Name="inputDisplayPaymentsChk" Content="Show Payments" HorizontalAlignment="Left" Margin="10,169,0,0" VerticalAlignment="Top" Click="inputDisplayPaymentsChk_Click"/>
+                    <CheckBox x:Name="inputDisplayPaymentsChk" Content="Show Payments" IsChecked="{Binding DisplayPaymentsChk, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="10,169,0,0" VerticalAlignment="Top" Click="inputDisplayPaymentsChk_Click"/>
 
                 </Grid>
             </TabItem>
@@ -207,7 +229,7 @@
                 </Grid.RowDefinitions>
 
                 <Label Name="labelUsername" Content="User Name" Margin="3,3,3,3" Background="#FF13487D" VerticalAlignment="Top" Height="Auto" Width="Auto" Grid.Row="0"/>
-                <TextBox x:Name="inputUserName" Margin="3,27,3,3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="Auto" Text="kollerpeter" ></TextBox>
+                <TextBox x:Name="inputUserName" Margin="3,27,3,3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="Auto" Text="peterkoller" ></TextBox>
                 <Label Name="labelPassword" Content="Password" Margin="3,51,3,3" Background="#FF13487D" VerticalAlignment="Top" Height="Auto" Width="Auto" Grid.Row="0"/>
                 <PasswordBox Name="inputPassword" Margin="3,75,3,3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="Auto" Password="M3926GremnkY" ></PasswordBox>
                 <Button Content="Login" Background="#FF4682B4" Name="buttonLogin" Margin="3,105,3,3" VerticalAlignment="Top" HorizontalAlignment="Center" Width="60" Height="24" Click="buttonLogin_Click"/>

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace InterestTracker
 {
-    public class Loan
+    public class Loan //: INotifyPropertyChanged
     {
         //all loan specific data stored in this class
 
@@ -14,7 +15,8 @@ namespace InterestTracker
         {
             LoanGuid = generateNewGuid();
             LoanStartDate = DateTime.Now.Date;
-            LoanInterestRate = 5;
+            LoanTitle = "Please add a title...";
+            //LoanInterestRate = 5;
             loanInterestPenaltyRate = 10;
             LoanCurrency = "USD";
             LoanPaymentsList = new List<Payment>();
@@ -28,6 +30,17 @@ namespace InterestTracker
             LoanPaymentsList = new List<Payment>();
         }
 
+        // required for databinding
+        //public event PropertyChangedEventHandler PropertyChanged;
+        //protected void Notify(string propertyName)
+        //{
+        //    if (this.PropertyChanged != null)
+        //    {
+        //        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        //    }
+        //}
+
+
         //fields & properies
 
         private Guid loanGuid;
@@ -39,7 +52,12 @@ namespace InterestTracker
             }
             set
             {
-                loanGuid = value;
+                if (value != loanGuid)
+                {
+                    loanGuid = value;
+                  //  Notify("LoanGuid");
+                }
+
             }
         }
 
@@ -52,7 +70,12 @@ namespace InterestTracker
             }
             set
             {
-                loanTitle = value;
+                if (value != loanTitle)
+                {
+                    loanTitle = value;
+                   // Notify("LoanTitle");
+                }
+
             }
         }
 
@@ -65,7 +88,11 @@ namespace InterestTracker
             }
             set
             {
-                loanCompanyInfo = value;
+                if (value != loanCompanyInfo)
+                {
+                    loanCompanyInfo = value;
+                  //  Notify("LoanCompanyInfo");
+                }
             }
         }
 
@@ -78,7 +105,12 @@ namespace InterestTracker
             }
             set
             {
-                loanLender = value;
+                if (value != loanLender)
+                {
+                    loanLender = value;
+                  //  Notify("LoanLender");
+                }
+
             }
         }
 
@@ -91,7 +123,11 @@ namespace InterestTracker
             }
             set
             {
-                loanBeneficiary = value;
+                if (value != loanBeneficiary)
+                {
+                    loanBeneficiary = value;
+                    //Notify("LoanBeneficiary");
+                }
             }
         }
 
@@ -104,10 +140,15 @@ namespace InterestTracker
             }
             set
             {
-                loanCollectionAccount = value;
+                if (value != loanCollectionAccount)
+                {
+                    loanCollectionAccount = value;
+                    //Notify("LoanCollectionAccount");
+                }
+
             }
-        } 
-        
+        }
+
         private DateTime loanStartDate;
         public DateTime LoanStartDate
         {
@@ -117,7 +158,11 @@ namespace InterestTracker
             }
             set
             {
-                loanStartDate = value.Date;
+                if (value != loanStartDate)
+                {
+                    loanStartDate = value.Date;
+                    //Notify("LoanStartDate");
+                }
             }
         }
 
@@ -130,7 +175,11 @@ namespace InterestTracker
             }
             set
             {
+                if (value != loanPaidDate)
+                {
                 loanPaidDate = value.Date;
+                    //Notify("LoanPaidDate");
+                }
             }
         }
 
@@ -143,7 +192,11 @@ namespace InterestTracker
             }
             set
             {
-                loanInitialLoanAmount = value;
+                if (value != loanInitialLoanAmount)
+                {
+                    loanInitialLoanAmount = value;
+                    //Notify("LoanInitialLoanAmount");
+                }
             }
         }
 
@@ -156,7 +209,11 @@ namespace InterestTracker
             }
             set
             {
-                loanInterestRate = value;
+                if (value != loanInterestRate)
+                {
+                    loanInterestRate = value;
+                    //Notify("LoanInterestRate");
+                }
             }
         }
 
@@ -169,7 +226,12 @@ namespace InterestTracker
             }
             set
             {
-                loanCurrency = value;
+                if (value != loanCurrency)
+                {
+                    loanCurrency = value;
+                    //Notify("LoanCurrency");
+                }
+              
             }
         }
 
@@ -183,7 +245,11 @@ namespace InterestTracker
 
             set
             {
-                loanHasIntersetPenalty = value;
+                if (value != loanHasIntersetPenalty)
+                {
+                    loanHasIntersetPenalty = value;
+                    //Notify("LoanHasInterestPenalty");
+                }
             }
         }
 
@@ -197,7 +263,11 @@ namespace InterestTracker
             }
             set
             {
-                loanInterestPenaltyDate = value;
+                if (value != loanInterestPenaltyDate)
+                {
+                    loanInterestPenaltyDate = value;
+                    //Notify("LoanInterestPenaltyDate");
+                }
             }
         }
 
@@ -211,7 +281,11 @@ namespace InterestTracker
             }
             set
             {
-                loanInterestPenaltyRate = value;
+                if (value != loanInterestPenaltyRate)
+                {
+                    loanInterestPenaltyRate = value;
+                    //Notify("LoanInterestPenaltyRate");
+                }
             }
         }
 
@@ -224,7 +298,11 @@ namespace InterestTracker
             }
             set
             {
-                loanInterestStructure = value;
+                if (value != loanInterestStructure)
+                {
+                    loanInterestStructure = value;
+                    //Notify("LoanInterestStructure");
+                }
             }
         }
 
@@ -237,9 +315,15 @@ namespace InterestTracker
             }
             set
             {
-                loanpaymentsList = value;
+                if (value != loanpaymentsList)
+                {
+                    loanpaymentsList = value;
+                    //Notify("LoanPaymentsList");
+                }
             }
         }
+
+
 
         //need to implement theses properties in LoanReportData:
 
@@ -248,16 +332,24 @@ namespace InterestTracker
         {
             get
             {
+
                 return loanPaid;
             }
 
             set
             {
-                loanPaid = value;
+                if (value != loanPaid)
+                {
+                    loanPaid = value;
+                    //Notify("LoanPaid");
+                }
             }
         }
 
         private bool loanSavedToDb;
+
+
+
         public bool LoanSavedToDb
         {
             get
@@ -266,17 +358,21 @@ namespace InterestTracker
             }
             set
             {
-                loanSavedToDb = value;
+                if (value != loanPaid)
+                {
+                    loanSavedToDb = value;
+                    //Notify("LoanSavedToDb");
+                }
             }
         }
-        
+
         //loan methods
 
 
         public Guid generateNewGuid()
         {
-        Guid newGuid = Guid.NewGuid();  
-        return newGuid;          
-        }    
+            Guid newGuid = Guid.NewGuid();
+            return newGuid;
+        }
     }
 }

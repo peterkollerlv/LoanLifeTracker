@@ -15,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
+using Microsoft.Win32;
 
 namespace InterestTracker
 {
@@ -24,37 +26,32 @@ namespace InterestTracker
     public partial class InterestTrackerMain : Window
     {
 
+
         //loan properties
         LoanReportData LoanReportDataObj;
-        LoanCalculation loanCalculation;
-        LoanPayments loanPayments;
-        LoanDrawDown loanDrawDown;
-        DatabaseConnection dbConnection;
 
-        CollectionViewSource loanReportDataViewSource;
 
-        private string tableNames;
+        private readonly BackgroundWorker bgWorker = new BackgroundWorker();
+        private readonly BackgroundWorker bgExcelWorker = new BackgroundWorker();
 
         public InterestTrackerMain()
         {
 
             LoanReportDataObj = new LoanReportData();
+
             LoanReportDataObj.createNewLoan();
-            dbConnection = new DatabaseConnection();
             InitializeComponent();
-
-            inputLoanStartDate.SelectedDate = DateTime.Now.Date;
-            inputInterestPenaltyStart.SelectedDate = DateTime.Now.Date;
-
+            LoanDetailsPages.CreatePages(LoanReportDataObj);
             //loanCalculation = new LoanCalculation(LoanReportDataObj);
             //loanPayments = new LoanPayments(LoanReportDataObj);
             //loanDrawDown = new LoanDrawDown();
-            loanDetails.Content = loanCalculation;
-
-
+            groupMainWindow.DataContext = LoanReportDataObj;
+            inputLoanStartDate.SelectedDate = DateTime.Now.Date;
+            inputInterestPenaltyStart.SelectedDate = DateTime.Now.Date;
+            loanDetails.Content = LoanDetailsPages.LoanCalculation;
+            processIndicationText.Content = "";
+            //inputCurrencySelection.SelectedItem = "USD";
         }
-        public string LoanTitle { get { return LoanReportDataObj.Title; } set { inputLoanTitle.Text = value; LoanReportDataObj.Title = value; } }
-
         //ui events
 
         private void navLoanData_GotFocus(object sender, RoutedEventArgs e)
@@ -70,20 +67,34 @@ namespace InterestTracker
         private void navLoanConfiguration_GotFocus(object sender, RoutedEventArgs e)
         {
             navMainTabControl.SelectedItem = navMainLoanDetails;
+
         }
 
         private void navLoanReports_GotFocus(object sender, RoutedEventArgs e)
         {
-            navMainTabControl.SelectedItem = navMainLoanDetails;
-            loanDetails.Content = loanCalculation;
+            if (LoanReportDataObj.ActiveLoan != null)
+            {
+                // LoanDetailsPages.LoanCalculation.LoanReportObj = this.LoanReportDataObj;
+                loanDetails.Content = LoanDetailsPages.LoanCalculation;
+
+                LoanReportDataObj.CalculateLoan();
+                navMainTabControl.SelectedItem = navMainLoanDetails;
+            }
         }
 
         private void inputCalculateLoan_Click(object sender, RoutedEventArgs e)
         {
             if (LoanReportDataObj.ActiveLoan != null)
             {
-                loanDetails.Content = new LoanCalculation(LoanReportDataObj);
+                // LoanDetailsPages.LoanCalculation.LoanReportObj = this.LoanReportDataObj;
+                if (loanDetails.Content != LoanDetailsPages.LoanCalculation)
+                {
+                    loanDetails.Content = LoanDetailsPages.LoanCalculation;
+                }
+
                 LoanReportDataObj.CalculateLoan();
+                LoanDetailsPages.LoanCalculation.FormatGrid();
+                // groupMainLoanDetails.UpdateLayout();
             }
         }
 
@@ -102,7 +113,6 @@ namespace InterestTracker
             var radioButton = (RadioButton)sender;
             LoanReportDataObj.InterestStructureSelection = radioButton.Name.ToString();
             labelInterestStructure.Content = "Interest Structure: " + radioButton.Tag.ToString();
-            // MessageBox.Show(LoanReportDataObj.InterestStructureSelection);
         }
 
         private void inputInterestPenaltyStart_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -114,7 +124,6 @@ namespace InterestTracker
         {
             if (LoanReportDataObj.ActiveLoan != null)
             {
-                LoanReportDataObj.StartDate = inputLoanStartDate.DisplayDate.Date;
                 inputReportStartDate.SelectedDate = inputLoanStartDate.SelectedDate;
                 inputReportStartDate.DisplayDateStart = inputLoanStartDate.SelectedDate;
                 inputReportEndDate.SelectedDate = inputLoanStartDate.SelectedDate.Value.AddYears(Int32.Parse(inputLoanDuration.Text));
@@ -124,12 +133,10 @@ namespace InterestTracker
 
         private void inputCurrencySelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            LoanReportDataObj.Currency = ((ComboBoxItem)inputCurrencySelection.SelectedItem).Content.ToString();
             if (LoanReportDataObj.LoanReportDataGrid != null)
             {
                 LoanReportDataObj.CalculateLoan();
             }
-            //MessageBox.Show(LoanReportDataObj.Currency);
         }
 
         private void inputReportType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -144,15 +151,12 @@ namespace InterestTracker
 
         public static void FilterKeypressToDigits(object sender, TextCompositionEventArgs e)
         {
-            //if (!char.IsControl(e.Key) && ((char)KeyInterop.VirtualKeyFromKey(e.Key)) && e.Key != Key.Back) // (char)KeyInterop.VirtualKeyFromKey(e.Key) != '.') //&& (sender as System.Windows.Controls.TextBox)sender.Text.IndexOf('.') > -1
-            //{
             if (e.Text == " ")
             {
                 e.Handled = true;
             }
 
             e.Handled = !new Regex(@"^(?:\d*)?(?:\.{1})?(?:\d+)?$").IsMatch(e.Text);
-            //  }
         }
 
         private void inputLoanDuration_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -176,8 +180,6 @@ namespace InterestTracker
             }
         }
 
-
-
         private void inputInitialLoanAmount_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             FilterKeypressToDigits(sender, e);
@@ -188,7 +190,7 @@ namespace InterestTracker
             if (inputInitialLoanAmount.Text.Length > 0)
             {
                 LoanReportDataObj.InitialLoanAmount = Decimal.Parse(inputInitialLoanAmount.Text);
-                labelInitialAmount.Content = "Initial Loan Amount: " + ((ComboBoxItem)inputCurrencySelection.SelectedItem).Content + " " + inputInitialLoanAmount.Text;
+                labelInitialAmount.Content = "Initial Loan Amount: " + LoanReportDataObj.Currency + " " + inputInitialLoanAmount.Text;
             }
         }
 
@@ -202,7 +204,7 @@ namespace InterestTracker
 
             if (inputInterestRate.Text.Length > 0)
             {
-                LoanReportDataObj.InterestRate = Decimal.Parse(inputInterestRate.Text);
+                //     LoanReportDataObj.InterestRate = Decimal.Parse(inputInterestRate.Text);
             }
         }
 
@@ -217,7 +219,6 @@ namespace InterestTracker
             {
                 LoanReportDataObj.InterestPenaltyRate = Decimal.Parse(inputInterestPenaltyRate.Text);
             }
-
         }
 
         private void inputLoanDuration_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -255,115 +256,145 @@ namespace InterestTracker
         private void inputReportStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             LoanReportDataObj.ReportStartDate = inputReportStartDate.SelectedDate.Value.Date;
-            if (LoanReportDataObj.LoanReportDataGrid != null)
+            if (LoanReportDataObj.LoanReportDataGrid != null && inputReportStartDate.SelectedDate != null && inputReportEndDate.SelectedDate != null)
             {
                 LoanReportDataObj.SortDataGridToReport(inputReportStartDate.SelectedDate.Value, inputReportEndDate.SelectedDate.Value, LoanReportDataObj.ReportSpan);
+                LoanDetailsPages.LoanCalculation.FormatGrid();
             }
         }
 
         private void inputReportEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             LoanReportDataObj.ReportEndDate = inputReportEndDate.SelectedDate.Value.Date;
-            if (LoanReportDataObj.LoanReportDataGrid != null)
+            if (LoanReportDataObj.LoanReportDataGrid != null && inputReportStartDate.SelectedDate != null && inputReportEndDate.SelectedDate != null)
             {
                 LoanReportDataObj.SortDataGridToReport(inputReportStartDate.SelectedDate.Value, inputReportEndDate.SelectedDate.Value, LoanReportDataObj.ReportSpan);
+                LoanDetailsPages.LoanCalculation.FormatGrid();
             }
-
         }
 
         private void reportSpan_Check(object sender, RoutedEventArgs e)
         {
             LoanReportDataObj.ReportSpan = Int32.Parse(((RadioButton)sender).Tag.ToString());
-            if (LoanReportDataObj.LoanReportDataGrid != null)
+            if (LoanReportDataObj.LoanReportDataGrid != null && inputReportStartDate.SelectedDate != null && inputReportEndDate.SelectedDate != null)
             {
                 LoanReportDataObj.SortDataGridToReport(inputReportStartDate.SelectedDate.Value, inputReportEndDate.SelectedDate.Value, LoanReportDataObj.ReportSpan);
+                LoanDetailsPages.LoanCalculation.FormatGrid();
             }
         }
 
         private void inputDisplayPaymentsChk_Click(object sender, RoutedEventArgs e)
         {
-            LoanReportDataObj.DisplayPaymentsChk = (bool)inputDisplayPaymentsChk.IsChecked;
-            if (LoanReportDataObj.LoanReportDataGrid != null)
+            if (LoanReportDataObj.LoanReportDataGrid != null && inputReportStartDate.SelectedDate != null && inputReportEndDate.SelectedDate != null)
             {
                 LoanReportDataObj.SortDataGridToReport(inputReportStartDate.SelectedDate.Value, inputReportEndDate.SelectedDate.Value, LoanReportDataObj.ReportSpan);
+                LoanDetailsPages.LoanCalculation.FormatGrid();
             }
         }
 
         private void buttonOpenAddPayment_Click(object sender, RoutedEventArgs e)
         {
-            loanDetails.Content = new LoanPayments(LoanReportDataObj);
+            loanDetails.Content = LoanDetailsPages.LoanPayments;
+            LoanDetailsPages.LoanPayments.LoanReportDataObj = this.LoanReportDataObj;
+
         }
 
         private void buttonOpenCalculation_Click(object sender, RoutedEventArgs e)
         {
-            loanDetails.Content = new LoanCalculation(LoanReportDataObj);
+            LoanDetailsPages.LoanCalculation.LoanReportObj = this.LoanReportDataObj;
+            loanDetails.Content = LoanDetailsPages.LoanCalculation;
             LoanReportDataObj.CalculateLoan();
         }
 
         private void buttonOpenDrawDown_Click(object sender, RoutedEventArgs e)
         {
-            loanDetails.Content = loanDrawDown;
+            loanDetails.Content = LoanDetailsPages.LoanDrawDown;
         }
 
-        private void inputOpenLoan_Click(object sender, RoutedEventArgs e)
+
+        private void inputRefreshLoans_Click(object sender, RoutedEventArgs e)
         {
-
-            bool connected = dbConnection.OpenConnection();
-
-         if(connected)
+            if (LoanReportDataObj.dbConnection.isConncectedToDb)
             {
-                // foreach (DataRow row in dbConnection.LoanDataSet.Tables[0].Rows)
-                openLoansDataGrid.Items.Clear();
-                DataTable openLoansTable = new DataTable();
-                openLoansTable.Columns.Add("title");
-                openLoansTable.Columns.Add("lender");
-                openLoansTable.Columns.Add("beneficiary");
-                openLoansTable.Columns.Add("collectionAccount");
-                openLoansTable.Columns.Add("startDate");
+                processIndicationText.Content = "Loading loans... Please Wait";
+                statusProgressBar.IsIndeterminate = true;
+                bgWorker.DoWork += BgWorker_DoWork;
+                bgWorker.RunWorkerCompleted += BgWorker_RunWorkerCompleted;
+                bgWorker.RunWorkerAsync();
+            }
+            else
+            {
+                MessageBox.Show("Unable to connecto to the data base. Please contact your system administrator", "Error connecting to the database");
+            }
+        }
 
+        private void BgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (LoanReportDataObj.dbConnection.isConncectedToDb)
+            {
 
-                foreach (DataRow row in dbConnection.LoanDataSet.Tables["LoanLifeTracker"].Rows)
-                    {
-                    string date = row.Field<DateTime>("loanStartDate").ToShortDateString();
-                    List<string> loanRow = new List<string> { row.Field<string>("loanTitle") , row.Field<string>("loanLender"), row.Field<string>("loanBeneficiary"), row.Field<string>("loanCollectionAccount"), date };
-                    DataRow newRow = openLoansTable.NewRow();
-
-                    for (int i = 0; i < loanRow.Count; i++)
-                    {
-                        newRow[i] = loanRow[i];
-                    }
-                    openLoansTable.Rows.Add(newRow);
-               
+                if (null == LoanReportDataObj.ExistingLoans || LoanReportDataObj.ExistingLoans.Count < 1)
+                {
+                    LoanReportDataObj.dbConnection.GetExistingLoans();
+                    DataGridTextColumn title = new DataGridTextColumn();
+                    DataGridTextColumn lender = new DataGridTextColumn();
+                    DataGridTextColumn beneficiary = new DataGridTextColumn();
+                    DataGridTextColumn collectionAccount = new DataGridTextColumn();
+                    DataGridTextColumn startDate = new DataGridTextColumn();
+                    DataGridTextColumn loanGuid = new DataGridTextColumn();
+                    openLoansDataGrid.Columns.Add(title);
+                    openLoansDataGrid.Columns.Add(lender);
+                    openLoansDataGrid.Columns.Add(beneficiary);
+                    openLoansDataGrid.Columns.Add(collectionAccount);
+                    openLoansDataGrid.Columns.Add(startDate);
+                    openLoansDataGrid.Columns.Add(loanGuid);
                 }
+                processIndicationText.Content = "";
+                statusProgressBar.IsIndeterminate = false;
+                //openLoansDataGrid.ItemsSource = null;
+                //openLoansDataGrid.ItemsSource = LoanReportDataObj.ExistingLoans;
 
-                openLoansDataGrid.ItemsSource = openLoansTable.AsDataView();
+
+
+
                 openLoansDataGrid.Columns[0].Header = "Title";
+                ((DataGridTextColumn)openLoansDataGrid.Columns[0]).Binding = new Binding("LoanTitle");
+
                 openLoansDataGrid.Columns[1].Header = "Lender";
+                ((DataGridTextColumn)openLoansDataGrid.Columns[1]).Binding = new Binding("LoanLender");
+
                 openLoansDataGrid.Columns[2].Header = "Beneficifiary";
+                ((DataGridTextColumn)openLoansDataGrid.Columns[2]).Binding = new Binding("LoanBeneficiary");
+
                 openLoansDataGrid.Columns[3].Header = "Collection Account";
+                ((DataGridTextColumn)openLoansDataGrid.Columns[3]).Binding = new Binding("LoanCollectionAccount");
+
                 openLoansDataGrid.Columns[4].Header = "Start Date";
+                ((DataGridTextColumn)openLoansDataGrid.Columns[4]).Binding = new Binding("LoanStartDate");
+                //  ((DataGridTextColumn)openLoansDataGrid.Columns[4]).Binding.StringFormat = "d";
+
+                //  ((DataGridTextColumn)openLoansDataGrid.Columns[5]).Binding = new Binding("LoanGuid");
+
+                // openLoansDataGrid.Columns[5].Visibility = Visibility.Collapsed;
                 openLoansDataGrid.Items.Refresh();
             }
-            //{LoanLifeTracker}
+            else
+            {
+                processIndicationText.Content = LoanReportDataObj.dbConnection.DbConnectionError;
+            }
+        }
+
+        private void BgWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            LoanReportDataObj.dbConnection.OpenConnection();
         }
 
         private void inputSaveLoan_Click(object sender, RoutedEventArgs e)
         {
-            // dbConnection = new DatabaseConnection();
-            dbConnection.AddLoan(LoanReportDataObj.ActiveLoan);
+            LoanReportDataObj.addLoanToExistingLoans();
+            LoanReportDataObj.NotifyUI();
+            LoanReportDataObj.dbConnection.UpdateLoansToDb();
         }
-
-        //private void Window_Loaded(object sender, RoutedEventArgs e)
-        //{
-
-        //    loanReportDataViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("loanReportDataViewSource")));
-        //    if(this.LoanReportDataObj != null)
-        //    { 
-        //    loanReportDataViewSource.Source = LoanReportDataObj;
-        //        // Load data by setting the CollectionViewSource.Source property:
-        //    }
-
-        //}
 
         private void inputCompanyInfo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -378,7 +409,6 @@ namespace InterestTracker
         private void inputLoanTitle_TextChanged(object sender, TextChangedEventArgs e)
         {
             labelTitle.Content = "Title: " + inputLoanTitle.Text;
-            LoanReportDataObj.Title = inputLoanTitle.Text;
         }
 
         private void inputBeneficiary_TextChanged(object sender, TextChangedEventArgs e)
@@ -393,13 +423,158 @@ namespace InterestTracker
 
         private void buttonLogin_Click(object sender, RoutedEventArgs e)
         {
-            dbConnection.dBConnInfo.MySqlUserName = inputUserName.Text;
-            dbConnection.dBConnInfo.MySqlPassword = inputPassword.Password;
-            bool connectionSucess = dbConnection.OpenConnection();
-            MessageBox.Show(connectionSucess.ToString());
+            LoanReportDataObj.dbConnection.dBConnInfo.MySqlUserName = inputUserName.Text;
+            LoanReportDataObj.dbConnection.dBConnInfo.MySqlPassword = inputPassword.Password;
+            processIndicationText.Content = "Login is being processed... Please wait";
+            statusProgressBar.IsIndeterminate = true;
+            bgWorker.DoWork += BgWorker_DoWork;
+            bgWorker.RunWorkerCompleted += BgWorker_RunWorkerCompleted;
+            bgWorker.RunWorkerAsync();
+            loginExpander.IsExpanded = false;
+        }
 
-            //inputUserName.Text = "";
-            //inputPassword.Password = "";
+        private void inputLoanTitle_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (((TextBox)sender).Text == "Please add a title...")
+            {
+                ((TextBox)sender).Text = "";
+            }
+        }
+
+        private void InterestTrackerMainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            statusProgressBar.IsIndeterminate = false;
+        }
+
+        private void openLoansDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (openLoansDataGrid.SelectedItems.Count > 0)
+            {
+                LoanReportDataObj.ActiveLoan = ((Loan)openLoansDataGrid.SelectedItems[0]);
+            }
+        }
+
+        private void buttonExportToPdf_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog savePdf = new SaveFileDialog();
+            savePdf.Filter = "PDF File (*.pdf)|*.pdf";
+            savePdf.ValidateNames = true;
+            savePdf.Title = "Save Interest Tracker Report...";
+            savePdf.FileName = LoanReportDataObj.Title + " " + LoanReportDataObj.ReportStartDate.Month + LoanReportDataObj.ReportStartDate.Day + LoanReportDataObj.ReportStartDate.Year +
+               " - " + LoanReportDataObj.ReportEndDate.Month + LoanReportDataObj.ReportEndDate.Day + LoanReportDataObj.ReportEndDate.Year + ".pdf";
+            if (savePdf.ShowDialog() == true)
+            {
+                GeneratePdf toPdf = new GeneratePdf(LoanReportDataObj);
+                toPdf.PdfSavePath = savePdf.FileName;
+                
+                LoanDetailsPages.LoanCalculation.FormatGrid();
+                toPdf.BuildPDF();
+            }
+        }
+
+        private void buttonExportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+
+            generateExcelBG();
+        }
+
+        GenerateExcel toExcel;
+        private void generateExcelBG()
+        {
+            SaveFileDialog saveExcel = new SaveFileDialog();
+            saveExcel.Filter = "Excel File (*.xlsx)|*.xlsx";
+            saveExcel.ValidateNames = true;
+            saveExcel.Title = "Save Interest Tracker Report...";
+            saveExcel.FileName = LoanReportDataObj.Title + " " + LoanReportDataObj.ReportStartDate.Month + LoanReportDataObj.ReportStartDate.Day + LoanReportDataObj.ReportStartDate.Year +
+               " - " + LoanReportDataObj.ReportEndDate.Month + LoanReportDataObj.ReportEndDate.Day + LoanReportDataObj.ReportEndDate.Year + ".xlsx";
+            if (saveExcel.ShowDialog() == true)
+            {
+                processIndicationText.Content = "Generating Excel document... Please wait";
+                statusProgressBar.IsIndeterminate = true;
+                toExcel = new GenerateExcel(LoanReportDataObj);
+                toExcel.PdfSavePath = saveExcel.FileName;
+                bgExcelWorker.DoWork += bgExcelWorker_DoWork;
+                bgExcelWorker.RunWorkerCompleted += bgExcelWorker_RunWorkerCompleted;
+                bgExcelWorker.RunWorkerAsync();
+            }
+        }
+
+        private void bgExcelWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            toExcel.BuildExcel();
+        }
+
+        private void bgExcelWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            processIndicationText.Content = "";
+            statusProgressBar.IsIndeterminate = false;
+        }
+
+        private void inputRemoveLoan_Click(object sender, RoutedEventArgs e)
+        {
+            if (openLoansDataGrid.SelectedItems[0] != null)
+            {
+                LoanReportDataObj.ExistingLoans.Remove((Loan)openLoansDataGrid.SelectedItems[0]);
+            }
+
+        }
+    }
+
+    static class LoanDetailsPages
+    {
+        static private LoanCalculation loanCalculation;
+        static private LoanPayments loanPayments;
+        static private LoanDrawDown loanDrawDown;
+        public static void CreatePages(LoanReportData loanReportDataObj)
+        {
+
+            loanCalculation = new LoanCalculation(loanReportDataObj);
+            loanPayments = new LoanPayments(loanReportDataObj);
+            loanDrawDown = new LoanDrawDown();
+        }
+
+
+
+
+        public static LoanCalculation LoanCalculation
+        {
+            get
+            {
+                return loanCalculation;
+            }
+
+            set
+            {
+
+                loanCalculation = value;
+            }
+        }
+
+        public static LoanPayments LoanPayments
+        {
+            get
+            {
+                return loanPayments;
+            }
+
+            set
+            {
+                loanPayments = value;
+            }
+        }
+
+        public static LoanDrawDown LoanDrawDown
+        {
+            get
+            {
+                return loanDrawDown;
+            }
+
+            set
+            {
+                loanDrawDown = value;
+            }
         }
     }
 }
+

@@ -20,18 +20,20 @@ namespace InterestTracker
     /// <summary>
     /// Interaction logic for LoanPayments.xaml
     /// </summary>
-    public partial class LoanPayments : Page
+     partial class LoanPayments : Page
     {
-        protected LoanReportData loanReportDataObj;
+        private LoanReportData loanReportDataObj;
         Payment checkForPayment;
         CollectionViewSource itemCollectionViewSource;
 
         public LoanPayments(LoanReportData loanReportDataObj)
+        //public LoanPayments()
+
         {
-            this.loanReportDataObj = loanReportDataObj;
+            this.LoanReportDataObj = loanReportDataObj;
             InitializeComponent();
             SelectedPayment = new Payment(loanReportDataObj.LoanGuid);
-            SelectedDate = this.loanReportDataObj.StartDate;
+            SelectedDate = this.LoanReportDataObj.StartDate;
             SelectedPayment.PaymentDate = SelectedDate;
             panelPaymentAllocation.DataContext = SelectedPayment;
             ((DatePicker)inputPaymentDate).DisplayDateStart = loanReportDataObj.StartDate;
@@ -53,6 +55,19 @@ namespace InterestTracker
         {
             get { return inputPaymentDate.SelectedDate.Value; }
             set { inputPaymentDate.SelectedDate = value; }
+        }
+
+        internal LoanReportData LoanReportDataObj
+        {
+            get
+            {
+                return loanReportDataObj;
+            }
+
+            set
+            {
+                loanReportDataObj = value;
+            }
         }
 
         private void displayedControlsCheck()
@@ -164,15 +179,15 @@ namespace InterestTracker
 
         private void updateTextBoxWithExistingPaymentData()
         {
-            if (loanReportDataObj.LoanDataTable != null)
+            if (LoanReportDataObj.LoanDataTable != null)
             {
-                DataRow dateRow = loanReportDataObj.LoanDataTable.Rows.Find(SelectedPayment.PaymentDate);
+                DataRow dateRow = LoanReportDataObj.LoanDataTable.Rows.Find(SelectedPayment.PaymentDate);
                 if (dateRow != null)
                 {
                     labelSelectedDayInfo.Content = "Balance details of the selected day: \r\n" +
-                        "Principal Balance: " + loanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[1]).ToString() + "\r\n" +
-                        "Interest Balance: " + loanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[4]).ToString() + "\r\n" +
-             "Current Balance: " + loanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[9]).ToString() + "\r\n";
+                        "Principal Balance: " + LoanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[1]).ToString() + "\r\n" +
+                        "Interest Balance: " + LoanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[4]).ToString() + "\r\n" +
+             "Current Balance: " + LoanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[9]).ToString() + "\r\n";
                 }
             }
         }
@@ -180,7 +195,7 @@ namespace InterestTracker
         private void inputPaymentDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            checkForPayment = loanReportDataObj.PaymentList.Find(delegate (Payment p)
+            checkForPayment = LoanReportDataObj.PaymentList.Find(delegate (Payment p)
             {
                 if (p.PaymentDate == SelectedDate)
                 {
@@ -266,7 +281,7 @@ namespace InterestTracker
 
         private void buttonAddPayment_Click(object sender, RoutedEventArgs e)
         {
-            checkForPayment = loanReportDataObj.PaymentList.Find(delegate (Payment p)
+            checkForPayment = LoanReportDataObj.PaymentList.Find(delegate (Payment p)
             {
                 if (p.PaymentDate == SelectedDate)
                 {
@@ -281,35 +296,35 @@ namespace InterestTracker
   );
             if (checkForPayment == null)
             {
-                Payment addPayment = new Payment(loanReportDataObj.LoanGuid);
+                Payment addPayment = new Payment(LoanReportDataObj.LoanGuid);
                 addPayment.PaymentDate = SelectedDate;
                 addPayment.TotalPaymentAmount = SelectedPayment.TotalPaymentAmount;
                 addPayment.InterestPaymentAmount = SelectedPayment.InterestPaymentAmount;
                 addPayment.PrincipalPaymentAmount = SelectedPayment.PrincipalPaymentAmount;
-                loanReportDataObj.PaymentList.Add(addPayment);
+                LoanReportDataObj.PaymentList.Add(addPayment);
                 addPayment = null;
                 itemCollectionViewSource.Source = null;
-                itemCollectionViewSource.Source = loanReportDataObj.PaymentList;
+                itemCollectionViewSource.Source = LoanReportDataObj.PaymentList;
                 formatPaymentColumnHeaders();
                 SelectedPayment.PaymentDate = SelectedDate;
             }
             else if (checkForPayment.PaymentDate == SelectedDate)
             {
-                Payment updatePayment = new Payment(loanReportDataObj.LoanGuid);
+                Payment updatePayment = new Payment(LoanReportDataObj.LoanGuid);
                 updatePayment.PaymentDate = SelectedDate;
                 updatePayment.TotalPaymentAmount = SelectedPayment.TotalPaymentAmount;
                 updatePayment.InterestPaymentAmount = SelectedPayment.InterestPaymentAmount;
                 updatePayment.PrincipalPaymentAmount = SelectedPayment.PrincipalPaymentAmount;
-                loanReportDataObj.PaymentList.Remove(checkForPayment);
-                loanReportDataObj.PaymentList.Add(updatePayment);
+                LoanReportDataObj.PaymentList.Remove(checkForPayment);
+                LoanReportDataObj.PaymentList.Add(updatePayment);
                 SelectedPayment = checkForPayment;
                 itemCollectionViewSource.Source = null;
-                itemCollectionViewSource.Source = loanReportDataObj.PaymentList;
+                itemCollectionViewSource.Source = LoanReportDataObj.PaymentList;
                 formatPaymentColumnHeaders();
             }
 
             gridPaymentList.Visibility = Visibility.Visible;
-            loanReportDataObj.CalculateLoan();
+            LoanReportDataObj.CalculateLoan();
             displayedControlsCheck();
         }
 
@@ -317,11 +332,11 @@ namespace InterestTracker
 
         private void buttonRemovePayment_Click(object sender, RoutedEventArgs e)
         {
-            if (loanReportDataObj.PaymentList.Contains(SelectedPayment))
+            if (LoanReportDataObj.PaymentList.Contains(SelectedPayment))
             {
-                loanReportDataObj.PaymentList.Remove(SelectedPayment);
+                LoanReportDataObj.PaymentList.Remove(SelectedPayment);
                 itemCollectionViewSource.Source = null;
-                itemCollectionViewSource.Source = loanReportDataObj.PaymentList;
+                itemCollectionViewSource.Source = LoanReportDataObj.PaymentList;
                 formatPaymentColumnHeaders();
                 displayedControlsCheck();
             }
@@ -363,21 +378,21 @@ namespace InterestTracker
                 
                 itemCollectionViewSource.Source = null;
                 itemCollectionViewSource = (CollectionViewSource)(FindResource("ItemCollectionViewSource"));
-                itemCollectionViewSource.Source = loanReportDataObj.PaymentList;
-                if (loanReportDataObj.PaymentList.Count >= 1 && gridPaymentList.Columns.Count != 0)
+                itemCollectionViewSource.Source = LoanReportDataObj.PaymentList;
+                if (LoanReportDataObj.PaymentList.Count >= 1 && gridPaymentList.Columns.Count != 0)
                 {
                     gridPaymentList.Visibility = Visibility.Visible;
                     gridPaymentList.Columns[0].Visibility = Visibility.Collapsed;
                     gridPaymentList.Columns[1].Header = "Payment Date";
                     ((DataGridTextColumn)gridPaymentList.Columns[1]).Binding.StringFormat = "MM/dd/yyyy";
 
-                    gridPaymentList.Columns[2].Header = "Total Payment \n(" + loanReportDataObj.Currency + ")";
+                    gridPaymentList.Columns[2].Header = "Total Payment \n(" + LoanReportDataObj.Currency + ")";
                     ((DataGridTextColumn)gridPaymentList.Columns[2]).Binding.StringFormat = "N";
 
-                    gridPaymentList.Columns[3].Header = "Interest Payment \n(" + loanReportDataObj.Currency + ")";
+                    gridPaymentList.Columns[3].Header = "Interest Payment \n(" + LoanReportDataObj.Currency + ")";
                     ((DataGridTextColumn)gridPaymentList.Columns[3]).Binding.StringFormat = "N";
 
-                    gridPaymentList.Columns[4].Header = "Principal Payment \n(" + loanReportDataObj.Currency + ")";
+                    gridPaymentList.Columns[4].Header = "Principal Payment \n(" + LoanReportDataObj.Currency + ")";
                     ((DataGridTextColumn)gridPaymentList.Columns[4]).Binding.StringFormat = "N";
                 }
                 else

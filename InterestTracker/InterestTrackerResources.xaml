@@ -36,6 +36,7 @@
     <Style TargetType="Label">
         <Setter Property="Background" Value="#FF4682B4"/>
         <Setter Property="Foreground" Value="#FFDCDCDC"/>
+        <Setter Property="Height" Value="24"/>
         <Setter Property="FontFamily" Value="Arial"/>
         <Setter Property="FontSize" Value="12"/>
     </Style>
@@ -43,6 +44,7 @@
     <Style TargetType="TextBox">
         <Setter Property="Background" Value="#FFDCDCDC"/>
         <Setter Property="Foreground" Value="#FF13487D"/>
+        <Setter Property="Height" Value="24"/>
         <Setter Property="MaxLength" Value="100"/>
         <Setter Property="Padding" Value="3"/>
         <Setter Property="FontFamily" Value="Arial"/>
@@ -174,10 +176,13 @@
     </Style>
 
     <Style TargetType="ProgressBar">
+        <Setter Property="Background" Value="#FFDCDCDC"/>
         <Setter Property="Background" Value="#FF4682B4"/>
         <Setter Property="BorderThickness" Value="0"/>
+        
         <Setter Property="Foreground" Value="#FF13487D"/>
         <Setter Property="Margin" Value="0"/>
+        <!--<Setter Property="VisualStateManager."-->
     </Style>
 
     <Style TargetType="StatusBar">
@@ -232,7 +237,7 @@
     </Style>
 
     <Style TargetType="DataGrid">
-        <Setter Property="Background" Value="#FF4682B4"/>
+        
         <Setter Property="ColumnWidth" Value="*"/>
         <Setter Property="RowHeaderWidth" Value="0"/>
         <Setter Property="VerticalGridLinesBrush" Value="#FF4682B4"/>
@@ -242,6 +247,32 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="SelectionMode" Value="Single"/>
         <Setter Property="SelectionUnit" Value="FullRow"/>
+        <!--<Setter Property="RowStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="Background" Value="#FF4682B4"/>
+                
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="#FF13487D"/>
+                    </Trigger>
+
+                </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>-->
+
+    </Style>
+
+    <Style TargetType="{x:Type DataGridRow}">
+        <!--<Setter Property="Selector.Background" Value="Beige"/>-->
+        <Setter Property="Background" Value="#FF4682B4"/>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="#FF13487D"/>
+            </Trigger>
+                     
+        </Style.Triggers>
     </Style>
     
     <Style TargetType="DataGridColumnHeader">
@@ -254,25 +285,32 @@
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="Height" Value="60"/>
-        <Setter Property="ContentTemplate">
+        <!--<Setter Property="ContentTemplate">
             
             <Setter.Value>
                 <DataTemplate>
                     <TextBlock TextWrapping="Wrap" Text="{Binding}"/>
                 </DataTemplate>
             </Setter.Value>
-        </Setter>
+        </Setter>-->
      
     </Style>
     
     
     
-    <Style TargetType="DataGridCell">
-        <Setter Property="Background" Value="#FF4682B4"/>
+    <Style TargetType="{x:Type DataGridCell}">
+        <Setter Property="Background" Value="#FF4682B4"/> 
         <Setter Property="Foreground" Value="#FFDCDCDC"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="#FFDCDCDC"/> 
+                <Setter Property="Foreground" Value="#FF13487D"/>
+            </Trigger>
+
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="ListView">
