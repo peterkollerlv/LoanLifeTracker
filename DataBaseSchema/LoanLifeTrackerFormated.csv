@@ -1,0 +1,6 @@
+loanGuid,loanTitle,loanBeneficiary,loanCollectionAccount,loanCompanyInfo,loanCurrency,loanHasPenalty,loanInitialLoanAmount,loanPenaltyDate,loanPenaltyRate,loanInterestRate,loanInterestStructure,loanLender,loanPaid,loanSavedToDB,loanStartDate
+1501b1df-b1f0-417f-8377-3ec5617ae3d4,This is a long title,beneficiary,collection accoutn,Freeway CAM B.V.,USD,0,255500,0001-01-01,11.25,5,0,Lender,0,1,4/7/2016
+281ccc54-62a2-4086-bfc0-d11acdb51879,New Title,beneficiary,Collection account,Freeway CAM B.V.,EUR,1,50000,4/7/2017,12.22,5,0,lender info,0,1,4/7/2016
+2f0d6a1f-1ec1-483a-ab88-d1d25f6f4c48,This is the title,beneficiary,Coll acc,Freeway CAM B.V.,AUD,0,5001111,0001-01-01,16.12,5,0,lender info,0,1,4/7/2016
+99137479-fbf3-4373-b846-c74925352e14,New This Long title,Beneficiary ,Coll account,Freeway CAM B.V.,USD,1,5000,4/7/2017,10,5,0,Lender info,0,1,4/7/2016
+ef7cc501-29e3-4885-a0f5-a6698045b81b,New Title now,beneficiary,coll acc,Freeway CAM B.V.,USD,0,800000,0001-01-01,10.25,5,0,lender info,0,1,4/7/2016
