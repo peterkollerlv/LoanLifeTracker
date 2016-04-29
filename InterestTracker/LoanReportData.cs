@@ -250,6 +250,7 @@ namespace InterestTracker
             set { ActiveLoan.LoanInterestStructure = value; }
         }
 
+        public Payment SelectedPayment { get; set; }
         public ObservableCollection<Payment> PaymentList
         {
             get { return ActiveLoan.LoanPaymentsList; }
@@ -499,18 +500,26 @@ namespace InterestTracker
             switch (InterestStructureSelection)
             {
                 case "fixed365":
+                    {
+                        interest = (PrincipalBalance * calculateInterestRate(date)) / numberOfDaysInDateYear;
+                        goto default;
+                    }
                 case "compDay365":
                 case "compMonth365":
                 case "compQuarter365":
                 case "compYear365":
-                    interest = (PrincipalBalance) * calculateInterestRate(date) / numberOfDaysInDateYear;
+                    interest = (CurrentBalance * calculateInterestRate(date)) / numberOfDaysInDateYear;
                     goto default;
                 case "fixed360":
+                    {
+                        interest = (PrincipalBalance * calculateInterestRate(date)) / 360;
+                        goto default;
+                    }
                 case "compDay360":
                 case "compMonth360":
                 case "compQuarter360":
                 case "compYear360":
-                    interest = (PrincipalBalance * calculateInterestRate(date)) / 360;
+                    interest = (CurrentBalance * calculateInterestRate(date)) / 360;
                     goto default;
                 //  case "compDay365":
                 //interest = (PrincipalBalance * calculateInterestRate(date)) / numberOfDaysInDateYear;
@@ -627,6 +636,8 @@ namespace InterestTracker
                 PrincipalBalance = ActiveLoan.LoanInitialLoanAmount;
                 CurrentBalance = PrincipalBalance;
             }
+
+
             decimal dailyInterest = calculateInterest(currentDate.Date);
             CumulativeInterestBalance += dailyInterest;
 
@@ -655,7 +666,7 @@ namespace InterestTracker
             }
             else
             {
-                CumulativeInterestBalance += dailyInterest;   //calculateInterest(currentDate.Date);
+               // CumulativeInterestBalance += dailyInterest;   //calculateInterest(currentDate.Date);
             }
 
             
@@ -675,8 +686,8 @@ namespace InterestTracker
                     {
 
                         CumulativeInterestBalance = calculateInterest(currentDate.Date);
-                        PrincipalBalance = PrincipalBalance + CumulativeInterestBalance;
-                        CurrentBalance = PrincipalBalance;
+                        CurrentBalance = PrincipalBalance + CumulativeInterestBalance;
+                       // CurrentBalance = PrincipalBalance;
 
                         goto default;
                     }
@@ -686,9 +697,9 @@ namespace InterestTracker
                     {
                         if (currentDate.Day == 1)
                         {
-                            PrincipalBalance = PrincipalBalance + CumulativeInterestBalance;
-                            CurrentBalance = PrincipalBalance;
-                            CumulativeInterestBalance = calculateInterest(currentDate.Date); //resets the interest balance;
+                            CurrentBalance = PrincipalBalance + CumulativeInterestBalance;
+                            //CurrentBalance = PrincipalBalance;
+                           // CumulativeInterestBalance = calculateInterest(currentDate.Date); //resets the interest balance;
                         }
                         if (getLastDayOfMonth(currentDate) == currentDate.Day)
                         {

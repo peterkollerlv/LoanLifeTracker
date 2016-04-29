@@ -300,6 +300,7 @@ namespace InterestTracker
 
         private void buttonOpenAddPayment_Click(object sender, RoutedEventArgs e)
         {
+            loanDetails.Content = LoanDetailsPages.LoanPayments = new LoanPayments(LoanReportDataObj);
             loanDetails.Content = LoanDetailsPages.LoanPayments;
             LoanDetailsPages.LoanPayments.LoanReportDataObj = this.LoanReportDataObj;
 

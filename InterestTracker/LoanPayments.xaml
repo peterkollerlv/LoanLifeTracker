@@ -7,7 +7,7 @@
       mc:Ignorable="d"
       Title="LoanPayments" Height="570" Width="995">
     <Page.Resources>
-        <CollectionViewSource x:Key="ItemCollectionViewSource" CollectionViewType="ListCollectionView"/>
+        <!--<CollectionViewSource x:Key="ItemCollectionViewSource" CollectionViewType="ListCollectionView"/>-->
     </Page.Resources>
     <Grid Name="paymentGrid">
         <Label x:Name="loanPaymentsTitle" Content="Loan Payments" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="29" Width="150" FontSize="18.667" FontWeight="Bold"/>
@@ -23,24 +23,24 @@
             <Grid Name="panelPaymentAmount" HorizontalAlignment="Left"  Margin="11,10,0,0" VerticalAlignment="Top" Height="60" Width="164">
                 <Label x:Name="labelPaymentCurrency" Content="USD" HorizontalAlignment="Left" Margin="-5,27,0,0" VerticalAlignment="Top"/>
                 <Label x:Name="labelPaymentAmount" Content="Payment Amount" HorizontalAlignment="Left" Margin="-5,3,0,0" VerticalAlignment="Top"/>
-                <TextBox x:Name="inputPaymentAmount" HorizontalAlignment="Left" Height="23" Margin="35,27,0,0" TextWrapping="Wrap" Text="{Binding Path=TotalPaymentAmount, StringFormat={}{0:N}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" PreviewTextInput="inputPaymentAmount_PreviewTextInput" TextChanged="inputPaymentAmount_TextChanged"/>
+                <TextBox x:Name="inputPaymentAmount" HorizontalAlignment="Left" Height="23" Margin="35,27,0,0" TextWrapping="Wrap" Text="{Binding Path=SelectedPayment.TotalPaymentAmount, StringFormat={}{0:N}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" PreviewTextInput="inputPaymentAmount_PreviewTextInput" TextChanged="inputPaymentAmount_TextChanged"/>
             </Grid>
             <Grid Name="panelInterestAmount"  HorizontalAlignment="Left"  Height="60" Width="164" Margin="602,10,0,0" VerticalAlignment="Top">
                 <Label x:Name="labelInterestPaymentCurrency" Content="USD" HorizontalAlignment="Left" Margin="4,24,0,0" VerticalAlignment="Top"/>
                 <Label x:Name="labelPaymentInterestAmount" Content="Interest" HorizontalAlignment="Left" Margin="4,0,0,0" VerticalAlignment="Top"/>
-                <TextBox x:Name="inputPaymentInterestAmount" HorizontalAlignment="Left" Height="23" Margin="44,26,0,0" TextWrapping="Wrap" Text="{Binding Path=InterestPaymentAmount, StringFormat={}{0:N}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" PreviewTextInput="inputPaymentInterestAmount_PreviewTextInput" TextChanged="inputPaymentInterestAmount_TextChanged"/>
+                <TextBox x:Name="inputPaymentInterestAmount" HorizontalAlignment="Left" Height="23" Margin="44,26,0,0" TextWrapping="Wrap" Text="{Binding Path=SelectedPayment.InterestPaymentAmount, StringFormat={}{0:N}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" PreviewTextInput="inputPaymentInterestAmount_PreviewTextInput" TextChanged="inputPaymentInterestAmount_TextChanged"/>
 
                 <Label x:Name="labelInterestPercent" Content="ix%" HorizontalAlignment="Left" Margin="135,0,0,0" VerticalAlignment="Top"/>
             </Grid>
             <Grid Name="panelPrincipalAmount" HorizontalAlignment="Left" Margin="771,10,0,0" VerticalAlignment="Top" Height="60" Width="164">
                 <Label x:Name="labelPrincipalPaymentCurrency" Content="USD" HorizontalAlignment="Left" Margin="3,23,0,0" VerticalAlignment="Top"/>
                 <Label x:Name="labelPaymentPrincipalAmount" Content="Principal" HorizontalAlignment="Left" Margin="3,-1,0,0" VerticalAlignment="Top"/>
-                <TextBox x:Name="inputPaymentPrincipalAmount" HorizontalAlignment="Left" Height="23" Margin="43,24,0,0" TextWrapping="Wrap" Text="{Binding Path=PrincipalPaymentAmount, StringFormat={}{0:N}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" PreviewTextInput="inputPaymentPrincipalAmount_PreviewTextInput" TextChanged="inputPaymentPrincipalAmount_TextChanged"/>
+                <TextBox x:Name="inputPaymentPrincipalAmount" HorizontalAlignment="Left" Height="23" Margin="43,24,0,0" TextWrapping="Wrap" Text="{Binding Path=SelectedPayment.PrincipalPaymentAmount, StringFormat={}{0:N}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" PreviewTextInput="inputPaymentPrincipalAmount_PreviewTextInput" TextChanged="inputPaymentPrincipalAmount_TextChanged"/>
                 <Label x:Name="labelPrincipalPercent" Content="px%" HorizontalAlignment="Left" Margin="131,0,0,0" VerticalAlignment="Top"/>
             </Grid>
 
         </Grid>
-        <DataGrid x:Name="gridPaymentList" DataContext="{StaticResource ItemCollectionViewSource}" AutoGenerateColumns="True" ItemsSource="{Binding}"
+        <DataGrid x:Name="gridPaymentList"  AutoGenerateColumns="False" ItemsSource="{Binding}"
                   HorizontalAlignment="Left" Margin="20,210,0,0" VerticalAlignment="Top" Height="321" Width="920" Loaded="gridPaymentList_Loaded" SelectionChanged="gridPaymentList_SelectionChanged">   
         </DataGrid>
         <!--Path=loanObject.PaymentList,-->
