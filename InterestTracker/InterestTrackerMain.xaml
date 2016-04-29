@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:InterestTracker"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Name="InterestTrackerMainWindow" x:Class="InterestTracker.InterestTrackerMain"
         mc:Ignorable="d"
-        Title="Interest Tracker" Height="737" Width="1394" Background="SteelBlue" WindowStartupLocation="CenterScreen" Loaded="InterestTrackerMainWindow_Loaded">
+        Title="Interest Tracker" Height="737" WindowStartupLocation="CenterScreen" Width="1394" Background="SteelBlue"  Loaded="InterestTrackerMainWindow_Loaded" Icon="Resources/InterestTrackerLogo.ico"
+   >
+
     <Window.Resources>
 
     </Window.Resources>
@@ -208,7 +210,7 @@
                     <DatePicker x:Name="inputReportEndDate" SelectedDate="{Binding ReportEndDate, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" SelectedDateChanged="inputReportEndDate_SelectedDateChanged"/>
                     <Button x:Name="buttonExportToPdf" Content="Export To PDF" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="103" Click="buttonExportToPdf_Click"/>
                     <Button x:Name="buttonExportToExcel" Content="Export To Excel" HorizontalAlignment="Left" Margin="10,212,0,0" VerticalAlignment="Top" Width="103" Click="buttonExportToExcel_Click"/>
-                    
+
                     <UniformGrid x:Name="reportSpan" Rows="4" Columns="1" Margin="166,85,0,0" HorizontalAlignment="Left" Width="95" Height="102" VerticalAlignment="Top" >
                         <RadioButton GroupName="reportSpan" Checked="reportSpan_Check" Tag="0" Content="Daily View" Height="26" VerticalAlignment="Top"></RadioButton>
                         <RadioButton GroupName="reportSpan" Checked="reportSpan_Check" Tag="1" Content="Weekly View"></RadioButton>

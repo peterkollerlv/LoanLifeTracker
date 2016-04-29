@@ -250,7 +250,7 @@ namespace InterestTracker
             set { ActiveLoan.LoanInterestStructure = value; }
         }
 
-        public List<Payment> PaymentList
+        public ObservableCollection<Payment> PaymentList
         {
             get { return ActiveLoan.LoanPaymentsList; }
             set { ActiveLoan.LoanPaymentsList = value; }
@@ -393,6 +393,7 @@ namespace InterestTracker
             set { reportScope = value; }
         }
 
+        private ObservableCollection<Loan> existingLoans;
         public ObservableCollection<Loan> ExistingLoans
         {
             get { return existingLoans; }
@@ -423,9 +424,9 @@ namespace InterestTracker
                     Notify("ActiveGuid");
                 }
             }
-
-
         }
+
+
 
 
         public void NotifyUI()
@@ -445,7 +446,7 @@ namespace InterestTracker
             Notify("ExistingLoans");
             Notify("ActiveGuid");
         }
-        private ObservableCollection<Loan> existingLoans;
+
 
 
         // not implemented yet
@@ -548,7 +549,7 @@ namespace InterestTracker
         {
             try
             {
-               // LoanReportDataGrid.Visibility = Visibility.Hidden;
+                // LoanReportDataGrid.Visibility = Visibility.Hidden;
                 LoanDataTable = new DataTable();
                 LoanDataTable.Columns.Add("loanDayDate", typeof(DateTime));
                 LoanDataTable.Columns.Add("loanDayPrincipal", typeof(decimal));
@@ -560,7 +561,7 @@ namespace InterestTracker
                 LoanDataTable.Columns.Add("loanDayInterestPayment", typeof(decimal));
                 LoanDataTable.Columns.Add("loanDayPrincipalPayment", typeof(decimal)); ;
                 LoanDataTable.Columns.Add("loanDayCurrentBalance", typeof(decimal));
-              //  LoanDataTable.Columns.Add("loanDayComments", typeof(string));
+                //  LoanDataTable.Columns.Add("loanDayComments", typeof(string));
                 LoanDataTable.PrimaryKey = new DataColumn[] { LoanDataTable.Columns["loanDayDate"] };
 
                 DateTime indexingDate = StartDate;
@@ -631,38 +632,40 @@ namespace InterestTracker
 
             if (paymentExists(currentDate))
             {
-                if (getPaymentDetails(currentDate).InterestPaymentAmount > InterestBalance)
+                if (getPaymentDetails(currentDate).InterestPaymentAmount > CumulativeInterestBalance)
                 {
                     //InterestBalance = InterestBalance - getPaymentDetails(currentDate).InterestPaymentAmount;
-                    InterestBalance = Math.Abs(InterestBalance - getPaymentDetails(currentDate).InterestPaymentAmount + dailyInterest);
-                    PrincipalBalance = PrincipalBalance - InterestBalance - getPaymentDetails(currentDate).PrincipalPaymentAmount;
-                    InterestBalance = 0;
+                    CumulativeInterestBalance = Math.Abs(CumulativeInterestBalance - getPaymentDetails(currentDate).InterestPaymentAmount + dailyInterest);
+                    PrincipalBalance = PrincipalBalance - CumulativeInterestBalance - getPaymentDetails(currentDate).PrincipalPaymentAmount;
+                    CumulativeInterestBalance = 0;
                 }
                 else if (getPaymentDetails(currentDate).PrincipalPaymentAmount > PrincipalBalance)
                 {
                     PrincipalBalance = Math.Abs(PrincipalBalance - getPaymentDetails(currentDate).PrincipalPaymentAmount);
-                    InterestBalance = InterestBalance - PrincipalBalance - getPaymentDetails(currentDate).InterestPaymentAmount;
+                    CumulativeInterestBalance = CumulativeInterestBalance - PrincipalBalance - getPaymentDetails(currentDate).InterestPaymentAmount;
                     PrincipalBalance = 0;
                 }
 
                 else
                 {
                     PrincipalBalance = PrincipalBalance - getPaymentDetails(currentDate).PrincipalPaymentAmount;
-                    InterestBalance += dailyInterest - getPaymentDetails(currentDate).InterestPaymentAmount;
+                    CumulativeInterestBalance += dailyInterest - getPaymentDetails(currentDate).InterestPaymentAmount;
                 }
-                CurrentBalance = PrincipalBalance + InterestBalance;
+                CurrentBalance = PrincipalBalance + CumulativeInterestBalance;
             }
             else
             {
-                InterestBalance += dailyInterest;   //calculateInterest(currentDate.Date);
+                CumulativeInterestBalance += dailyInterest;   //calculateInterest(currentDate.Date);
             }
+
+            
 
             switch (InterestStructureSelection)
             {
                 case "fixed360":
                 case "fixed365":
                     {
-                        CurrentBalance = PrincipalBalance + InterestBalance;
+                        CurrentBalance = PrincipalBalance + CumulativeInterestBalance;
 
                         goto default;
                     }
@@ -670,9 +673,11 @@ namespace InterestTracker
                 case "compDay365":
                 case "compDay360":
                     {
-                        InterestBalance = calculateInterest(currentDate.Date);
-                        PrincipalBalance = PrincipalBalance + InterestBalance;
+
+                        CumulativeInterestBalance = calculateInterest(currentDate.Date);
+                        PrincipalBalance = PrincipalBalance + CumulativeInterestBalance;
                         CurrentBalance = PrincipalBalance;
+
                         goto default;
                     }
 
@@ -681,12 +686,13 @@ namespace InterestTracker
                     {
                         if (currentDate.Day == 1)
                         {
-                            InterestBalance = calculateInterest(currentDate.Date); //resets the interest balance;
+                            PrincipalBalance = PrincipalBalance + CumulativeInterestBalance;
+                            CurrentBalance = PrincipalBalance;
+                            CumulativeInterestBalance = calculateInterest(currentDate.Date); //resets the interest balance;
                         }
                         if (getLastDayOfMonth(currentDate) == currentDate.Day)
                         {
-                            PrincipalBalance = PrincipalBalance + InterestBalance;
-                            CurrentBalance = PrincipalBalance;
+
                         }
                         goto default;
                     }
@@ -870,8 +876,8 @@ namespace InterestTracker
                         default:
                             DataView viewReport = ReportScope.AsDataView();
                             ReportViewTable = viewReport.ToTable();
-                          //  LoanReportDataGrid.ItemsSource = null;
-                          //  LoanReportDataGrid.ItemsSource = viewReport;
+                            //  LoanReportDataGrid.ItemsSource = null;
+                            //  LoanReportDataGrid.ItemsSource = viewReport;
 
                             SetColumnHeaders();
 
