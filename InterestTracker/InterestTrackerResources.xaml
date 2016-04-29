@@ -65,7 +65,7 @@
     
 
     <Style TargetType="ComboBox" >
-        <Setter Property="Background" Value="#FF13487D"/>
+        <Setter Property="Background" Value="#FF4682B4"/>
         <Setter Property="Foreground" Value="#FF13487D"/>
     </Style>
 

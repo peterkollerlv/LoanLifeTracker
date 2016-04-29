@@ -8,18 +8,17 @@ using System.Data;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Collections;
+using System.Windows.Controls;
 
 namespace InterestTracker
 {
     public class GeneratePdf
     {
         private LoanReportData loanReportDataObj;
+        public DataGrid GridLoanCalclation;
         public GeneratePdf(LoanReportData loanReportDataObj)
         {
             this.loanReportDataObj = loanReportDataObj;
-           
-            
-
         }
 
         private string displayingPayments;
@@ -40,7 +39,8 @@ namespace InterestTracker
             }
             reportRows.Add(gridRow);
             var rows = GetDataGridRows(loanReportDataObj.LoanReportDataGrid);
-            foreach(System.Windows.Controls.DataGridRow row in rows)
+            //var rows = GetDataGridRows(loanReportDataObj.LoanReportDataGrid);
+            foreach (System.Windows.Controls.DataGridRow row in rows)
             {
                 gridRow = null;
                 gridRow = new string[loanReportDataObj.LoanReportDataGrid.Columns.Count];
@@ -90,8 +90,8 @@ namespace InterestTracker
     "Report Range: " + loanReportDataObj.ReportStartDate.ToShortDateString() + " - " + loanReportDataObj.ReportEndDate.ToShortDateString() + "\n" +
     displayingPayments + "\n\n";
 
-                Image freewayLogo = Image.GetInstance(freewayLogoFromRescources, System.Drawing.Imaging.ImageFormat.Png);
-                freewayLogo.Alignment = Image.UNDERLYING | Element.ALIGN_TOP | Element.ALIGN_CENTER;
+                iTextSharp.text.Image freewayLogo = iTextSharp.text.Image.GetInstance(freewayLogoFromRescources, System.Drawing.Imaging.ImageFormat.Png);
+                freewayLogo.Alignment = iTextSharp.text.Image.UNDERLYING | Element.ALIGN_TOP | Element.ALIGN_CENTER;
                 freewayLogo.ScalePercent(15f);
                 PdfWriter.GetInstance(exportPdfDocument, new FileStream(PdfSavePath, FileMode.Create));
                 PdfPTable pdfTable = new PdfPTable(loanReportDataObj.LoanReportDataGrid.Columns.Count);
@@ -146,6 +146,7 @@ namespace InterestTracker
                 var row = grid.ItemContainerGenerator.ContainerFromItem(item) as System.Windows.Controls.DataGridRow;
                 if (null != row) yield return row;
             }
+
         }
 
         public static T GetVisualChild<T>(Visual parent) where T : Visual

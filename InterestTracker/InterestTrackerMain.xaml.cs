@@ -29,10 +29,11 @@ namespace InterestTracker
 
         //loan properties
         LoanReportData LoanReportDataObj;
-
+        LoanDetailsPages loanDetailsPages;
 
         private readonly BackgroundWorker bgWorker = new BackgroundWorker();
         private readonly BackgroundWorker bgExcelWorker = new BackgroundWorker();
+        
 
         public InterestTrackerMain()
         {
@@ -41,6 +42,7 @@ namespace InterestTracker
 
             LoanReportDataObj.createNewLoan();
             InitializeComponent();
+            LoanDetailsPages = new LoanDetailsPages(LoanReportDataObj);
             LoanDetailsPages.CreatePages(LoanReportDataObj);
             //loanCalculation = new LoanCalculation(LoanReportDataObj);
             //loanPayments = new LoanPayments(LoanReportDataObj);
@@ -75,10 +77,12 @@ namespace InterestTracker
             if (LoanReportDataObj.ActiveLoan != null)
             {
                 // LoanDetailsPages.LoanCalculation.LoanReportObj = this.LoanReportDataObj;
+                LoanDetailsPages.LoanCalculation = new LoanCalculation(LoanReportDataObj);
                 loanDetails.Content = LoanDetailsPages.LoanCalculation;
 
-                LoanReportDataObj.CalculateLoan();
+                
                 navMainTabControl.SelectedItem = navMainLoanDetails;
+                LoanReportDataObj.CalculateLoan();
             }
         }
 
@@ -87,10 +91,12 @@ namespace InterestTracker
             if (LoanReportDataObj.ActiveLoan != null)
             {
                 // LoanDetailsPages.LoanCalculation.LoanReportObj = this.LoanReportDataObj;
-                if (loanDetails.Content != LoanDetailsPages.LoanCalculation)
-                {
+              //  if (loanDetails.Content != LoanDetailsPages.LoanCalculation)
+              //  {
+                    LoanDetailsPages.LoanCalculation = new LoanCalculation(LoanReportDataObj);
+
                     loanDetails.Content = LoanDetailsPages.LoanCalculation;
-                }
+             //   }
 
                 LoanReportDataObj.CalculateLoan();
                 LoanDetailsPages.LoanCalculation.FormatGrid();
@@ -301,7 +307,8 @@ namespace InterestTracker
 
         private void buttonOpenCalculation_Click(object sender, RoutedEventArgs e)
         {
-            LoanDetailsPages.LoanCalculation.LoanReportObj = this.LoanReportDataObj;
+           // LoanDetailsPages.LoanCalculation.LoanReportObj = this.LoanReportDataObj;
+            LoanDetailsPages.LoanCalculation = new LoanCalculation(LoanReportDataObj);
             loanDetails.Content = LoanDetailsPages.LoanCalculation;
             LoanReportDataObj.CalculateLoan();
         }
@@ -466,8 +473,8 @@ namespace InterestTracker
             {
                 GeneratePdf toPdf = new GeneratePdf(LoanReportDataObj);
                 toPdf.PdfSavePath = savePdf.FileName;
-                
-                LoanDetailsPages.LoanCalculation.FormatGrid();
+                toPdf.GridLoanCalclation = LoanDetailsPages.LoanCalculation.GridLoanCalclation;
+              //  LoanDetailsPages.LoanCalculation.FormatGrid();
                 toPdf.BuildPDF();
             }
         }
@@ -479,6 +486,20 @@ namespace InterestTracker
         }
 
         GenerateExcel toExcel;
+
+        public LoanDetailsPages LoanDetailsPages
+        {
+            get
+            {
+                return loanDetailsPages;
+            }
+
+            set
+            {
+                loanDetailsPages = value;
+            }
+        }
+
         private void generateExcelBG()
         {
             SaveFileDialog saveExcel = new SaveFileDialog();
@@ -520,61 +541,7 @@ namespace InterestTracker
         }
     }
 
-    static class LoanDetailsPages
-    {
-        static private LoanCalculation loanCalculation;
-        static private LoanPayments loanPayments;
-        static private LoanDrawDown loanDrawDown;
-        public static void CreatePages(LoanReportData loanReportDataObj)
-        {
-
-            loanCalculation = new LoanCalculation(loanReportDataObj);
-            loanPayments = new LoanPayments(loanReportDataObj);
-            loanDrawDown = new LoanDrawDown();
-        }
-
-
-
-
-        public static LoanCalculation LoanCalculation
-        {
-            get
-            {
-                return loanCalculation;
-            }
-
-            set
-            {
-
-                loanCalculation = value;
-            }
-        }
-
-        public static LoanPayments LoanPayments
-        {
-            get
-            {
-                return loanPayments;
-            }
-
-            set
-            {
-                loanPayments = value;
-            }
-        }
-
-        public static LoanDrawDown LoanDrawDown
-        {
-            get
-            {
-                return loanDrawDown;
-            }
-
-            set
-            {
-                loanDrawDown = value;
-            }
-        }
-    }
+  
+    
 }
 

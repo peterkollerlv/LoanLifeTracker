@@ -9,7 +9,7 @@
       Title="LoanCalculation">
 
     <Grid>
-        <DataGrid x:Name="gridLoanCalculation" ItemsSource="{Binding}" AutoGenerateColumns="True" Margin="0,0,0,0" Height="Auto" Width="Auto" Loaded="gridLoanCalculation_Loaded" IsSynchronizedWithCurrentItem="True" MouseDown="gridLoanCalculation_MouseDown">
+        <DataGrid x:Name="gridLoanCalculation" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="0,0,0,0" Height="Auto" Width="Auto" Loaded="gridLoanCalculation_Loaded" IsSynchronizedWithCurrentItem="True" MouseDown="gridLoanCalculation_MouseDown">
 
         </DataGrid>
     </Grid>

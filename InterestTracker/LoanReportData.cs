@@ -548,7 +548,7 @@ namespace InterestTracker
         {
             try
             {
-                LoanReportDataGrid.Visibility = Visibility.Hidden;
+               // LoanReportDataGrid.Visibility = Visibility.Hidden;
                 LoanDataTable = new DataTable();
                 LoanDataTable.Columns.Add("loanDayDate", typeof(DateTime));
                 LoanDataTable.Columns.Add("loanDayPrincipal", typeof(decimal));
@@ -560,7 +560,7 @@ namespace InterestTracker
                 LoanDataTable.Columns.Add("loanDayInterestPayment", typeof(decimal));
                 LoanDataTable.Columns.Add("loanDayPrincipalPayment", typeof(decimal)); ;
                 LoanDataTable.Columns.Add("loanDayCurrentBalance", typeof(decimal));
-                LoanDataTable.Columns.Add("loanDayComments", typeof(string));
+              //  LoanDataTable.Columns.Add("loanDayComments", typeof(string));
                 LoanDataTable.PrimaryKey = new DataColumn[] { LoanDataTable.Columns["loanDayDate"] };
 
                 DateTime indexingDate = StartDate;
@@ -870,8 +870,8 @@ namespace InterestTracker
                         default:
                             DataView viewReport = ReportScope.AsDataView();
                             ReportViewTable = viewReport.ToTable();
-                            LoanReportDataGrid.ItemsSource = null;
-                            LoanReportDataGrid.ItemsSource = viewReport;
+                          //  LoanReportDataGrid.ItemsSource = null;
+                          //  LoanReportDataGrid.ItemsSource = viewReport;
 
                             SetColumnHeaders();
 

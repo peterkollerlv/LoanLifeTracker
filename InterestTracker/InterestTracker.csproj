@@ -105,6 +105,7 @@
     <Compile Include="LoanCalculation.xaml.cs">
       <DependentUpon>LoanCalculation.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LoanDetailsPages.cs" />
     <Compile Include="LoanDrawDown.xaml.cs">
       <DependentUpon>LoanDrawDown.xaml</DependentUpon>
     </Compile>
