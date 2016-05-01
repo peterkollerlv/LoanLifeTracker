@@ -134,16 +134,16 @@
                     <Button x:Name="buttonOpenDrawDown" Content="Draw Down" HorizontalAlignment="Left" Margin="168,168,0,0" VerticalAlignment="Top" Width="91" Height="25" Click="buttonOpenDrawDown_Click"/>
                     <Button x:Name="buttonOpenCalculation" Content="Calculation" HorizontalAlignment="Left" Margin="168,198,0,0" VerticalAlignment="Top" Width="91" Height="25" Click="buttonOpenCalculation_Click"/>
 
-                    <ComboBox x:Name="inputCurrencySelection" HorizontalAlignment="Left"
-                              SelectedItem="{Binding Currency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    <!--SelectedItem="{Binding Currency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                               SelectedValuePath="{Binding SelectedValuePath}"
-                              DisplayMemberPath="Curreny"
+                              DisplayMemberPath="Curreny"-->
+
+                    <ComboBox x:Name="inputCurrencySelection" HorizontalAlignment="Left"
+                            
+                        ItemsSource="{Binding CurrencyList}"
+                              SelectedItem="{Binding Currency}"
                     Margin="10,109,0,0" VerticalAlignment="Top" Width="77" Height="24" SelectionChanged="inputCurrencySelection_SelectionChanged">
                         <!--<ComboBoxItem x:Name="USD">USD</ComboBoxItem>-->
-                        <ComboBoxItem x:Name="USD"  Content="USD"/>
-                        <ComboBoxItem x:Name="EUR" Content="EUR"/>
-                        <ComboBoxItem x:Name="CAD" Content="CAD"/>
-                        <ComboBoxItem x:Name="AUD" Content="AUD"/>
                     </ComboBox>
                     <TextBox x:Name="inputInitialLoanAmount" HorizontalAlignment="Left" Text="{Binding InitialLoanAmount, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N}}"                             
                              Height="24" Margin="92,109,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" PreviewTextInput="inputInitialLoanAmount_PreviewTextInput" TextChanged="inputInitialLoanAmount_TextChanged" PreviewKeyDown="inputInitialLoanAmount_PreviewKeyDown"/>

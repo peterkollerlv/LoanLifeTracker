@@ -21,6 +21,11 @@ namespace InterestTracker
             principalBalance = 0;
             dbConnection = new DatabaseConnection(this);
             ExistingLoans = new ObservableCollection<Loan>();
+            CurrencyList = new List<string>();
+            CurrencyList.Add("USD");
+            CurrencyList.Add("EUR");
+            CurrencyList.Add("CAD");
+            CurrencyList.Add("AUD");
 
         }
 
@@ -427,7 +432,8 @@ namespace InterestTracker
             }
         }
 
-
+        public List<string> CurrencyList
+        { get; set; }
 
 
         public void NotifyUI()
@@ -450,6 +456,10 @@ namespace InterestTracker
 
 
 
+
+
+
+
         // not implemented yet
 
         //private decimal recuringPaymentAmount;
@@ -458,6 +468,9 @@ namespace InterestTracker
         //    get { return recuringPaymentAmount; }
         //    set { recuringPaymentAmount = value; }
         //}
+
+
+
 
 
         //Generate the loan objects, and populate the data grid colums

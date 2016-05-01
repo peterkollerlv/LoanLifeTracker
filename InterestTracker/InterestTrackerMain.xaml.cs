@@ -51,6 +51,7 @@ namespace InterestTracker
             inputLoanStartDate.SelectedDate = DateTime.Now.Date;
             inputInterestPenaltyStart.SelectedDate = DateTime.Now.Date;
             loanDetails.Content = LoanDetailsPages.LoanCalculation;
+            inputCurrencySelection.SelectedIndex = 0;
             processIndicationText.Content = "";
             //inputCurrencySelection.SelectedItem = "USD";
         }
@@ -139,9 +140,10 @@ namespace InterestTracker
 
         private void inputCurrencySelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (LoanReportDataObj.LoanReportDataGrid != null)
+            if (loanDetailsPages.LoanCalculation.GridLoanCalclation != null)
             {
-                LoanReportDataObj.CalculateLoan();
+                loanDetailsPages.LoanCalculation.FormatGrid();
+                //LoanReportDataObj.CalculateLoan();
             }
         }
 

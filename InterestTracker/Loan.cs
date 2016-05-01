@@ -16,6 +16,7 @@ namespace InterestTracker
         {
             LoanGuid = generateNewGuid();
             LoanStartDate = DateTime.Now.Date;
+            LoanInterestPenaltyDate = DateTime.Now.Date;
             LoanTitle = "Please add a title...";
             //LoanInterestRate = 5;
             loanInterestPenaltyRate = 10;
