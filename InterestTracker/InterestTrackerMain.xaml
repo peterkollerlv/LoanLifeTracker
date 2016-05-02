@@ -49,10 +49,8 @@
                 </Grid>
             </TabItem>
             <TabItem x:Name="navMainLoanDetails" Header="Loan Details">
-                <Grid x:Name="groupMainLoanDetails" Margin="0,0,0,30">
-                    <Frame x:Name="loanDetails" NavigationUIVisibility="Hidden" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top">
-
-                    </Frame>
+                <Grid x:Name="groupMainLoanDetails">
+                    <Frame x:Name="loanDetails" NavigationUIVisibility="Hidden"/>
 
                 </Grid>
             </TabItem>

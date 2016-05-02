@@ -255,7 +255,7 @@ namespace InterestTracker
             set { ActiveLoan.LoanInterestStructure = value; }
         }
 
-        public Payment SelectedPayment { get; set; }
+       // public Payment SelectedPayment { get; set; }
         public ObservableCollection<Payment> PaymentList
         {
             get { return ActiveLoan.LoanPaymentsList; }
@@ -593,6 +593,7 @@ namespace InterestTracker
                 PrincipalBalance = 0;
                 InterestBalance = 0;
                 CumulativeInterestBalance = 0;
+                CurrentBalance = 0;
 
 
                 //testing nulling the data source

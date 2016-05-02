@@ -285,14 +285,14 @@
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="Height" Value="60"/>
-        <!--<Setter Property="ContentTemplate">
+        <Setter Property="ContentTemplate">
             
             <Setter.Value>
                 <DataTemplate>
                     <TextBlock TextWrapping="Wrap" Text="{Binding}"/>
                 </DataTemplate>
             </Setter.Value>
-        </Setter>-->
+        </Setter>
      
     </Style>
     
