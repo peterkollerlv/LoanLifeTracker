@@ -33,6 +33,7 @@ namespace InterestTracker
             //inputPaymentAmount.DataContext = this;
             //inputPaymentPrincipalAmount.DataContext = this;
             //inputPaymentInterestAmount.DataContext = this;
+            DefaultAllocation = 3;
             SelectedDate = this.LoanReportDataObj.StartDate;
             displayedControlsCheck();
         }
@@ -82,9 +83,8 @@ namespace InterestTracker
                     TotalPaymentAmount = 0;
                     InterestPaymentAmount = 0;
                     PrincipalPaymentAmount = 0;
-                    Notify("PrincipalPaymentAmount");
-                    Notify("InterestPaymentAmount");
-                    Notify("TotalPaymentAmount");
+                    buttonAddPayment.Content = "Add Payment";
+
                 }
                 // inputPaymentDate.SelectedDate = value;
 
@@ -97,6 +97,7 @@ namespace InterestTracker
                     TotalPaymentAmount = locatedPayment.TotalPaymentAmount;
                     InterestPaymentAmount = locatedPayment.InterestPaymentAmount;
                     PrincipalPaymentAmount = locatedPayment.PrincipalPaymentAmount;
+                    buttonAddPayment.Content = "Confirm Edit";
 
 
 
@@ -110,9 +111,8 @@ namespace InterestTracker
                     TotalPaymentAmount = 0;
                     InterestPaymentAmount = 0;
                     PrincipalPaymentAmount = 0;
-                    Notify("PrincipalPaymentAmount");
-                    Notify("InterestPaymentAmount");
-                    Notify("TotalPaymentAmount");
+                    buttonAddPayment.Content = "Add Payment";
+
                 }
 
                 else
@@ -130,9 +130,13 @@ namespace InterestTracker
                 formatColumns();
                 displayedControlsCheck();
                 updateTextBoxWithExistingPaymentData();
-
+                Notify("DefaultAllocation");
+                Notify("StatusLabel");
                 Notify("SelectedDate");
                 Notify("ActivePayment");
+                Notify("PrincipalPaymentAmount");
+                Notify("InterestPaymentAmount");
+                Notify("TotalPaymentAmount");
             }
         }
 
@@ -212,6 +216,7 @@ namespace InterestTracker
             set
             {
                 ActivePayment.PaymentGuid = value;
+                Notify("StatusLabel");
             }
         }
 
@@ -254,7 +259,7 @@ namespace InterestTracker
         {
             get
             {
-               
+
                 return Decimal.ToInt32(TotalPaymentAmount / 100);
 
             }
@@ -279,6 +284,43 @@ namespace InterestTracker
                     StartDate = value;
                     Notify("StartDate");
                 }
+            }
+        }
+
+        private int defaultAllocation;
+        public int DefaultAllocation
+        {
+            get
+            {
+                return defaultAllocation;
+            }
+            set
+            {
+                if (DefaultAllocation != value)
+                {
+                    defaultAllocation = value;
+                    Notify("DefaultAllocation");
+                    Notify("StatusLabel");
+
+                }
+            }
+        }
+
+        public string StatusLabel
+        {
+            get
+            {
+                return "Payment ID: " + PaymentGuid.ToString() + "  -  Default allocation: " + DefaultAllocation.ToString();
+            }
+
+            set
+            {
+                if (StatusLabel != value)
+                {
+                    StatusLabel = value;
+                    Notify("StatusLabel");
+                }
+
             }
         }
 
@@ -332,28 +374,32 @@ namespace InterestTracker
 
         private void adjustAllocation()
         {
-            if (ActivePayment.PrincipalPaymentAmount > 0 && ActivePayment.PrincipalPaymentAmount <= ActivePayment.TotalPaymentAmount && inputPaymentPrincipalAmount.IsFocused == true)
+            if (PrincipalPaymentAmount > 0 && PrincipalPaymentAmount <= TotalPaymentAmount && inputPaymentPrincipalAmount.IsFocused == true)
             {
-                inputPaymentInterestAmount.Text = (ActivePayment.TotalPaymentAmount - ActivePayment.PrincipalPaymentAmount).ToString();
-                ActivePayment.InterestPaymentAmount = ActivePayment.TotalPaymentAmount - ActivePayment.PrincipalPaymentAmount;
+                //inputPaymentInterestAmount.Text = (TotalPaymentAmount - PrincipalPaymentAmount).ToString();
+
 
                 updateAllocationPercent();
+                buttonAddPayment.Visibility = Visibility.Visible;
             }
-            else if (ActivePayment.PrincipalPaymentAmount > ActivePayment.TotalPaymentAmount && inputPaymentPrincipalAmount.IsFocused == true)
+            else if (PrincipalPaymentAmount > TotalPaymentAmount && inputPaymentPrincipalAmount.IsFocused == true)
             {
+                buttonAddPayment.Visibility = Visibility.Hidden;
                 MessageBox.Show("Principal exceeded the payment amount, please adjust the value.", "Payments");
             }
 
-            else if (ActivePayment.InterestPaymentAmount > 0 && ActivePayment.InterestPaymentAmount <= ActivePayment.TotalPaymentAmount && inputPaymentInterestAmount.IsFocused == true)
+            else if (InterestPaymentAmount > 0 && InterestPaymentAmount <= TotalPaymentAmount && inputPaymentInterestAmount.IsFocused == true)
             {
-                inputPaymentPrincipalAmount.Text = (ActivePayment.TotalPaymentAmount - ActivePayment.InterestPaymentAmount).ToString();
+                // inputPaymentPrincipalAmount.Text = (TotalPaymentAmount - InterestPaymentAmount).ToString();
 
                 updateAllocationPercent();
                 displayedControlsCheck();
+                buttonAddPayment.Visibility = Visibility.Visible;
             }
 
             else if (ActivePayment.InterestPaymentAmount > ActivePayment.TotalPaymentAmount && inputPaymentInterestAmount.IsFocused == true)
             {
+                buttonAddPayment.Visibility = Visibility.Hidden;
                 MessageBox.Show("Interest exceeded the payment amount, please adjust the value.", "Payments");
             }
         }
@@ -385,6 +431,7 @@ namespace InterestTracker
                 e.Handled = true;
             }
             e.Handled = !new Regex(@"^(?:\d*)?(?:\.{1})?(?:\d+)?$").IsMatch(e.Text);
+
             displayedControlsCheck();
         }
 
@@ -395,6 +442,7 @@ namespace InterestTracker
                 e.Handled = true;
             }
             e.Handled = !new Regex(@"^(?:\d*)?(?:\.{1})?(?:\d+)?$").IsMatch(e.Text);
+
         }
 
         private void inputPaymentPrincipalAmount_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -404,22 +452,67 @@ namespace InterestTracker
                 e.Handled = true;
             }
             e.Handled = !new Regex(@"^(?:\d*)?(?:\.{1})?(?:\d+)?$").IsMatch(e.Text);
+
         }
 
+        private void adjustToDefaultAllocation()
+        {
+            switch (DefaultAllocation)
+            {
+                case 0:
+                    {
+                        InterestPaymentAmount = TotalPaymentAmount;
+                        PrincipalPaymentAmount = TotalPaymentAmount - InterestPaymentAmount;
+                        break;
+                    }
+                case 1:
+                    {
+                        InterestPaymentAmount = TotalPaymentAmount / 2;
+                        PrincipalPaymentAmount = TotalPaymentAmount - InterestPaymentAmount;
+                        break;
+                    }
+                case 2:
+                    {
+                        PrincipalPaymentAmount = TotalPaymentAmount;
+                        InterestPaymentAmount = TotalPaymentAmount - PrincipalPaymentAmount;
+                        break;
+                    }
+                case 3:
+                    {
+                        break;
+                    }
+            }
+            }
 
         private void inputPaymentAmount_TextChanged(object sender, TextChangedEventArgs e)
         {
+            adjustToDefaultAllocation();
 
+            //if ((InterestPaymentAmount + PrincipalPaymentAmount) > TotalPaymentAmount)
+            //{
+            //    e.Handled = true;
+            //    MessageBox.Show("Incorrect allocation.");
+            //}
         }
 
         private void inputPaymentInterestAmount_TextChanged(object sender, TextChangedEventArgs e)
         {
+            //if ((TotalPaymentAmount - PrincipalPaymentAmount) < InterestPaymentAmount)
+            //{
+            //    e.Handled = true;
+            //    MessageBox.Show("Incorrect allocation.");
+            //}
             adjustAllocation();
         }
 
         private void inputPaymentPrincipalAmount_TextChanged(object sender, TextChangedEventArgs e)
         {
             adjustAllocation();
+            //if ((TotalPaymentAmount - InterestPaymentAmount) < PrincipalPaymentAmount)
+            //{
+            //    e.Handled = true;
+            //    MessageBox.Show("Incorrect allocation.");
+            //}
         }
 
         private void panelPaymentAllocation_LostFocus(object sender, RoutedEventArgs e)
@@ -437,6 +530,7 @@ namespace InterestTracker
                     if (p.PaymentGuid == ActivePayment.PaymentGuid)
                     {
                         indexOfPayment = LoanReportDataObj.PaymentList.IndexOf(p);
+                        break;
                     }
                     else
                     {
@@ -573,6 +667,12 @@ namespace InterestTracker
                 ActivePayment.PrincipalPaymentAmount = p.PrincipalPaymentAmount;
 
             }
+        }
+
+        private void sliderDefaultAllocation_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            adjustToDefaultAllocation();
+            adjustAllocation();
         }
     }
 }

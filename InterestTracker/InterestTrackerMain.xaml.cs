@@ -44,9 +44,6 @@ namespace InterestTracker
             InitializeComponent();
             LoanDetailsPages = new LoanDetailsPages(LoanReportDataObj);
             LoanDetailsPages.CreatePages(LoanReportDataObj);
-            //loanCalculation = new LoanCalculation(LoanReportDataObj);
-            //loanPayments = new LoanPayments(LoanReportDataObj);
-            //loanDrawDown = new LoanDrawDown();
             groupMainWindow.DataContext = LoanReportDataObj;
             inputLoanStartDate.SelectedDate = DateTime.Now.Date;
             inputInterestPenaltyStart.SelectedDate = DateTime.Now.Date;

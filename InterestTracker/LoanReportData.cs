@@ -419,7 +419,7 @@ namespace InterestTracker
             get
             {
                 activeGuid = LoanGuid.ToString();
-                return "Active GUID: " + activeGuid;
+                return "Active Loan ID: " + activeGuid;
 
             }
             set
@@ -434,6 +434,7 @@ namespace InterestTracker
 
         public List<string> CurrencyList
         { get; set; }
+
 
 
         public void NotifyUI()
