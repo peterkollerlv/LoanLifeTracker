@@ -15,9 +15,7 @@ namespace InterestTracker
         private Loan activeLoan;
         public LoanReportData()
         {
-
             ReportType = 0;
-
             principalBalance = 0;
             dbConnection = new DatabaseConnection(this);
             ExistingLoans = new ObservableCollection<Loan>();
@@ -26,7 +24,6 @@ namespace InterestTracker
             CurrencyList.Add("EUR");
             CurrencyList.Add("CAD");
             CurrencyList.Add("AUD");
-
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
