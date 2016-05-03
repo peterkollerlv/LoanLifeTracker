@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:InterestTracker"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Name="InterestTrackerMainWindow" x:Class="InterestTracker.InterestTrackerMain"
         mc:Ignorable="d"
-        Title="Interest Tracker" Height="737" Width="1394" Background="SteelBlue" WindowStartupLocation="CenterScreen" Loaded="InterestTrackerMainWindow_Loaded">
+        Title="Interest Tracker" Height="737" WindowStartupLocation="CenterScreen" Width="1394" Background="SteelBlue"  Loaded="InterestTrackerMainWindow_Loaded" Icon="Resources/InterestTrackerLogo.ico"
+   >
+
     <Window.Resources>
 
     </Window.Resources>
@@ -47,10 +49,8 @@
                 </Grid>
             </TabItem>
             <TabItem x:Name="navMainLoanDetails" Header="Loan Details">
-                <Grid x:Name="groupMainLoanDetails" Margin="0,0,0,30">
-                    <Frame x:Name="loanDetails" NavigationUIVisibility="Hidden" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top">
-
-                    </Frame>
+                <Grid x:Name="groupMainLoanDetails">
+                    <Frame x:Name="loanDetails" NavigationUIVisibility="Hidden"/>
 
                 </Grid>
             </TabItem>
@@ -132,16 +132,16 @@
                     <Button x:Name="buttonOpenDrawDown" Content="Draw Down" HorizontalAlignment="Left" Margin="168,168,0,0" VerticalAlignment="Top" Width="91" Height="25" Click="buttonOpenDrawDown_Click"/>
                     <Button x:Name="buttonOpenCalculation" Content="Calculation" HorizontalAlignment="Left" Margin="168,198,0,0" VerticalAlignment="Top" Width="91" Height="25" Click="buttonOpenCalculation_Click"/>
 
-                    <ComboBox x:Name="inputCurrencySelection" HorizontalAlignment="Left"
-                              SelectedItem="{Binding Currency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    <!--SelectedItem="{Binding Currency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                               SelectedValuePath="{Binding SelectedValuePath}"
-                              DisplayMemberPath="Curreny"
+                              DisplayMemberPath="Curreny"-->
+
+                    <ComboBox x:Name="inputCurrencySelection" HorizontalAlignment="Left"
+                            
+                        ItemsSource="{Binding CurrencyList}"
+                              SelectedItem="{Binding Currency}"
                     Margin="10,109,0,0" VerticalAlignment="Top" Width="77" Height="24" SelectionChanged="inputCurrencySelection_SelectionChanged">
                         <!--<ComboBoxItem x:Name="USD">USD</ComboBoxItem>-->
-                        <ComboBoxItem x:Name="USD"  Content="USD"/>
-                        <ComboBoxItem x:Name="EUR" Content="EUR"/>
-                        <ComboBoxItem x:Name="CAD" Content="CAD"/>
-                        <ComboBoxItem x:Name="AUD" Content="AUD"/>
                     </ComboBox>
                     <TextBox x:Name="inputInitialLoanAmount" HorizontalAlignment="Left" Text="{Binding InitialLoanAmount, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N}}"                             
                              Height="24" Margin="92,109,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" PreviewTextInput="inputInitialLoanAmount_PreviewTextInput" TextChanged="inputInitialLoanAmount_TextChanged" PreviewKeyDown="inputInitialLoanAmount_PreviewKeyDown"/>
@@ -208,7 +208,7 @@
                     <DatePicker x:Name="inputReportEndDate" SelectedDate="{Binding ReportEndDate, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" SelectedDateChanged="inputReportEndDate_SelectedDateChanged"/>
                     <Button x:Name="buttonExportToPdf" Content="Export To PDF" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="103" Click="buttonExportToPdf_Click"/>
                     <Button x:Name="buttonExportToExcel" Content="Export To Excel" HorizontalAlignment="Left" Margin="10,212,0,0" VerticalAlignment="Top" Width="103" Click="buttonExportToExcel_Click"/>
-                    
+
                     <UniformGrid x:Name="reportSpan" Rows="4" Columns="1" Margin="166,85,0,0" HorizontalAlignment="Left" Width="95" Height="102" VerticalAlignment="Top" >
                         <RadioButton GroupName="reportSpan" Checked="reportSpan_Check" Tag="0" Content="Daily View" Height="26" VerticalAlignment="Top"></RadioButton>
                         <RadioButton GroupName="reportSpan" Checked="reportSpan_Check" Tag="1" Content="Weekly View"></RadioButton>

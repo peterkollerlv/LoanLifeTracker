@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace InterestTracker
@@ -15,11 +16,12 @@ namespace InterestTracker
         {
             LoanGuid = generateNewGuid();
             LoanStartDate = DateTime.Now.Date;
+            LoanInterestPenaltyDate = DateTime.Now.Date;
             LoanTitle = "Please add a title...";
             //LoanInterestRate = 5;
             loanInterestPenaltyRate = 10;
             LoanCurrency = "USD";
-            LoanPaymentsList = new List<Payment>();
+            LoanPaymentsList = new ObservableCollection<Payment>();
         }
 
         //constructor for existing loans
@@ -27,7 +29,7 @@ namespace InterestTracker
         public Loan(Guid existingGuid)
         {
             LoanGuid = existingGuid;
-            LoanPaymentsList = new List<Payment>();
+            LoanPaymentsList = new ObservableCollection<Payment>();
         }
 
         // required for databinding
@@ -306,8 +308,8 @@ namespace InterestTracker
             }
         }
 
-        private List<Payment> loanpaymentsList;
-        public List<Payment> LoanPaymentsList
+        private ObservableCollection<Payment> loanpaymentsList;
+        public ObservableCollection<Payment> LoanPaymentsList
         {
             get
             {

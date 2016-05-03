@@ -21,6 +21,11 @@ namespace InterestTracker
             principalBalance = 0;
             dbConnection = new DatabaseConnection(this);
             ExistingLoans = new ObservableCollection<Loan>();
+            CurrencyList = new List<string>();
+            CurrencyList.Add("USD");
+            CurrencyList.Add("EUR");
+            CurrencyList.Add("CAD");
+            CurrencyList.Add("AUD");
 
         }
 
@@ -250,7 +255,8 @@ namespace InterestTracker
             set { ActiveLoan.LoanInterestStructure = value; }
         }
 
-        public List<Payment> PaymentList
+       // public Payment SelectedPayment { get; set; }
+        public ObservableCollection<Payment> PaymentList
         {
             get { return ActiveLoan.LoanPaymentsList; }
             set { ActiveLoan.LoanPaymentsList = value; }
@@ -393,6 +399,7 @@ namespace InterestTracker
             set { reportScope = value; }
         }
 
+        private ObservableCollection<Loan> existingLoans;
         public ObservableCollection<Loan> ExistingLoans
         {
             get { return existingLoans; }
@@ -412,7 +419,7 @@ namespace InterestTracker
             get
             {
                 activeGuid = LoanGuid.ToString();
-                return "Active GUID: " + activeGuid;
+                return "Active Loan ID: " + activeGuid;
 
             }
             set
@@ -423,9 +430,11 @@ namespace InterestTracker
                     Notify("ActiveGuid");
                 }
             }
-
-
         }
+
+        public List<string> CurrencyList
+        { get; set; }
+
 
 
         public void NotifyUI()
@@ -445,7 +454,11 @@ namespace InterestTracker
             Notify("ExistingLoans");
             Notify("ActiveGuid");
         }
-        private ObservableCollection<Loan> existingLoans;
+
+
+
+
+
 
 
         // not implemented yet
@@ -456,6 +469,9 @@ namespace InterestTracker
         //    get { return recuringPaymentAmount; }
         //    set { recuringPaymentAmount = value; }
         //}
+
+
+
 
 
         //Generate the loan objects, and populate the data grid colums
@@ -498,18 +514,26 @@ namespace InterestTracker
             switch (InterestStructureSelection)
             {
                 case "fixed365":
+                    {
+                        interest = (PrincipalBalance * calculateInterestRate(date)) / numberOfDaysInDateYear;
+                        goto default;
+                    }
                 case "compDay365":
                 case "compMonth365":
                 case "compQuarter365":
                 case "compYear365":
-                    interest = (PrincipalBalance) * calculateInterestRate(date) / numberOfDaysInDateYear;
+                    interest = (CurrentBalance * calculateInterestRate(date)) / numberOfDaysInDateYear;
                     goto default;
                 case "fixed360":
+                    {
+                        interest = (PrincipalBalance * calculateInterestRate(date)) / 360;
+                        goto default;
+                    }
                 case "compDay360":
                 case "compMonth360":
                 case "compQuarter360":
                 case "compYear360":
-                    interest = (PrincipalBalance * calculateInterestRate(date)) / 360;
+                    interest = (CurrentBalance * calculateInterestRate(date)) / 360;
                     goto default;
                 //  case "compDay365":
                 //interest = (PrincipalBalance * calculateInterestRate(date)) / numberOfDaysInDateYear;
@@ -548,7 +572,7 @@ namespace InterestTracker
         {
             try
             {
-               // LoanReportDataGrid.Visibility = Visibility.Hidden;
+                // LoanReportDataGrid.Visibility = Visibility.Hidden;
                 LoanDataTable = new DataTable();
                 LoanDataTable.Columns.Add("loanDayDate", typeof(DateTime));
                 LoanDataTable.Columns.Add("loanDayPrincipal", typeof(decimal));
@@ -560,7 +584,7 @@ namespace InterestTracker
                 LoanDataTable.Columns.Add("loanDayInterestPayment", typeof(decimal));
                 LoanDataTable.Columns.Add("loanDayPrincipalPayment", typeof(decimal)); ;
                 LoanDataTable.Columns.Add("loanDayCurrentBalance", typeof(decimal));
-              //  LoanDataTable.Columns.Add("loanDayComments", typeof(string));
+                //  LoanDataTable.Columns.Add("loanDayComments", typeof(string));
                 LoanDataTable.PrimaryKey = new DataColumn[] { LoanDataTable.Columns["loanDayDate"] };
 
                 DateTime indexingDate = StartDate;
@@ -570,6 +594,7 @@ namespace InterestTracker
                 PrincipalBalance = 0;
                 InterestBalance = 0;
                 CumulativeInterestBalance = 0;
+                CurrentBalance = 0;
 
 
                 //testing nulling the data source
@@ -626,43 +651,47 @@ namespace InterestTracker
                 PrincipalBalance = ActiveLoan.LoanInitialLoanAmount;
                 CurrentBalance = PrincipalBalance;
             }
+
+
             decimal dailyInterest = calculateInterest(currentDate.Date);
             CumulativeInterestBalance += dailyInterest;
 
             if (paymentExists(currentDate))
             {
-                if (getPaymentDetails(currentDate).InterestPaymentAmount > InterestBalance)
+                if (getPaymentDetails(currentDate).InterestPaymentAmount > CumulativeInterestBalance)
                 {
                     //InterestBalance = InterestBalance - getPaymentDetails(currentDate).InterestPaymentAmount;
-                    InterestBalance = Math.Abs(InterestBalance - getPaymentDetails(currentDate).InterestPaymentAmount + dailyInterest);
-                    PrincipalBalance = PrincipalBalance - InterestBalance - getPaymentDetails(currentDate).PrincipalPaymentAmount;
-                    InterestBalance = 0;
+                    CumulativeInterestBalance = Math.Abs(CumulativeInterestBalance - getPaymentDetails(currentDate).InterestPaymentAmount + dailyInterest);
+                    PrincipalBalance = PrincipalBalance - CumulativeInterestBalance - getPaymentDetails(currentDate).PrincipalPaymentAmount;
+                    CumulativeInterestBalance = 0;
                 }
                 else if (getPaymentDetails(currentDate).PrincipalPaymentAmount > PrincipalBalance)
                 {
                     PrincipalBalance = Math.Abs(PrincipalBalance - getPaymentDetails(currentDate).PrincipalPaymentAmount);
-                    InterestBalance = InterestBalance - PrincipalBalance - getPaymentDetails(currentDate).InterestPaymentAmount;
+                    CumulativeInterestBalance = CumulativeInterestBalance - PrincipalBalance - getPaymentDetails(currentDate).InterestPaymentAmount;
                     PrincipalBalance = 0;
                 }
 
                 else
                 {
                     PrincipalBalance = PrincipalBalance - getPaymentDetails(currentDate).PrincipalPaymentAmount;
-                    InterestBalance += dailyInterest - getPaymentDetails(currentDate).InterestPaymentAmount;
+                    CumulativeInterestBalance += dailyInterest - getPaymentDetails(currentDate).InterestPaymentAmount;
                 }
-                CurrentBalance = PrincipalBalance + InterestBalance;
+                CurrentBalance = PrincipalBalance + CumulativeInterestBalance;
             }
             else
             {
-                InterestBalance += dailyInterest;   //calculateInterest(currentDate.Date);
+               // CumulativeInterestBalance += dailyInterest;   //calculateInterest(currentDate.Date);
             }
+
+            
 
             switch (InterestStructureSelection)
             {
                 case "fixed360":
                 case "fixed365":
                     {
-                        CurrentBalance = PrincipalBalance + InterestBalance;
+                        CurrentBalance = PrincipalBalance + CumulativeInterestBalance;
 
                         goto default;
                     }
@@ -670,9 +699,11 @@ namespace InterestTracker
                 case "compDay365":
                 case "compDay360":
                     {
-                        InterestBalance = calculateInterest(currentDate.Date);
-                        PrincipalBalance = PrincipalBalance + InterestBalance;
-                        CurrentBalance = PrincipalBalance;
+
+                        CumulativeInterestBalance = calculateInterest(currentDate.Date);
+                        CurrentBalance = PrincipalBalance + CumulativeInterestBalance;
+                       // CurrentBalance = PrincipalBalance;
+
                         goto default;
                     }
 
@@ -681,12 +712,13 @@ namespace InterestTracker
                     {
                         if (currentDate.Day == 1)
                         {
-                            InterestBalance = calculateInterest(currentDate.Date); //resets the interest balance;
+                            CurrentBalance = PrincipalBalance + CumulativeInterestBalance;
+                            //CurrentBalance = PrincipalBalance;
+                           // CumulativeInterestBalance = calculateInterest(currentDate.Date); //resets the interest balance;
                         }
                         if (getLastDayOfMonth(currentDate) == currentDate.Day)
                         {
-                            PrincipalBalance = PrincipalBalance + InterestBalance;
-                            CurrentBalance = PrincipalBalance;
+
                         }
                         goto default;
                     }
@@ -870,8 +902,8 @@ namespace InterestTracker
                         default:
                             DataView viewReport = ReportScope.AsDataView();
                             ReportViewTable = viewReport.ToTable();
-                          //  LoanReportDataGrid.ItemsSource = null;
-                          //  LoanReportDataGrid.ItemsSource = viewReport;
+                            //  LoanReportDataGrid.ItemsSource = null;
+                            //  LoanReportDataGrid.ItemsSource = viewReport;
 
                             SetColumnHeaders();
 

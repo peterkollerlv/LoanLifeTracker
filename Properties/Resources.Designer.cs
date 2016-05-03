@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace InterestTracker.Properties {
+namespace LoanLifeTracker.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace InterestTracker.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("InterestTracker.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LoanLifeTracker.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -83,16 +83,6 @@ namespace InterestTracker.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap FreewayLogoPlain {
-            get {
-                object obj = ResourceManager.GetObject("FreewayLogoPlain", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap FreewayLogoTransparent {
             get {
                 object obj = ResourceManager.GetObject("FreewayLogoTransparent", resourceCulture);
@@ -113,19 +103,40 @@ namespace InterestTracker.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon InterestTrackerLogo {
+        internal static System.Drawing.Icon fwLogoTransparent {
             get {
-                object obj = ResourceManager.GetObject("InterestTrackerLogo", resourceCulture);
+                object obj = ResourceManager.GetObject("fwLogoTransparent", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Title:.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string titleLabel {
+        internal static byte[] itextsharp {
             get {
-                return ResourceManager.GetString("titleLabel", resourceCulture);
+                object obj = ResourceManager.GetObject("itextsharp", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap lltButtonLeft {
+            get {
+                object obj = ResourceManager.GetObject("lltButtonLeft", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap lltButtonRight {
+            get {
+                object obj = ResourceManager.GetObject("lltButtonRight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
