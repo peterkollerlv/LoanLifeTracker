@@ -30,11 +30,11 @@
     <ProductName>InterestTracker</ProductName>
     <PublisherName>Freeeway Entertainment</PublisherName>
     <SuiteName>InterestTracker</SuiteName>
-    <MinimumRequiredVersion>2.0.0.11</MinimumRequiredVersion>
+    <MinimumRequiredVersion>2.0.0.12</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>12</ApplicationRevision>
+    <ApplicationRevision>13</ApplicationRevision>
     <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>

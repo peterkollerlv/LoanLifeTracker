@@ -14,47 +14,47 @@
         <Label x:Name="loanPaymentsTitle" Content="Loan Payments" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="29" Width="150" FontSize="18.667" FontWeight="Bold"/>
 
         <Label x:Name="lablePaymentDate" Content="Payments Date" HorizontalAlignment="Left" Margin="11,44,0,0" VerticalAlignment="Top"/>
-        <DatePicker x:Name="inputPaymentDate" SelectedDate="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged}" DisplayDateStart="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}" Margin="20,73,920,0" VerticalAlignment="Top" SelectedDateChanged="inputPaymentDate_SelectedDateChanged"/>
+        <DatePicker x:Name="inputPaymentDate" SelectedDate="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged}" DisplayDateStart="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}" Margin="20,73,920,0" VerticalAlignment="Top" SelectedDateChanged="inputPaymentDate_SelectedDateChanged" ToolTip="Pick a date, or type it in, than press &quot;Enter&quot;"/>
 
-        <Button x:Name="buttonRemovePayment" Content="Remove Payment" HorizontalAlignment="Left" Margin="20,480,0,0" VerticalAlignment="Top" Width="120" Height="24" Click="buttonRemovePayment_Click"/>
-        <Button x:Name="buttonAddPayment" Content="Add Payment" HorizontalAlignment="Left" Margin="916,480,0,0" VerticalAlignment="Top" Width="120" Height="24" Click="buttonAddPayment_Click"/>
+        <Button x:Name="buttonRemovePayment" Content="Remove Payment" HorizontalAlignment="Left" Margin="20,501,0,0" VerticalAlignment="Top" Width="120" Height="24" Click="buttonRemovePayment_Click"/>
+        <Button x:Name="buttonAddPayment" Content="Add Payment" HorizontalAlignment="Left" Margin="916,501,0,0" VerticalAlignment="Top" Width="120" Height="24" Click="buttonAddPayment_Click"/>
 
-        <Grid Name="panelPaymentAllocation" Margin="11,135,44,325" LostFocus="panelPaymentAllocation_LostFocus">
-            <Slider x:Name="inputPaymentAllocationTrack" HorizontalAlignment="Left" Margin="0,70,0,0" VerticalAlignment="Top" Width="1025" Height="30" Value="{Binding InterestPaymentAmount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Maximum="{Binding TotalPaymentAmount}" LargeChange="{Binding LargeSliderTick}" ValueChanged="inputPaymentAllocationTrack_ValueChanged" SmallChange="5"/>
-            <Grid Name="panelPaymentAmount" HorizontalAlignment="Left"  Margin="11,10,0,0" VerticalAlignment="Top" Height="60" Width="164">
+        <Grid Name="panelPaymentAllocation" Margin="11,109,44,320" LostFocus="panelPaymentAllocation_LostFocus">
+            <Slider x:Name="inputPaymentAllocationTrack" HorizontalAlignment="Left" Margin="0,101,0,0" VerticalAlignment="Top" Width="1025" Height="26" Value="{Binding InterestPaymentAmount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Maximum="{Binding TotalPaymentAmount}" LargeChange="{Binding LargeSliderTick}" ValueChanged="inputPaymentAllocationTrack_ValueChanged" SmallChange="5"/>
+            <Grid Name="panelPaymentAmount" HorizontalAlignment="Left"  Margin="8,36,0,0" VerticalAlignment="Top" Height="60" Width="164">
                 <Label x:Name="labelPaymentCurrency" Content="USD" HorizontalAlignment="Left" Margin="-5,27,0,0" VerticalAlignment="Top"/>
                 <Label x:Name="labelPaymentAmount" Content="Payment Amount" HorizontalAlignment="Left" Margin="-5,3,0,0" VerticalAlignment="Top"/>
                 <TextBox x:Name="inputPaymentAmount" HorizontalAlignment="Left" Height="23" Margin="35,27,0,0" TextWrapping="Wrap" Text="{Binding Path=TotalPaymentAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N}}" VerticalAlignment="Top" Width="120" PreviewTextInput="inputPaymentAmount_PreviewTextInput" TextChanged="inputPaymentAmount_TextChanged"/>
             </Grid>
-            <Grid Name="panelInterestAmount"  HorizontalAlignment="Left"  Height="60" Width="164" Margin="685,10,0,0" VerticalAlignment="Top">
+            <Grid Name="panelInterestAmount"  HorizontalAlignment="Left"  Height="60" Width="164" Margin="682,36,0,0" VerticalAlignment="Top">
                 <Label x:Name="labelInterestPaymentCurrency" Content="USD" HorizontalAlignment="Left" Margin="4,24,0,0" VerticalAlignment="Top"/>
                 <Label x:Name="labelPaymentInterestAmount" Content="Interest" HorizontalAlignment="Left" Margin="4,0,0,0" VerticalAlignment="Top"/>
                 <TextBox x:Name="inputPaymentInterestAmount" HorizontalAlignment="Left" Height="23" Margin="44,26,0,0" TextWrapping="Wrap" Text="{Binding Path=InterestPaymentAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N}}" VerticalAlignment="Top" Width="120" PreviewTextInput="inputPaymentInterestAmount_PreviewTextInput" TextChanged="inputPaymentInterestAmount_TextChanged"/>
 
                 <Label x:Name="labelInterestPercent" Content="ix%" HorizontalAlignment="Left" Margin="114,-3,0,0" VerticalAlignment="Top"/>
             </Grid>
-            <Grid Name="panelPrincipalAmount" HorizontalAlignment="Left" Margin="854,10,0,0" VerticalAlignment="Top" Height="60" Width="164">
+            <Grid Name="panelPrincipalAmount" HorizontalAlignment="Left" Margin="851,36,0,0" VerticalAlignment="Top" Height="60" Width="164">
                 <Label x:Name="labelPrincipalPaymentCurrency" Content="USD" HorizontalAlignment="Left" Margin="3,23,0,0" VerticalAlignment="Top"/>
                 <Label x:Name="labelPaymentPrincipalAmount" Content="Principal" HorizontalAlignment="Left" Margin="3,-1,0,0" VerticalAlignment="Top"/>
                 <TextBox x:Name="inputPaymentPrincipalAmount" HorizontalAlignment="Left" Height="23" Margin="43,24,0,0" TextWrapping="Wrap" Text="{Binding Path=PrincipalPaymentAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N}}" VerticalAlignment="Top" Width="120" PreviewTextInput="inputPaymentPrincipalAmount_PreviewTextInput" TextChanged="inputPaymentPrincipalAmount_TextChanged"/>
                 <Label x:Name="labelPrincipalPercent" Content="px%" HorizontalAlignment="Left" Margin="110,-5,0,0" VerticalAlignment="Top"/>
             </Grid>
+            <Grid x:Name="gridPaymentAllocation" Margin="223,27,391,30" >
+                <Slider x:Name="sliderDefaultAllocation" IsSnapToTickEnabled="True" Value="{Binding DefaultAllocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="386" Maximum="3" TickPlacement="BottomRight" SmallChange="1" Height="32" Margin="26,33,0,0" ValueChanged="sliderDefaultAllocation_ValueChanged"/>
+                <Label x:Name="labelInterstFirstAllocation" Content="Interest First" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,3,0,0"/>
+                <Label x:Name="labelEqualAllocation" Content="Equal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="136,4,0,0"/>
+                <Label x:Name="labelPrincipalFirstAllocation" Content="Principal First" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="241,3,0,0"/>
+                <Label x:Name="labelDefaultAllocation" Content="Payment Allocation" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-230,-18,0,0" FontSize="18" Height="30"/>
+                <Label x:Name="labelCustomAllocation" Content="Custom" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="360,3,0,0"/>
+            </Grid>
         </Grid>
 
-        <Label x:Name="labelSelectedDayInfo" Content="Selected date details:" HorizontalAlignment="Left" Margin="820,28,0,0" VerticalAlignment="Top" Width="216" Height="86"/>
+        <Label x:Name="labelSelectedDayInfo" Content="Selected date details:" HorizontalAlignment="Left" Margin="695,23,0,0" VerticalAlignment="Top" Width="216" Height="86"/>
 
         <DataGrid x:Name="gridPaymentList"  AutoGenerateColumns="False" ItemsSource="{Binding}"
-                  HorizontalAlignment="Left" Margin="10,240,0,0" VerticalAlignment="Top" Height="235" Width="1026" Loaded="gridPaymentList_Loaded" SelectionChanged="gridPaymentList_SelectionChanged">
+                  HorizontalAlignment="Left" Margin="10,240,0,0" VerticalAlignment="Top" Height="256" Width="1026" Loaded="gridPaymentList_Loaded" SelectionChanged="gridPaymentList_SelectionChanged">
         </DataGrid>
         <!--Path=loanObject.PaymentList,-->
-        <Grid x:Name="gridPaymentAllocation" Margin="199,119,410,350" >
-            <Slider x:Name="sliderDefaultAllocation" IsSnapToTickEnabled="True" Value="{Binding DefaultAllocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="386" Maximum="3" TickPlacement="BottomRight" SmallChange="1" Height="32" Margin="33,58,0,0" ValueChanged="sliderDefaultAllocation_ValueChanged"/>
-            <Label x:Name="labelInterstFirst" Content="Interest First" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,28,0,0"/>
-            <Label x:Name="labelEqualAllocation" Content="Equal Allocation" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,29,0,0"/>
-            <Label x:Name="labelPrincipalFirst" Content="Principal First" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="244,29,0,0"/>
-            <Label x:Name="labelDefaultAllocation" Content="Payment Allocation" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-179,-4,0,0"/>
-            <Label x:Name="labelCustomAllocation" Content="Custom Allocation" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="359,28,0,0"/>
-        </Grid>
         <StatusBar x:Name="paymentsStatusBar" HorizontalAlignment="Center" Height="30" Margin="0,530,0,0" VerticalAlignment="Bottom" Width="Auto">
             <Label x:Name="labelPaymentStatus" HorizontalAlignment="Center" VerticalAlignment="Bottom" Content="{Binding StatusLabel, UpdateSourceTrigger=PropertyChanged}"></Label>
 

@@ -29,10 +29,6 @@ namespace InterestTracker
             this.LoanReportDataObj = loanReportDataObj;
             InitializeComponent();
             this.DataContext = this;
-            //inputPaymentDate.DataContext = this;
-            //inputPaymentAmount.DataContext = this;
-            //inputPaymentPrincipalAmount.DataContext = this;
-            //inputPaymentInterestAmount.DataContext = this;
             DefaultAllocation = 3;
             SelectedDate = this.LoanReportDataObj.StartDate;
             displayedControlsCheck();
@@ -84,13 +80,10 @@ namespace InterestTracker
                     InterestPaymentAmount = 0;
                     PrincipalPaymentAmount = 0;
                     buttonAddPayment.Content = "Add Payment";
-
                 }
-                // inputPaymentDate.SelectedDate = value;
 
                 else if (LoanReportDataObj.PaymentList.Any(date => date.PaymentDate == value))
                 {
-                    // checkForPayment = LoanReportDataObj.PaymentList.Contains(ActivePayment) ? ActivePayment  : null;
                     Payment locatedPayment = LoanReportDataObj.PaymentList.Where(p => p.PaymentDate == value).FirstOrDefault();
                     PaymentGuid = locatedPayment.PaymentGuid;
                     ActivePayment.PaymentDate = value;
@@ -98,34 +91,17 @@ namespace InterestTracker
                     InterestPaymentAmount = locatedPayment.InterestPaymentAmount;
                     PrincipalPaymentAmount = locatedPayment.PrincipalPaymentAmount;
                     buttonAddPayment.Content = "Confirm Edit";
-
-
-
                 }
 
                 else if (ActivePayment.PaymentDate != value)
                 {
                     ActivePayment = new Payment(LoanReportDataObj.LoanGuid);
-
                     ActivePayment.PaymentDate = value;
                     TotalPaymentAmount = 0;
                     InterestPaymentAmount = 0;
                     PrincipalPaymentAmount = 0;
                     buttonAddPayment.Content = "Add Payment";
 
-                }
-
-                else
-                {
-                    //ActivePayment.PaymentDate = value;
-                    //TotalPaymentAmount = 0;
-                    //InterestPaymentAmount = 0;
-                    //PrincipalPaymentAmount = 0;
-                    // ActivePayment = checkForPayment;
-                    //ActivePayment.PaymentDate = checkForPayment.PaymentDate;
-                    //ActivePayment.TotalPaymentAmount = checkForPayment.TotalPaymentAmount;
-                    //ActivePayment.InterestPaymentAmount = checkForPayment.InterestPaymentAmount;
-                    //ActivePayment.PrincipalPaymentAmount = checkForPayment.PrincipalPaymentAmount;
                 }
                 formatColumns();
                 displayedControlsCheck();
@@ -306,11 +282,40 @@ namespace InterestTracker
             }
         }
 
+        string allocationText;
         public string StatusLabel
         {
+
             get
             {
-                return "Payment ID: " + PaymentGuid.ToString() + "  -  Default allocation: " + DefaultAllocation.ToString();
+                switch (DefaultAllocation)
+                {
+                    case 0:
+                        {
+                            allocationText = labelInterstFirstAllocation.Content.ToString();
+                            goto default;
+                        }
+                    case 1:
+                        {
+                            allocationText = labelEqualAllocation.Content.ToString();
+                            goto default;
+                        }
+                    case 2:
+                        {
+                            allocationText = labelPrincipalFirstAllocation.Content.ToString();
+                            goto default;
+                        }
+                    case 3:
+                        {
+                            allocationText = labelCustomAllocation.Content.ToString();
+                            goto default;
+                        }
+
+                    default:
+                        {
+                            return "Payment ID: " + PaymentGuid.ToString() + "  -  Payment allocation: " + allocationText;
+                        }
+                }
             }
 
             set
@@ -412,9 +417,9 @@ namespace InterestTracker
                 if (dateRow != null)
                 {
                     labelSelectedDayInfo.Content = "Balance details of the selected day: \r\n" +
-                        "Principal Balance: " + LoanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[1]).ToString() + "\r\n" +
-                        "Interest Balance: " + LoanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[5]).ToString() + "\r\n" +
-             "Current Balance: " + LoanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[9]).ToString() + "\r\n";
+                        "Principal Balance: " + LoanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[1]).ToString("N") + "\r\n" +
+                        "Interest Balance: " + LoanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[5]).ToString("N") + "\r\n" +
+             "Current Balance: " + LoanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[9]).ToString("N") + "\r\n";
                 }
             }
         }
@@ -482,7 +487,7 @@ namespace InterestTracker
                         break;
                     }
             }
-            }
+        }
 
         private void inputPaymentAmount_TextChanged(object sender, TextChangedEventArgs e)
         {
