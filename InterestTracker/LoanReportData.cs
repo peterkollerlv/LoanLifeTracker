@@ -48,6 +48,10 @@ namespace InterestTracker
                 if (value != activeLoan)
                 {
                     activeLoan = value;
+                    if (InterestStructureSelection != null)
+                    {
+                        LoanStructure = (LoanStructures)Enum.Parse(typeof(LoanStructures), value.LoanInterestStructure.ToString());
+                    }
                     Notify("ActiveLoan");
                     Notify("Title");
                     Notify("Lender");
@@ -252,7 +256,6 @@ namespace InterestTracker
             set { ActiveLoan.LoanInterestStructure = value; }
         }
 
-       // public Payment SelectedPayment { get; set; }
         public ObservableCollection<Payment> PaymentList
         {
             get { return ActiveLoan.LoanPaymentsList; }
@@ -280,7 +283,13 @@ namespace InterestTracker
         public int LoanDuration
         {
             get { return loanDuration; }
-            set { loanDuration = value; }
+            set {
+                if(loanDuration != value)
+                {
+                    loanDuration = value;
+                    Notify("LoanDuration");
+                }
+                 }
         }
         private DateTime reportStartDate;
         public DateTime ReportStartDate
@@ -288,7 +297,7 @@ namespace InterestTracker
             get { return reportStartDate; }
             set
             {
-                if (value != ReportStartDate)
+                if (value != reportStartDate)
                 {
                     reportStartDate = value;
                     Notify("ReportStartDate");
@@ -301,7 +310,7 @@ namespace InterestTracker
             get { return reportEndDate; }
             set
             {
-                if (value != ReportEndDate)
+                if (value != reportEndDate)
                 {
                     reportEndDate = value;
                     Notify("ReportEndDate");
@@ -381,9 +390,6 @@ namespace InterestTracker
             private set { currentBalance = value; }
         }
 
-
-
-        // public string SelectedTabControl;
         public DataTable LoanDataTable;
         public DataTable ReportViewTable;
         public bool RegenerateLoanTable;
@@ -432,7 +438,98 @@ namespace InterestTracker
         public List<string> CurrencyList
         { get; set; }
 
+        private LoanStructures loanStructure;
 
+        public LoanStructures LoanStructure
+        {
+            get { return this.loanStructure; }
+            set
+            {
+
+                if (this.loanStructure == value)
+                { return; }
+                this.loanStructure = value;
+                InterestStructureSelection = value.ToString();
+                Notify("IsFixed360");
+                Notify("IsCompDay360");
+                Notify("IsCompMonth360");
+                Notify("IsCompQuarter360");
+                Notify("IsCompYear360");
+                Notify("IsFixed365");
+                Notify("IsCompDay365");
+                Notify("IsCompMonth365");
+                Notify("IsCompQuarter365");
+                Notify("IsCompYear365");
+            }
+        }
+
+
+        public bool IsFixed360
+        {
+            get { return LoanStructure == LoanStructures.fixed360; }
+            set { LoanStructure = value ? LoanStructures.fixed360 : LoanStructure; }
+        }
+        public bool IsCompDay360
+        {
+            get { return LoanStructure == LoanStructures.compDay360; }
+            set { LoanStructure = value ? LoanStructures.compDay360 : LoanStructure; }
+        }
+        public bool IsCompMonth360
+        {
+            get { return LoanStructure == LoanStructures.compMonth360; }
+            set { LoanStructure = value ? LoanStructures.compMonth360 : LoanStructure; }
+        }
+        public bool IsCompQuarter360
+        {
+            get { return LoanStructure == LoanStructures.compQuarter360; }
+            set { LoanStructure = value ? LoanStructures.compQuarter360 : LoanStructure; }
+        }
+        public bool IsCompYear360
+        {
+            get { return LoanStructure == LoanStructures.compYear360; }
+            set { LoanStructure = value ? LoanStructures.compYear360 : LoanStructure; }
+        }
+        public bool IsFixed365
+        {
+            get { return LoanStructure == LoanStructures.fixed365; }
+            set { LoanStructure = value ? LoanStructures.fixed365 : LoanStructure; }
+        }
+        public bool IsCompDay365
+        {
+            get { return LoanStructure == LoanStructures.compDay365; }
+            set { LoanStructure = value ? LoanStructures.compDay365 : LoanStructure; }
+        }
+        public bool IsCompMonth365
+        {
+            get { return LoanStructure == LoanStructures.compMonth365; }
+            set { LoanStructure = value ? LoanStructures.compMonth365 : LoanStructure; }
+        }
+        public bool IsCompQuarter365
+        {
+            get { return LoanStructure == LoanStructures.compQuarter365; }
+            set { LoanStructure = value ? LoanStructures.compQuarter365 : LoanStructure; }
+        }
+        public bool IsCompYear365
+        {
+            get { return LoanStructure == LoanStructures.compYear365; }
+            set { LoanStructure = value ? LoanStructures.compYear365 : LoanStructure; }
+        }
+
+
+
+        public enum LoanStructures
+        {
+            fixed360,
+            compDay360,
+            compMonth360,
+            compQuarter360,
+            compYear360,
+            fixed365,
+            compDay365,
+            compMonth365,
+            compQuarter365,
+            compYear365,
+        }
 
         public void NotifyUI()
         {
@@ -452,12 +549,6 @@ namespace InterestTracker
             Notify("ActiveGuid");
         }
 
-
-
-
-
-
-
         // not implemented yet
 
         //private decimal recuringPaymentAmount;
@@ -468,12 +559,7 @@ namespace InterestTracker
         //}
 
 
-
-
-
         //Generate the loan objects, and populate the data grid colums
-
-
 
         public void createNewLoan()
         {
@@ -488,10 +574,6 @@ namespace InterestTracker
                 if (!ExistingLoans.Contains(ActiveLoan))
                 {
                     ExistingLoans.Add(ActiveLoan);
-                }
-                else
-                {
-                    //Loan existingLoan = ExistingLoans.Select(ActiveLoan)
                 }
             }
         }
@@ -575,7 +657,7 @@ namespace InterestTracker
                 LoanDataTable.Columns.Add("loanDayPrincipal", typeof(decimal));
                 LoanDataTable.Columns.Add("loanDayInterestRate", typeof(decimal));
                 LoanDataTable.Columns.Add("loanDayInterest", typeof(decimal));
-                LoanDataTable.Columns.Add("loanInterestBalance", typeof(decimal));
+                // LoanDataTable.Columns.Add("loanInterestBalance", typeof(decimal));
                 LoanDataTable.Columns.Add("loanDayCuIntrestBal", typeof(decimal));
                 LoanDataTable.Columns.Add("loanDayTotalPayment", typeof(decimal)); ;
                 LoanDataTable.Columns.Add("loanDayInterestPayment", typeof(decimal));
@@ -586,15 +668,11 @@ namespace InterestTracker
 
                 DateTime indexingDate = StartDate;
                 DateTime indexEndDate = EndDate;
-                //LoanReportMainObj.statusProgressBar.Maximum = LoanTimeSpan.Days;
-                //LoanReportMainObj.statusProgressBar.Value = 0;
                 PrincipalBalance = 0;
                 InterestBalance = 0;
                 CumulativeInterestBalance = 0;
                 CurrentBalance = 0;
 
-
-                //testing nulling the data source
                 LoanGenerated = false;
                 //if (RegenerateLoanTable)
                 //{
@@ -619,18 +697,9 @@ namespace InterestTracker
                         }
                     }
                 }
-                // LoanReportMainObj.statusProgressBar.Value = 0;
                 LoanDataTable.AcceptChanges();
-                //LoanReportMainObj.loanReportDataGrid.DataSource = LoanDataTable;
-                // SetColumnHeaders();
                 LoanGenerated = true;
                 SortDataGridToReport(ActiveLoan.LoanStartDate, EndDate, 2);
-                // }
-                //else if (!RegenerateLoanTable)
-                //{
-                //    MessageBox.Show("Loan is not regenerated with new start date");
-                //}
-
             }
             catch (OverflowException e)
             {
@@ -649,7 +718,6 @@ namespace InterestTracker
                 CurrentBalance = PrincipalBalance;
             }
 
-
             decimal dailyInterest = calculateInterest(currentDate.Date);
             CumulativeInterestBalance += dailyInterest;
 
@@ -657,7 +725,6 @@ namespace InterestTracker
             {
                 if (getPaymentDetails(currentDate).InterestPaymentAmount > CumulativeInterestBalance)
                 {
-                    //InterestBalance = InterestBalance - getPaymentDetails(currentDate).InterestPaymentAmount;
                     CumulativeInterestBalance = Math.Abs(CumulativeInterestBalance - getPaymentDetails(currentDate).InterestPaymentAmount + dailyInterest);
                     PrincipalBalance = PrincipalBalance - CumulativeInterestBalance - getPaymentDetails(currentDate).PrincipalPaymentAmount;
                     CumulativeInterestBalance = 0;
@@ -678,10 +745,10 @@ namespace InterestTracker
             }
             else
             {
-               // CumulativeInterestBalance += dailyInterest;   //calculateInterest(currentDate.Date);
+                // CumulativeInterestBalance += dailyInterest;   //calculateInterest(currentDate.Date);
             }
 
-            
+
 
             switch (InterestStructureSelection)
             {
@@ -699,7 +766,7 @@ namespace InterestTracker
 
                         CumulativeInterestBalance = calculateInterest(currentDate.Date);
                         CurrentBalance = PrincipalBalance + CumulativeInterestBalance;
-                       // CurrentBalance = PrincipalBalance;
+                        // CurrentBalance = PrincipalBalance;
 
                         goto default;
                     }
@@ -711,7 +778,7 @@ namespace InterestTracker
                         {
                             CurrentBalance = PrincipalBalance + CumulativeInterestBalance;
                             //CurrentBalance = PrincipalBalance;
-                           // CumulativeInterestBalance = calculateInterest(currentDate.Date); //resets the interest balance;
+                            // CumulativeInterestBalance = calculateInterest(currentDate.Date); //resets the interest balance;
                         }
                         if (getLastDayOfMonth(currentDate) == currentDate.Day)
                         {
@@ -748,22 +815,22 @@ namespace InterestTracker
                     dateRow[1] = FormatDigitInput.FormatToDecimal(PrincipalBalance);
                     dateRow[2] = calculateInterestRate(currentDate);
                     dateRow[3] = FormatDigitInput.FormatToDecimal(dailyInterest);
-                    dateRow[4] = FormatDigitInput.FormatToDecimal(InterestBalance);
-                    dateRow[5] = FormatDigitInput.FormatToDecimal(CumulativeInterestBalance);
+                    dateRow[4] = FormatDigitInput.FormatToDecimal(CumulativeInterestBalance);
+                    //  dateRow[5] = FormatDigitInput.FormatToDecimal(CumulativeInterestBalance);
 
                     if (paymentExists(currentDate))
                     {
-                        dateRow[6] = FormatDigitInput.FormatToDecimal(getPaymentDetails(currentDate).TotalPaymentAmount);
-                        dateRow[7] = FormatDigitInput.FormatToDecimal(getPaymentDetails(currentDate).InterestPaymentAmount);
-                        dateRow[8] = FormatDigitInput.FormatToDecimal(getPaymentDetails(currentDate).PrincipalPaymentAmount);
+                        dateRow[5] = FormatDigitInput.FormatToDecimal(getPaymentDetails(currentDate).TotalPaymentAmount);
+                        dateRow[6] = FormatDigitInput.FormatToDecimal(getPaymentDetails(currentDate).InterestPaymentAmount);
+                        dateRow[7] = FormatDigitInput.FormatToDecimal(getPaymentDetails(currentDate).PrincipalPaymentAmount);
                     }
                     else
                     {
+                        dateRow[5] = 0;
                         dateRow[6] = 0;
                         dateRow[7] = 0;
-                        dateRow[8] = 0;
                     }
-                    dateRow[9] = FormatDigitInput.FormatToDecimal(CurrentBalance);
+                    dateRow[8] = FormatDigitInput.FormatToDecimal(CurrentBalance);
                     return dateRow;
             }
         }
@@ -826,7 +893,6 @@ namespace InterestTracker
             {
                 if (ReportType == 0)
                 {
-                    //EnumerableRowCollection<DataRow> reportScope = from displayDate in LoanDataTable.AsEnumerable()
                     ReportScope = from displayDate in LoanDataTable.AsEnumerable()
 
                                   where displayDate.Field<DateTime>("loanDayDate") <= reportEnd && displayDate.Field<DateTime>("loanDayDate") >= reportStart
@@ -899,12 +965,6 @@ namespace InterestTracker
                         default:
                             DataView viewReport = ReportScope.AsDataView();
                             ReportViewTable = viewReport.ToTable();
-                            //  LoanReportDataGrid.ItemsSource = null;
-                            //  LoanReportDataGrid.ItemsSource = viewReport;
-
-                            SetColumnHeaders();
-
-
                             break;
                     }
                 }
@@ -913,39 +973,5 @@ namespace InterestTracker
             { } // MessageBox.Show("Please generate the loan first."); }
         }
 
-
-        public void SetColumnHeaders()
-        {
-            //if (LoanReportDataGrid.ItemsSource != null)
-            //{
-
-            //    LoanReportDataGrid.AutoGenerateColumns = true;
-
-            //    LoanReportDataGrid.Columns[0].Header = "Start Date";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[0]).Binding.StringFormat = "MM/dd/yyyy";
-            //    LoanReportDataGrid.Columns[1].Header = "Principal \n(" + ActiveLoan.LoanCurrency + ")";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[1]).Binding.StringFormat = "N";
-            //    LoanReportDataGrid.Columns[2].Header = "Interest Rate";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[2]).Binding.StringFormat = "p2";
-            //    LoanReportDataGrid.Columns[3].Header = "Daily Interest \n(" + ActiveLoan.LoanCurrency + ")";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[3]).Binding.StringFormat = "N";
-            //    LoanReportDataGrid.Columns[4].Header = "Interest Balance\n(" + ActiveLoan.LoanCurrency + ")";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[4]).Binding.StringFormat = "N";
-            //    LoanReportDataGrid.Columns[5].Header = "Cumulative Interest \n(" + ActiveLoan.LoanCurrency + ")";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[5]).Binding.StringFormat = "N";
-            //    LoanReportDataGrid.Columns[6].Header = "Total Payment \n(" + ActiveLoan.LoanCurrency + ")";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[6]).Binding.StringFormat = "N";
-            //    LoanReportDataGrid.Columns[7].Header = "Interest Payment \n(" + ActiveLoan.LoanCurrency + ")";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[7]).Binding.StringFormat = "N";
-            //    LoanReportDataGrid.Columns[8].Header = "Principal Payment \n(" + ActiveLoan.LoanCurrency + ")";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[8]).Binding.StringFormat = "N";
-            //    LoanReportDataGrid.Columns[9].Header = "Current Balance \n(" + ActiveLoan.LoanCurrency + ")";
-            //    ((DataGridTextColumn)LoanReportDataGrid.Columns[9]).Binding.StringFormat = "N";
-            //    LoanReportDataGrid.Columns[10].Header = "Comments";
-
-            //    LoanReportDataGrid.Visibility = Visibility.Visible;
-
-            // }
-        }
     }
 }

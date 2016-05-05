@@ -50,7 +50,7 @@
             </TabItem>
             <TabItem x:Name="navMainLoanDetails" Header="Loan Details">
                 <Grid x:Name="groupMainLoanDetails">
-                    <Frame x:Name="loanDetails" NavigationUIVisibility="Hidden"/>
+                    <Frame x:Name="loanDetails" NavigationUIVisibility="Hidden" Margin="0,0,0,24"/>
 
                 </Grid>
             </TabItem>
@@ -123,7 +123,7 @@
                     <Label x:Name="labelLoanDuration" Content="Projected Duration" HorizontalAlignment="Left" Margin="147,35,0,0" VerticalAlignment="Top" Width="112" Height="24"/>
                     <DatePicker x:Name="inputLoanStartDate" HorizontalAlignment="Left" SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}" Margin="10,61,0,0" VerticalAlignment="Top" Width="140" FirstDayOfWeek="Monday" BorderThickness="0,1,0,0" Height="24" SelectedDateChanged="inputLoanStartDate_SelectedDateChanged"/>
 
-                    <TextBox x:Name="inputLoanDuration" HorizontalAlignment="Left" Height="24" Margin="147,61,0,0" TextWrapping="Wrap" Width="58" PreviewTextInput="inputLoanDuration_PreviewTextInput" TextChanged="inputLoanDuration_TextChanged" Text="5" VerticalAlignment="Top" PreviewKeyDown="inputLoanDuration_PreviewKeyDown"/>
+                    <TextBox x:Name="inputLoanDuration" HorizontalAlignment="Left" Height="24" Margin="147,61,0,0" TextWrapping="Wrap" Width="58" PreviewTextInput="inputLoanDuration_PreviewTextInput" TextChanged="inputLoanDuration_TextChanged" Text="{Binding LoanDuration, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Top" PreviewKeyDown="inputLoanDuration_PreviewKeyDown"/>
 
                     <Label x:Name="labelYears" Content="Years" HorizontalAlignment="Left" Margin="210,62,0,0" VerticalAlignment="Top" Width="49" Height="24"/>
                     <Label x:Name="labelCurrencySelection" Content="Currency" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Width="77" Height="24"/>
@@ -171,21 +171,21 @@
                             </Grid.ColumnDefinitions>
                             <TreeView x:Name="inputInterestStructureSelection" Margin="0,0,-131,-177" Grid.RowSpan="2">
                                 <TreeViewItem Grid.Row="0" Grid.Column="0" Header="360">
-                                    <RadioButton x:Name="fixed360" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="360 Fixed Interest" Content="Fixed Interest" IsChecked="True"/>
+                                    <RadioButton x:Name="fixed360" Checked="interestStructureChecked_Checked" IsChecked="{Binding IsFixed360}" GroupName="interestStructure" Tag="360 Fixed Interest" Content="Fixed Interest" />
                                     <TreeViewItem Header="Compund Interest">
-                                        <RadioButton x:Name="compDay360" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="360 Compound Daily" Content="Daily"/>
-                                        <RadioButton x:Name="compMonth360" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="360 Compound Monthly" Content="Monthly"/>
-                                        <RadioButton x:Name="compQuarter360" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="360 Compound Quarterly" Content="Quarterly"/>
-                                        <RadioButton x:Name="compYear360" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="360 Compound Yearly" Content="Yearly"/>
+                                        <RadioButton x:Name="compDay360" Checked="interestStructureChecked_Checked" IsChecked="{Binding IsCompDay360}" GroupName="interestStructure" Tag="360 Compound Daily" Content="Daily"/>
+                                        <RadioButton x:Name="compMonth360" Checked="interestStructureChecked_Checked" IsChecked="{Binding IsCompMonth360}" GroupName="interestStructure" Tag="360 Compound Monthly" Content="Monthly"/>
+                                        <RadioButton x:Name="compQuarter360" Checked="interestStructureChecked_Checked" IsChecked="{Binding IsCompQuarter360}" GroupName="interestStructure" Tag="360 Compound Quarterly" Content="Quarterly"/>
+                                        <RadioButton x:Name="compYear360" Checked="interestStructureChecked_Checked" IsChecked="{Binding IsCompYear360}" GroupName="interestStructure" Tag="360 Compound Yearly" Content="Yearly"/>
                                     </TreeViewItem>
                                 </TreeViewItem>
                                 <TreeViewItem Grid.Row="1" Grid.Column="0"  Header="365/366">
-                                    <RadioButton  x:Name="fixed365" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="365 Fixed" Content="Fixed Interest"/>
+                                    <RadioButton  x:Name="fixed365" Checked="interestStructureChecked_Checked" IsChecked="{Binding IsFixed365}" GroupName="interestStructure" Tag="365 Fixed" Content="Fixed Interest"/>
                                     <TreeViewItem Header="Compund Interest">
-                                        <RadioButton x:Name="compDay365" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="365 Compound Daily" Content="Daily"/>
-                                        <RadioButton x:Name="compMonth365" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="365 Compound Monthly" Content="Monthly"/>
-                                        <RadioButton x:Name="compQuarter365" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="365 Compound Quarterly" Content="Quarterly"/>
-                                        <RadioButton x:Name="compYear365" Checked="interestStructureChecked_Checked" GroupName="interestStructure" Tag="365 Compound Yearly" Content="Yearly"/>
+                                        <RadioButton x:Name="compDay365" Checked="interestStructureChecked_Checked" IsChecked="{Binding IsCompDay365}" GroupName="interestStructure" Tag="365 Compound Daily" Content="Daily"/>
+                                        <RadioButton x:Name="compMonth365" Checked="interestStructureChecked_Checked" IsChecked="{Binding IsCompMonth365}" GroupName="interestStructure" Tag="365 Compound Monthly" Content="Monthly"/>
+                                        <RadioButton x:Name="compQuarter365" Checked="interestStructureChecked_Checked" IsChecked="{Binding IsCompQuarter365}" GroupName="interestStructure" Tag="365 Compound Quarterly" Content="Quarterly"/>
+                                        <RadioButton x:Name="compYear365" Checked="interestStructureChecked_Checked" IsChecked="{Binding IsCompYear365}" GroupName="interestStructure" Tag="365 Compound Yearly" Content="Yearly"/>
                                     </TreeViewItem>
                                 </TreeViewItem>
                             </TreeView>

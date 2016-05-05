@@ -331,9 +331,6 @@ namespace InterestTracker
 
         private void displayedControlsCheck()
         {
-            // ((DatePicker)inputPaymentDate).DisplayDateStart = loanReportDataObj.StartDate;
-            // panelInterestAmount.Visibility = Visibility.Hidden;
-            // panelPrincipalAmount.Visibility = Visibility.Hidden;
             updateAllocationPercent();
             if (ActivePayment != null && TotalPaymentAmount > 0 && TotalPaymentAmount > 0)
             {
@@ -416,10 +413,10 @@ namespace InterestTracker
                 DataRow dateRow = LoanReportDataObj.LoanDataTable.Rows.Find(PaymentDate);
                 if (dateRow != null)
                 {
-                    labelSelectedDayInfo.Content = "Balance details of the selected day: \r\n" +
+                    labelSelectedDayInfo.Content = "Balance details of the selected day: \r\n\n" +
                         "Principal Balance: " + LoanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[1]).ToString("N") + "\r\n" +
-                        "Interest Balance: " + LoanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[5]).ToString("N") + "\r\n" +
-             "Current Balance: " + LoanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[9]).ToString("N") + "\r\n";
+                        "Cumulative Interest Balance: " + LoanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[4]).ToString("N") + "\r\n" +
+             "Current Balance: " + LoanReportDataObj.ActiveLoan.LoanCurrency + " " + FormatDigitInput.FormatToDecimal(dateRow[8]).ToString("N") + "\r\n";
                 }
             }
         }
@@ -491,6 +488,8 @@ namespace InterestTracker
 
         private void inputPaymentAmount_TextChanged(object sender, TextChangedEventArgs e)
         {
+            decimal paymentAmount;
+            inputPaymentAmount.Text = Decimal.TryParse(inputPaymentAmount.Text, out paymentAmount) ? paymentAmount.ToString() : 0.ToString();
             adjustToDefaultAllocation();
 
             //if ((InterestPaymentAmount + PrincipalPaymentAmount) > TotalPaymentAmount)
@@ -502,16 +501,21 @@ namespace InterestTracker
 
         private void inputPaymentInterestAmount_TextChanged(object sender, TextChangedEventArgs e)
         {
+            decimal interestAmount;
+            inputPaymentInterestAmount.Text = Decimal.TryParse(inputPaymentInterestAmount.Text, out interestAmount) ? interestAmount.ToString() : 0.ToString();
+            adjustAllocation();
             //if ((TotalPaymentAmount - PrincipalPaymentAmount) < InterestPaymentAmount)
             //{
             //    e.Handled = true;
             //    MessageBox.Show("Incorrect allocation.");
             //}
-            adjustAllocation();
+
         }
 
         private void inputPaymentPrincipalAmount_TextChanged(object sender, TextChangedEventArgs e)
         {
+            decimal principalAmount;
+            inputPaymentPrincipalAmount.Text = Decimal.TryParse(inputPaymentPrincipalAmount.Text, out principalAmount) ? principalAmount.ToString() : 0.ToString();
             adjustAllocation();
             //if ((TotalPaymentAmount - InterestPaymentAmount) < PrincipalPaymentAmount)
             //{

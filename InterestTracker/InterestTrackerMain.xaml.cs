@@ -30,10 +30,9 @@ namespace InterestTracker
         //loan properties
         LoanReportData LoanReportDataObj;
         LoanDetailsPages loanDetailsPages;
-
         private readonly BackgroundWorker bgWorker = new BackgroundWorker();
         private readonly BackgroundWorker bgExcelWorker = new BackgroundWorker();
-        
+
 
         public InterestTrackerMain()
         {
@@ -50,8 +49,8 @@ namespace InterestTracker
             loanDetails.Content = LoanDetailsPages.LoanCalculation;
             inputCurrencySelection.SelectedIndex = 0;
             processIndicationText.Content = "";
-            //inputCurrencySelection.SelectedItem = "USD";
         }
+
         //ui events
 
         private void navLoanData_GotFocus(object sender, RoutedEventArgs e)
@@ -74,11 +73,10 @@ namespace InterestTracker
         {
             if (LoanReportDataObj.ActiveLoan != null)
             {
-                // LoanDetailsPages.LoanCalculation.LoanReportObj = this.LoanReportDataObj;
                 LoanDetailsPages.LoanCalculation = new LoanCalculation(LoanReportDataObj);
                 loanDetails.Content = LoanDetailsPages.LoanCalculation;
 
-                
+
                 navMainTabControl.SelectedItem = navMainLoanDetails;
                 LoanReportDataObj.CalculateLoan();
             }
@@ -88,17 +86,11 @@ namespace InterestTracker
         {
             if (LoanReportDataObj.ActiveLoan != null)
             {
-                // LoanDetailsPages.LoanCalculation.LoanReportObj = this.LoanReportDataObj;
-              //  if (loanDetails.Content != LoanDetailsPages.LoanCalculation)
-              //  {
-                    LoanDetailsPages.LoanCalculation = new LoanCalculation(LoanReportDataObj);
+                LoanDetailsPages.LoanCalculation = new LoanCalculation(LoanReportDataObj);
 
-                    loanDetails.Content = LoanDetailsPages.LoanCalculation;
-             //   }
-
+                loanDetails.Content = LoanDetailsPages.LoanCalculation;
                 LoanReportDataObj.CalculateLoan();
                 LoanDetailsPages.LoanCalculation.FormatGrid();
-                // groupMainLoanDetails.UpdateLayout();
             }
         }
 
@@ -128,9 +120,9 @@ namespace InterestTracker
         {
             if (LoanReportDataObj.ActiveLoan != null)
             {
+                inputReportEndDate.SelectedDate = inputLoanStartDate.SelectedDate.Value.AddYears(LoanReportDataObj.LoanDuration);
                 inputReportStartDate.SelectedDate = inputLoanStartDate.SelectedDate;
                 inputReportStartDate.DisplayDateStart = inputLoanStartDate.SelectedDate;
-                inputReportEndDate.SelectedDate = inputLoanStartDate.SelectedDate.Value.AddYears(Int32.Parse(inputLoanDuration.Text));
             }
             labelLoanStartDate.Content = "Loan Start Date: " + inputLoanStartDate.SelectedDate.Value.ToLongDateString();
         }
@@ -179,10 +171,9 @@ namespace InterestTracker
 
         private void inputLoanDuration_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (inputLoanDuration.Text.Length > 0)
-            {
-                LoanReportDataObj.LoanDuration = Int32.Parse(inputLoanDuration.Text);
-            }
+            int duration;
+            inputLoanDuration.Text = (Int32.TryParse(inputLoanDuration.Text, out duration)) ? duration.ToString() : 0.ToString();
+            // inputLoanDuration.Text = duration.ToString();
         }
 
         private void inputInitialLoanAmount_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -194,8 +185,10 @@ namespace InterestTracker
         {
             if (inputInitialLoanAmount.Text.Length > 0)
             {
-                LoanReportDataObj.InitialLoanAmount = Decimal.Parse(inputInitialLoanAmount.Text);
-                labelInitialAmount.Content = "Initial Loan Amount: " + LoanReportDataObj.Currency + " " + inputInitialLoanAmount.Text;
+                decimal loanAmount;
+                inputInitialLoanAmount.Text = Decimal.TryParse(inputInitialLoanAmount.Text, out loanAmount) ? loanAmount.ToString() : 0.ToString();
+                // inputInitialLoanAmount.Text = loanAmount.ToString();
+                labelInitialAmount.Content = "Initial Loan Amount: " + LoanReportDataObj.Currency + " " + loanAmount.ToString();
             }
         }
 
@@ -207,10 +200,10 @@ namespace InterestTracker
         private void inputInterestRate_TextChanged(object sender, TextChangedEventArgs e)
         {
 
-            if (inputInterestRate.Text.Length > 0)
-            {
-                //     LoanReportDataObj.InterestRate = Decimal.Parse(inputInterestRate.Text);
-            }
+            decimal interestRate;
+            inputInterestRate.Text = Decimal.TryParse(inputInterestRate.Text, out interestRate) ? interestRate.ToString() : 0.ToString();
+            //     LoanReportDataObj.InterestRate = Decimal.Parse(inputInterestRate.Text);
+
         }
 
         private void inputInterestPenaltyRate_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -220,10 +213,8 @@ namespace InterestTracker
 
         private void inputInterestPenaltyRate_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (inputInterestPenaltyRate.Text.Length > 0)
-            {
-                LoanReportDataObj.InterestPenaltyRate = Decimal.Parse(inputInterestPenaltyRate.Text);
-            }
+            decimal interestPenaltyRate;
+            inputInterestPenaltyRate.Text = Decimal.TryParse(inputInterestPenaltyRate.Text, out interestPenaltyRate) ? interestPenaltyRate.ToString() : 0.ToString();
         }
 
         private void inputLoanDuration_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -307,7 +298,7 @@ namespace InterestTracker
 
         private void buttonOpenCalculation_Click(object sender, RoutedEventArgs e)
         {
-           // LoanDetailsPages.LoanCalculation.LoanReportObj = this.LoanReportDataObj;
+            // LoanDetailsPages.LoanCalculation.LoanReportObj = this.LoanReportDataObj;
             LoanDetailsPages.LoanCalculation = new LoanCalculation(LoanReportDataObj);
             loanDetails.Content = LoanDetailsPages.LoanCalculation;
             LoanReportDataObj.CalculateLoan();
@@ -474,7 +465,7 @@ namespace InterestTracker
                 GeneratePdf toPdf = new GeneratePdf(LoanReportDataObj);
                 toPdf.PdfSavePath = savePdf.FileName;
                 toPdf.GridLoanCalclation = LoanDetailsPages.LoanCalculation.GridLoanCalclation;
-              //  LoanDetailsPages.LoanCalculation.FormatGrid();
+                //  LoanDetailsPages.LoanCalculation.FormatGrid();
                 toPdf.BuildPDF();
             }
         }
@@ -541,7 +532,7 @@ namespace InterestTracker
         }
     }
 
-  
-    
+
+
 }
 
