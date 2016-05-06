@@ -231,7 +231,7 @@
                 <Label Name="labelUsername" Content="User Name" Margin="3,3,3,3" Background="#FF13487D" VerticalAlignment="Top" Height="Auto" Width="Auto" Grid.Row="0"/>
                 <TextBox x:Name="inputUserName" Margin="3,27,3,3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="Auto" Text="peterkoller" ></TextBox>
                 <Label Name="labelPassword" Content="Password" Margin="3,51,3,3" Background="#FF13487D" VerticalAlignment="Top" Height="Auto" Width="Auto" Grid.Row="0"/>
-                <PasswordBox Name="inputPassword" Margin="3,75,3,3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="Auto" Password="M3926GremnkY" ></PasswordBox>
+                <PasswordBox Name="inputPassword" Margin="3,75,3,3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="Auto" Password="" ></PasswordBox>
                 <Button Content="Login" Background="#FF4682B4" Name="buttonLogin" Margin="3,105,3,3" VerticalAlignment="Top" HorizontalAlignment="Center" Width="60" Height="24" Click="buttonLogin_Click"/>
             </Grid>
         </Expander>

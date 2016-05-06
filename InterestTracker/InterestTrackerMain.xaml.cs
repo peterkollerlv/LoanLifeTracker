@@ -49,6 +49,7 @@ namespace InterestTracker
             loanDetails.Content = LoanDetailsPages.LoanCalculation;
             inputCurrencySelection.SelectedIndex = 0;
             processIndicationText.Content = "";
+            inputPassword.Password = LoanReportDataObj.dbConnection.dBConnInfo.MySqlPassword;
         }
 
         //ui events
