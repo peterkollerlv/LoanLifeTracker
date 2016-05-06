@@ -283,13 +283,14 @@ namespace InterestTracker
         public int LoanDuration
         {
             get { return loanDuration; }
-            set {
-                if(loanDuration != value)
+            set
+            {
+                if (loanDuration != value)
                 {
                     loanDuration = value;
                     Notify("LoanDuration");
                 }
-                 }
+            }
         }
         private DateTime reportStartDate;
         public DateTime ReportStartDate
@@ -763,11 +764,7 @@ namespace InterestTracker
                 case "compDay365":
                 case "compDay360":
                     {
-
-                        CumulativeInterestBalance = calculateInterest(currentDate.Date);
                         CurrentBalance = PrincipalBalance + CumulativeInterestBalance;
-                        // CurrentBalance = PrincipalBalance;
-
                         goto default;
                     }
 
@@ -777,38 +774,28 @@ namespace InterestTracker
                         if (currentDate.Day == 1)
                         {
                             CurrentBalance = PrincipalBalance + CumulativeInterestBalance;
-                            //CurrentBalance = PrincipalBalance;
-                            // CumulativeInterestBalance = calculateInterest(currentDate.Date); //resets the interest balance;
-                        }
-                        if (getLastDayOfMonth(currentDate) == currentDate.Day)
-                        {
-
                         }
                         goto default;
                     }
                 case "compQuarter365":
                 case "compQuarter360":
                     {
-                        goto case "compMonth365"; //non implemented defaulting to monthly
+                        if((currentDate.Month == 1 || currentDate.Month == 4 || currentDate.Month == 7 || currentDate.Month == 10) && currentDate.Day == 1)
+                        {
+                            CurrentBalance = PrincipalBalance + CumulativeInterestBalance;
+                        }
+
+                        goto default;
                     }
                 case "compYear365":
                 case "compYear360":
                     {
-                        goto case "compMonth365"; //non implemented defaulting to monthly
+                        if (currentDate.Month == 01 && currentDate.Day == 01)
+                        {
+                            CurrentBalance = PrincipalBalance + CumulativeInterestBalance;
+                        }
+                        goto default;
                     }
-
-                //if (currentDate.Day == 1)
-                //{
-                // InterestBalance = calculateInterest(currentDate.Date); //resets the interest balance;
-                // }
-                //else if (getLastDayOfMonth(currentDate) == currentDate.Day)
-                //{
-
-                // }
-
-
-
-                //  goto default;
 
                 default:
                     dateRow[0] = currentDate;
