@@ -559,6 +559,8 @@ namespace InterestTracker
                 p.TotalPaymentAmount = ActivePayment.TotalPaymentAmount;
                 p.InterestPaymentAmount = ActivePayment.InterestPaymentAmount;
                 p.PrincipalPaymentAmount = ActivePayment.PrincipalPaymentAmount;
+                LoanReportDataObj.dbConnection.saveLoanLifeTrackerPayment(p);
+
             }
             else
             {
