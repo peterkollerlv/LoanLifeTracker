@@ -110,7 +110,6 @@
                     <Label x:Name="labelBeneficiarySet" Content="Beneficiary" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top"  Width="69"/>
                     <TextBox x:Name="inputCollectionAccount"  Margin="10,220,10,0" Text="{Binding CollectionAccount, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="inputCollectionAccount_TextChanged"/>
                     <Label x:Name="labelCollectionAccountSet" Content="Collection Account" HorizontalAlignment="Left" Margin="10,196,0,0" VerticalAlignment="Top"  Width="109"/>
-                    <Button x:Name="btnSave" Content="Save" Margin="10,249,10,0" VerticalAlignment="Top" Height="24" FontWeight="Bold" Click="btnSave_Click"/>
 
                 </Grid>
             </TabItem>

@@ -49,10 +49,7 @@ namespace InterestTracker
             loanDetails.Content = LoanDetailsPages.LoanCalculation;
             inputCurrencySelection.SelectedIndex = 0;
             processIndicationText.Content = "";
-            
-
-            //MGY 2016.05.06
-            LoanReportDataObj.CompanyInfo = inputCompanyInfo.Text;
+            inputPassword.Password = LoanReportDataObj.dbConnection.dBConnInfo.MySqlPassword;
         }
 
         //ui events
@@ -533,11 +530,6 @@ namespace InterestTracker
                 LoanReportDataObj.ExistingLoans.Remove((Loan)openLoansDataGrid.SelectedItems[0]);
             }
 
-        }
-
-        private void btnSave_Click(object sender, RoutedEventArgs e)
-        {
-            LoanReportDataObj.dbConnection.saveLoanLifeTracker(LoanReportDataObj.ActiveLoan);
         }
     }
 
