@@ -159,127 +159,129 @@ namespace InterestTracker
 
 
 
-        public string UpdateLoansToDb()
-        {
+        //public string UpdateLoansToDb()
+        //{
 
-            try
-            {
-                if (dbConn.State == ConnectionState.Open)
-                {
-                    // openLoansTable.Rows.Clear();
-                    foreach (Loan loan in loanReportDataObj.ExistingLoans)
-                    {
-                        DataRow fillRow;
-                        //  DataRow fillRow = openLoansTable.NewRow();
-                        if (openLoansTable.Rows.Find(loan.LoanGuid) != null)
-                        {
-                            fillRow = openLoansTable.Rows.Find(loan.LoanGuid);
-                            fillRow["loanGuid"] = loan.LoanGuid;
-                            fillRow["loanTitle"] = loan.LoanTitle;
-                            fillRow["loanBeneficiary"] = loan.LoanBeneficiary;
-                            fillRow["loanCollectionAccount"] = loan.LoanCollectionAccount;
-                            fillRow["loanCompanyInfo"] = loan.LoanCompanyInfo;
-                            fillRow["loanCurrency"] = loan.LoanCurrency;
-                            fillRow["loanHasPenalty"] = loan.LoanHasInterestPenalty;
-                            fillRow["loanInitialLoanAmount"] = loan.LoanInitialLoanAmount;
-                            fillRow["loanPenaltyDate"] = loan.LoanInterestPenaltyDate;
-                            fillRow["loanPenaltyRate"] = loan.LoanInterestPenaltyRate;
-                            fillRow["loanInterestRate"] = loan.LoanInterestRate;
-                            fillRow["loanInterestStructure"] = loan.LoanInterestStructure;
-                            fillRow["loanLender"] = loan.LoanLender;
-                            fillRow["loanPaid"] = loan.LoanPaid;
-                            fillRow["loanSavedToDB"] = loan.LoanSavedToDb;
-                            fillRow["loanStartDate"] = loan.LoanStartDate;
+        //    try
+        //    {
+        //        if (dbConn.State == ConnectionState.Open)
+        //        {
+        //            // openLoansTable.Rows.Clear();
+        //            foreach (Loan loan in loanReportDataObj.ExistingLoans)
+        //            {
+        //                DataRow fillRow;
+        //                //  DataRow fillRow = openLoansTable.NewRow();
+        //                if (openLoansTable.Rows.Find(loan.LoanGuid) != null)
+        //                {
+        //                    fillRow = openLoansTable.Rows.Find(loan.LoanGuid);
+        //                    fillRow["loanGuid"] = loan.LoanGuid;
+        //                    fillRow["loanTitle"] = loan.LoanTitle;
+        //                    fillRow["loanBeneficiary"] = loan.LoanBeneficiary;
+        //                    fillRow["loanCollectionAccount"] = loan.LoanCollectionAccount;
+        //                    fillRow["loanCompanyInfo"] = loan.LoanCompanyInfo;
+        //                    fillRow["loanCurrency"] = loan.LoanCurrency;
+        //                    fillRow["loanHasPenalty"] = loan.LoanHasInterestPenalty;
+        //                    fillRow["loanInitialLoanAmount"] = loan.LoanInitialLoanAmount;
+        //                    fillRow["loanPenaltyDate"] = loan.LoanInterestPenaltyDate;
+        //                    fillRow["loanPenaltyRate"] = loan.LoanInterestPenaltyRate;
+        //                    fillRow["loanInterestRate"] = loan.LoanInterestRate;
+        //                    fillRow["loanInterestStructure"] = loan.LoanInterestStructure;
+        //                    fillRow["loanLender"] = loan.LoanLender;
+        //                    fillRow["loanPaid"] = loan.LoanPaid;
+        //                    fillRow["loanSavedToDB"] = loan.LoanSavedToDb;
+        //                    fillRow["loanStartDate"] = loan.LoanStartDate;
 
-                        }
-                        else
-                        {
-                            fillRow = openLoansTable.NewRow();
-                            fillRow["loanGuid"] = loan.LoanGuid;
-                            fillRow["loanTitle"] = loan.LoanTitle;
-                            fillRow["loanBeneficiary"] = loan.LoanBeneficiary;
-                            fillRow["loanCollectionAccount"] = loan.LoanCollectionAccount;
-                            fillRow["loanCompanyInfo"] = loan.LoanCompanyInfo;
-                            fillRow["loanCurrency"] = loan.LoanCurrency;
-                            fillRow["loanHasPenalty"] = loan.LoanHasInterestPenalty;
-                            fillRow["loanInitialLoanAmount"] = loan.LoanInitialLoanAmount;
-                            fillRow["loanPenaltyDate"] = loan.LoanInterestPenaltyDate;
-                            fillRow["loanPenaltyRate"] = loan.LoanInterestPenaltyRate;
-                            fillRow["loanInterestRate"] = loan.LoanInterestRate;
-                            fillRow["loanInterestStructure"] = loan.LoanInterestStructure;
-                            fillRow["loanLender"] = loan.LoanLender;
-                            fillRow["loanPaid"] = loan.LoanPaid;
-                            fillRow["loanSavedToDB"] = loan.LoanSavedToDb;
-                            fillRow["loanStartDate"] = loan.LoanStartDate;
-                            openLoansTable.Rows.Add(fillRow);
-                        }
+        //                }
+        //                else
+        //                {
+        //                    fillRow = openLoansTable.NewRow();
+        //                    fillRow["loanGuid"] = loan.LoanGuid;
+        //                    fillRow["loanTitle"] = loan.LoanTitle;
+        //                    fillRow["loanBeneficiary"] = loan.LoanBeneficiary;
+        //                    fillRow["loanCollectionAccount"] = loan.LoanCollectionAccount;
+        //                    fillRow["loanCompanyInfo"] = loan.LoanCompanyInfo;
+        //                    fillRow["loanCurrency"] = loan.LoanCurrency;
+        //                    fillRow["loanHasPenalty"] = loan.LoanHasInterestPenalty;
+        //                    fillRow["loanInitialLoanAmount"] = loan.LoanInitialLoanAmount;
+        //                    fillRow["loanPenaltyDate"] = loan.LoanInterestPenaltyDate;
+        //                    fillRow["loanPenaltyRate"] = loan.LoanInterestPenaltyRate;
+        //                    fillRow["loanInterestRate"] = loan.LoanInterestRate;
+        //                    fillRow["loanInterestStructure"] = loan.LoanInterestStructure;
+        //                    fillRow["loanLender"] = loan.LoanLender;
+        //                    fillRow["loanPaid"] = loan.LoanPaid;
+        //                    fillRow["loanSavedToDB"] = loan.LoanSavedToDb;
+        //                    fillRow["loanStartDate"] = loan.LoanStartDate;
+        //                    openLoansTable.Rows.Add(fillRow);
+        //                }
 
-                    }
-                    string selectTable = "SELECT * FROM LoanLifeTracker";
-                    dataAdapter = new MySqlDataAdapter(selectTable, dbConn);
-                    dataAdapter.UpdateCommand = new MySqlCommandBuilder(dataAdapter).GetDeleteCommand();
-                    dataAdapter.Update(openLoansTable);
-                    byte loanPenaltyConvert;
-                    byte loanPaidConvert;
-                    byte loanSavedToDB = 1;
-                    if (loanReportDataObj.HasInterestPenalty)
-                    {
-                        loanPenaltyConvert = 1;
-                    }
-                    else
-                    {
-                        loanPenaltyConvert = 0;
-                    }
-                    if (loanReportDataObj.Paid)
-                    {
-                        loanPaidConvert = 1;
-                    }
-                    else
-                    {
-                        loanPaidConvert = 0;
-                    }
+        //            }
+        //            string selectTable = "SELECT * FROM LoanLifeTracker";
+        //            dataAdapter = new MySqlDataAdapter(selectTable, dbConn);
+        //            dataAdapter.UpdateCommand = new MySqlCommandBuilder(dataAdapter).GetDeleteCommand();
+        //            dataAdapter.Update(openLoansTable);
+        //            byte loanPenaltyConvert;
+        //            byte loanPaidConvert;
+        //            byte loanSavedToDB = 1;
+        //            if (loanReportDataObj.HasInterestPenalty)
+        //            {
+        //                loanPenaltyConvert = 1;
+        //            }
+        //            else
+        //            {
+        //                loanPenaltyConvert = 0;
+        //            }
+        //            if (loanReportDataObj.Paid)
+        //            {
+        //                loanPaidConvert = 1;
+        //            }
+        //            else
+        //            {
+        //                loanPaidConvert = 0;
+        //            }
 
 
 
                     
-                    // activeLoan.LoanGuid.ToString(),
-                    // activeLoan.LoanTitle,
-                    // activeLoan.LoanBeneficiary,
-                    // activeLoan.LoanCollectionAccount,
-                    // activeLoan.LoanCompanyInfo,
-                    // activeLoan.LoanCurrency,
-                    // loanPenaltyConvert,
-                    // activeLoan.LoanInitialLoanAmount,
-                    // activeLoan.LoanInterestPenaltyDate,
-                    // activeLoan.LoanInterestPenaltyRate,
-                    // activeLoan.LoanInterestRate,
-                    // activeLoan.LoanInterestStructure,
-                    // activeLoan.LoanLender,
-                    // loanPaidConvert,
-                    // loanSavedToDB,
-                    // activeLoan.LoanStartDate
-                    // );
-                    //  dbAdapter.Update(loanLifeTrackerDbTable);
-                    // LoanDataSet.AcceptChanges();
-                    return "Loans has been saved.";
-                }
-                else
-                {
-                    return "Error saving loan";
-                }
-            }
-            catch (Exception ex)
-            {
-                return "Failed due to: " + ex.Message;
-            }
-        }
+        //            // activeLoan.LoanGuid.ToString(),
+        //            // activeLoan.LoanTitle,
+        //            // activeLoan.LoanBeneficiary,
+        //            // activeLoan.LoanCollectionAccount,
+        //            // activeLoan.LoanCompanyInfo,
+        //            // activeLoan.LoanCurrency,
+        //            // loanPenaltyConvert,
+        //            // activeLoan.LoanInitialLoanAmount,
+        //            // activeLoan.LoanInterestPenaltyDate,
+        //            // activeLoan.LoanInterestPenaltyRate,
+        //            // activeLoan.LoanInterestRate,
+        //            // activeLoan.LoanInterestStructure,
+        //            // activeLoan.LoanLender,
+        //            // loanPaidConvert,
+        //            // loanSavedToDB,
+        //            // activeLoan.LoanStartDate
+        //            // );
+        //            //  dbAdapter.Update(loanLifeTrackerDbTable);
+        //            // LoanDataSet.AcceptChanges();
+        //            return "Loans has been saved.";
+        //        }
+        //        else
+        //        {
+        //            return "Error saving loan";
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return "Failed due to: " + ex.Message;
+        //    }
+        //}
         public void GetExistingLoans()
         {
 
             if (loanReportDataObj.ExistingLoans != null)
             {
-                loanReportDataObj.ExistingLoans.Clear();
-                // loanReportDataObj.ExistingLoans = new ObservableCollection<Loan>();
+                if (loanReportDataObj.ExistingLoans.Count > 0)
+                {
+                    loanReportDataObj.ExistingLoans.Clear();
+                }// loanReportDataObj.ExistingLoans = new ObservableCollection<Loan>();
                 foreach (DataRow loans in openLoansTable.Rows)
                 {
                     Guid guid = new Guid(loans["loanGuid"].ToString());

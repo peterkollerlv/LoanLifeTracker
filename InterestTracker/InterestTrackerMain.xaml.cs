@@ -386,13 +386,14 @@ namespace InterestTracker
         private void BgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             LoanReportDataObj.dbConnection.OpenConnection();
+            //LoanReportDataObj.dbConnection.GetExistingLoans();
         }
 
         private void inputSaveLoan_Click(object sender, RoutedEventArgs e)
         {
             LoanReportDataObj.addLoanToExistingLoans();
             LoanReportDataObj.NotifyUI();
-            LoanReportDataObj.dbConnection.UpdateLoansToDb();
+            //LoanReportDataObj.dbConnection.UpdateLoansToDb();
         }
 
         private void inputCompanyInfo_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -429,6 +430,8 @@ namespace InterestTracker
             bgWorker.DoWork += BgWorker_DoWork;
             bgWorker.RunWorkerCompleted += BgWorker_RunWorkerCompleted;
             bgWorker.RunWorkerAsync();
+            inputUserName.Text = "";
+            inputPassword.Password = "";
             loginExpander.IsExpanded = false;
         }
 
