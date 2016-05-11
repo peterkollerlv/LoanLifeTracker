@@ -161,6 +161,7 @@
       <DependentUpon>LoanPayments.xaml</DependentUpon>
     </Compile>
     <Compile Include="LoanReportData.cs" />
+    <Compile Include="LoanStructures.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

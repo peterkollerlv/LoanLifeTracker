@@ -1,20 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Data.Objects;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.ComponentModel;
 using Microsoft.Win32;
 
@@ -395,7 +384,7 @@ namespace InterestTracker
         {
             LoanReportDataObj.addLoanToExistingLoans();
             LoanReportDataObj.NotifyUI();
-            LoanReportDataObj.dbConnection.UpdateLoansToDb();
+          //  LoanReportDataObj.dbConnection.UpdateLoansToDb();
         }
 
         private void inputCompanyInfo_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -432,7 +421,10 @@ namespace InterestTracker
             bgWorker.DoWork += BgWorker_DoWork;
             bgWorker.RunWorkerCompleted += BgWorker_RunWorkerCompleted;
             bgWorker.RunWorkerAsync();
+            inputUserName.Text = "";
+            inputPassword.Password = "";
             loginExpander.IsExpanded = false;
+            
         }
 
         private void inputLoanTitle_GotFocus(object sender, RoutedEventArgs e)
