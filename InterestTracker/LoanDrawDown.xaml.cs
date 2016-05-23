@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,11 +19,13 @@ namespace InterestTracker
     /// <summary>
     /// Interaction logic for LoanDrawDown.xaml
     /// </summary>
-    public partial class LoanDrawDown : Page
+    public partial class LoanDrawDown : Page, INotifyPropertyChanged
     {
         public LoanDrawDown()
         {
             InitializeComponent();
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

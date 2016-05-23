@@ -124,6 +124,7 @@
     </Compile>
     <Compile Include="DatabaseConnection.cs" />
     <Compile Include="DBConnectInfo.cs" />
+    <Compile Include="DrawDown.cs" />
     <Compile Include="FormatDigitInput.cs" />
     <Compile Include="GenerateExcel.cs" />
     <Compile Include="GeneratePdf.cs" />

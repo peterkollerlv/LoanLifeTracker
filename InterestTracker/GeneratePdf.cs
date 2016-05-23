@@ -21,14 +21,11 @@ namespace InterestTracker
             this.loanReportDataObj = loanReportDataObj;
         }
 
-        private string displayingPayments;
-        private string reportText;
-        public string ExError;
-
-
+        private List<string[]> reportText;
         private List<string[]> reportRows = new List<string[]>();
-
+        private string[] displayingPayments;
         public string PdfSavePath { get; internal set; }
+        public string ExError;
 
         internal void BuildPDF()
         {
@@ -39,7 +36,6 @@ namespace InterestTracker
             }
             reportRows.Add(gridRow);
             var rows = GetDataGridRows(loanReportDataObj.LoanReportDataGrid);
-            //var rows = GetDataGridRows(loanReportDataObj.LoanReportDataGrid);
             foreach (System.Windows.Controls.DataGridRow row in rows)
             {
                 gridRow = null;
@@ -47,59 +43,77 @@ namespace InterestTracker
                 DataRowView rowView = (DataRowView)row.Item;
                 for (int i = 0; i < loanReportDataObj.LoanReportDataGrid.Columns.Count; i++)
                 {
-                   System.Windows.Controls.TextBlock textBlock = loanReportDataObj.LoanReportDataGrid.Columns[i].GetCellContent(row) as System.Windows.Controls.TextBlock;
+                    System.Windows.Controls.TextBlock textBlock = loanReportDataObj.LoanReportDataGrid.Columns[i].GetCellContent(row) as System.Windows.Controls.TextBlock;
                     gridRow[i] = textBlock.Text;
                 }
                 reportRows.Add(gridRow);
             }
-        //    buildPdf();
-        //}
-
-
-
-        //private void buildPdf()
-        //{
 
             if (loanReportDataObj.DisplayPaymentsChk)
             {
-                displayingPayments = "Displaying Payments: Yes";
+                displayingPayments = new string[] { "Displaying Payments:", "Yes" };
             }
             else if (!loanReportDataObj.DisplayPaymentsChk)
             {
-                displayingPayments = "Displaying Payments: No";
+                displayingPayments = new string[] { "Displaying Payments:", "No" };
             }
 
-            //string pdfName = loanReportDataObj.Title + " " + loanReportDataObj.ReportStartDate.Month + loanReportDataObj.ReportStartDate.Day + loanReportDataObj.ReportStartDate.Year +
-            //    " - " + loanReportDataObj.ReportEndDate.Month + loanReportDataObj.ReportEndDate.Day + loanReportDataObj.ReportEndDate.Year + ".pdf";
-
-
             System.Drawing.Image freewayLogoFromRescources = System.Drawing.Image.FromHbitmap(Properties.Resources.FreewayLogoPlain.GetHbitmap());
-            
+            Font reportFont = FontFactory.GetFont("Arial", 7f);
+            Font headerFont = FontFactory.GetFont("Arial", 8f, 1);
+
             Document exportPdfDocument = new Document(PageSize.A4, 20f, 20f, 20f, 20f);
             try
             {
+                reportText = new List<string[]>();
+                string[] newLine = new string[] { "Title:", loanReportDataObj.Title };
+                reportText.Add(newLine);
+                newLine = new string[] { "Company Info:", loanReportDataObj.CompanyInfo };
+                reportText.Add(newLine);
+                newLine = new string[] { "Lender:", loanReportDataObj.Lender };
+                reportText.Add(newLine);
+                newLine = new string[] { "Beneficiary:", loanReportDataObj.Beneficiary };
+                reportText.Add(newLine);
+                newLine = new string[] { "Collection Account:", loanReportDataObj.CollectionAccount };
+                reportText.Add(newLine);
+                newLine = new string[] { "Initial Loan Amount:", loanReportDataObj.Currency + " " + loanReportDataObj.InitialLoanAmount.ToString() };
+                reportText.Add(newLine);
+                newLine = new string[] { "Loan Start Date:", loanReportDataObj.StartDate.ToShortDateString() };
+                reportText.Add(newLine);
+                newLine = new string[] { "Interest Structure:", loanReportDataObj.InterestStructureSelection };
+                reportText.Add(newLine);
+                newLine = new string[] { "Report Range:", loanReportDataObj.ReportStartDate.ToShortDateString() + " - " + loanReportDataObj.ReportEndDate.ToShortDateString() };
+                reportText.Add(newLine);
+                reportText.Add(displayingPayments);
 
-                reportText = "\n\n\n\n\n\n\n" + "Title: " + loanReportDataObj.Title + "\n" +
-    "Company Info: " + " " + loanReportDataObj.CompanyInfo + "\n" +
-    "Lender: " + " " + loanReportDataObj.Lender + "\n" +
-    "Beneficiary: " + " " + loanReportDataObj.Beneficiary + "\n" +
-    "Collection Account: " + " " + loanReportDataObj.CollectionAccount + "\n" +
-    "Initial Loan Amount: " + loanReportDataObj.Currency + " " + loanReportDataObj.InitialLoanAmount.ToString() + "\n" +
-    "Loan Start Date: " + " " + loanReportDataObj.StartDate.ToShortDateString() + "\n" +
-    "Interest Structure: " + " " + loanReportDataObj.InterestStructureSelection + "\n" +
-    "Report Range: " + loanReportDataObj.ReportStartDate.ToShortDateString() + " - " + loanReportDataObj.ReportEndDate.ToShortDateString() + "\n" +
-    displayingPayments + "\n\n";
-
+                PdfPTable titleInfoTable = new PdfPTable(2);
+                float[] cellWidth = new float[] { 40f, 100f };
+                foreach (string[] titeInfoItem in reportText)
+                {
+                    PdfPCell titleInfoCell;
+                    PdfPCell[] titleInfoCells = new PdfPCell[2];
+                    titleInfoCell = new PdfPCell(new Phrase(titeInfoItem[0], reportFont));
+                    titleInfoCells[0] = titleInfoCell;
+                    titleInfoCell.BorderWidth = 0f;
+                    titleInfoCell.Padding = 0f;
+                    titleInfoCell = new PdfPCell(new Phrase(titeInfoItem[1], reportFont));
+                    titleInfoCells[1] = titleInfoCell;
+                    titleInfoCell.BorderWidth = 0;
+                    titleInfoCell.Padding = 0f;
+                    PdfPRow titleInfoRow = new PdfPRow(titleInfoCells);
+                    titleInfoTable.Rows.Add(titleInfoRow);
+                }
+                titleInfoTable.SetWidths(cellWidth);
+                Paragraph reportTextBlock = new Paragraph();
+                Paragraph reportBody = new Paragraph();
                 iTextSharp.text.Image freewayLogo = iTextSharp.text.Image.GetInstance(freewayLogoFromRescources, System.Drawing.Imaging.ImageFormat.Png);
                 freewayLogo.Alignment = iTextSharp.text.Image.UNDERLYING | Element.ALIGN_TOP | Element.ALIGN_CENTER;
                 freewayLogo.ScalePercent(15f);
                 PdfWriter.GetInstance(exportPdfDocument, new FileStream(PdfSavePath, FileMode.Create));
                 PdfPTable pdfTable = new PdfPTable(loanReportDataObj.LoanReportDataGrid.Columns.Count);
                 pdfTable.WidthPercentage = 100;
-                Font reportFont = FontFactory.GetFont("Arial", 7f);
-                Font headerFont = FontFactory.GetFont("Arial", 8f, 1);
-                Paragraph reportTextBlock = new Paragraph(reportText, reportFont);
-                reportTextBlock.SetLeading(9f, 0f);
+                titleInfoTable.HorizontalAlignment = Element.ALIGN_LEFT;
+                reportTextBlock.Add(titleInfoTable);
 
                 foreach (string headerCell in reportRows[0])
                 {
@@ -118,11 +132,14 @@ namespace InterestTracker
                         }
                     }
                 }
+                reportTextBlock.SpacingBefore = 50f;
+                reportBody.Add(pdfTable);
+                reportBody.SpacingBefore = 1f;
+
                 exportPdfDocument.Open();
                 exportPdfDocument.Add(freewayLogo);
                 exportPdfDocument.Add(reportTextBlock);
-
-                exportPdfDocument.Add(pdfTable);
+                exportPdfDocument.Add(reportBody);
             }
 
             catch (Exception ex)
@@ -146,7 +163,6 @@ namespace InterestTracker
                 var row = grid.ItemContainerGenerator.ContainerFromItem(item) as System.Windows.Controls.DataGridRow;
                 if (null != row) yield return row;
             }
-
         }
 
         public static T GetVisualChild<T>(Visual parent) where T : Visual

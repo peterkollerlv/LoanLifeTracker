@@ -8,7 +8,13 @@
       d:DesignHeight="300" d:DesignWidth="300"
       Title="LoanDrawDown">
 
-    <Grid>
-        <TextBox Name="drawDownAmount" Height="24" Width="74"></TextBox>
+    <Grid Margin="0,0,-167,0">
+        <TextBox Name="drawDownAmount" Height="24" Margin="237,69,114,207"/>
+        <DatePicker Name="drawDownDate" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelDrawDown" Content="Draw Down" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="18" Height="30"/>
+        <Label x:Name="labelDrawDownDate" Content="Draw Down Date" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelDrawDownAmount" Content="Draw Down Amount" HorizontalAlignment="Left" Margin="237,45,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelDrawDownCurrency" Content="USD" HorizontalAlignment="Left" Margin="193,69,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="buttonSubmitDrawDown" Content="Button" HorizontalAlignment="Left" Margin="278,126,0,0" VerticalAlignment="Top" Width="75" Height="26"/>
     </Grid>
 </Page>
