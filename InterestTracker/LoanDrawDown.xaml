@@ -9,12 +9,12 @@
       Title="LoanDrawDown">
 
     <Grid Margin="0,0,-167,0">
-        <TextBox Name="drawDownAmount" Height="24" Margin="237,69,114,207"/>
-        <DatePicker Name="drawDownDate" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelDrawDown" Content="Draw Down" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="18" Height="30"/>
-        <Label x:Name="labelDrawDownDate" Content="Draw Down Date" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelDrawDownAmount" Content="Draw Down Amount" HorizontalAlignment="Left" Margin="237,45,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelDrawDownCurrency" Content="USD" HorizontalAlignment="Left" Margin="193,69,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="buttonSubmitDrawDown" Content="Button" HorizontalAlignment="Left" Margin="278,126,0,0" VerticalAlignment="Top" Width="75" Height="26"/>
+        <TextBox Name="drawDownAmount" Height="24" Margin="248,105,0,0" HorizontalAlignment="Left" Width="116" VerticalAlignment="Top"/>
+        <DatePicker Name="drawDownDate" HorizontalAlignment="Left" Margin="21,105,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelDrawDown" Content="Draw Down" HorizontalAlignment="Left" Margin="21,46,0,0" VerticalAlignment="Top" FontSize="18" Height="30" FontWeight="Bold"/>
+        <Label x:Name="labelDrawDownDate" Content="Draw Down Date" HorizontalAlignment="Left" Margin="21,81,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelDrawDownAmount" Content="Draw Down Amount" HorizontalAlignment="Left" Margin="248,81,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelDrawDownCurrency" Content="USD" HorizontalAlignment="Left" Margin="204,105,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="buttonSubmitDrawDown" Content="Button" Margin="289,162,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="75"/>
     </Grid>
 </Page>
